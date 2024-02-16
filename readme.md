@@ -14,10 +14,7 @@ https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf
 ```zsh
 rpicam-hello
 ```
-- update everything
-```zsh
-sudo apt install -y python3-picamera2
-```
+### Install Dependecies
 - Install OpenCV
 - OpenCV (Open Source Computer Vision Library) is a library of programming functions mainly aimed at real-time computer vision
 ```zsh
