@@ -30,6 +30,12 @@ sudo apt install -y ffmpeg
 
 
 ## 2. Microphone Module
+Device Overview: 
+https://www.farnell.com/datasheets/2608206.pdf?_ga=2.219371345.993533472.1539793131-901402398.1539269224
+
+ALSA Mic Overview: https://matrix-io.github.io/matrix-documentation/matrix-lite/py-reference/alsa-mics/
+
+MatrixIO Kernal Modules: https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation
 
 
 
