@@ -8,6 +8,7 @@ University of Memphis
 https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf
 
 ### First Connection
+- New versions of rpi should have camera packages preinstalled
 - To test if camera is working, type this command in terminal
 - This should bring up a window with camera feed for about 5 seconds
 ```zsh
