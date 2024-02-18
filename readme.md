@@ -75,7 +75,7 @@ sudo apt install -y ffmpeg
 - [MatrixIO Kernal Modules](https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation)
 
 
-####Following option 1 from MatrixIO Kernal Modules
+#### Following option 1 from MatrixIO Kernal Modules
 - reverting back to current stock Raspbian kernel use:
 
 ```zsh
