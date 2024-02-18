@@ -144,6 +144,7 @@ and edit it to:
 ~~~
 deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
 ~~~
+- rerun curl
 ~~~
 curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
 ~~~
