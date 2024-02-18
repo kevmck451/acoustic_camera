@@ -126,7 +126,7 @@ Another thing worth noting is that
 matrixio-creator-init seems to be not availablie on bullseye (neither 32 nor 64 bit), only on buster
 ~~~
 
-#### Next Steps
+#### Next Step
 - in the Raspberry Pi imager I have, there is not an option for downloading the buster OS
 - Not sure where to go from here.
 - Should i download an older .img file for buster and trying imaging that on to the SD drive?
