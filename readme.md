@@ -147,6 +147,7 @@ deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
 ~~~
 curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
 ~~~
+- no warning this time, but gpg still says no valid data found; doest that matter?
 
 #### Output:
 ~~~
