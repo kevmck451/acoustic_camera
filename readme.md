@@ -75,6 +75,32 @@ sudo apt install -y ffmpeg
 - [MatrixIO Kernal Modules](https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation)
 
 
+####Following option 1 from MatrixIO Kernal Modules
+- reverting back to current stock Raspbian kernel use:
+
+```zsh
+sudo apt-get install --reinstall raspberrypi-bootloader raspberrypi-kernel
+```
+
+- output is in "ALSA or kernel output.txt" file
+
+#### Add repo and key
+
+```zsh
+curl -L https://apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
+```
+
+#### Output:
+- pi@acousticpi:~ $ curl -L https://apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
+- % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+- curl: (6) Could not resolve host: apt.matrix.one
+- Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+gpg: no valid OpenPGP data found.
+
+
 
 
 
