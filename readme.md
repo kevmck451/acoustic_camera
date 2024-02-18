@@ -92,13 +92,45 @@ echo "deb https://apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /e
 ```
 
 #### Output:
-- pi@acousticpi:~ $ curl -L https://apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
-- % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+~~~
+pi@acousticpi:~ $ curl -L https://apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-- curl: (6) Could not resolve host: apt.matrix.one
-- Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+    0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (6) Could not resolve host: apt.matrix.one
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
 gpg: no valid OpenPGP data found.
+~~~
+
+#### Troubleshooting
+- I googled this link from warning: https://apt.matrix.one/doc/apt-key.gpg
+- First link was this github site: [Link](https://github.com/matrix-io/matrix-creator-init/issues/57)
+- At the bottom, this was said from someone:
+
+~~~
+This issues is also adressed here matrix-org/synapse#1855
+
+Their solution is to use another link
+curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
+
+But this ends up in
+The following signatures couldn't be verified because the public key is not available: NO_PUBKEY B16A1706B2DD19C3
+
+Workaround for this is to open the sources file
+
+sudo nano /etc/apt/sources.list.d/matrixlabs.list
+and edit it to:
+deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
+
+Another thing worth noting is that
+matrixio-creator-init seems to be not availablie on bullseye (neither 32 nor 64 bit), only on buster
+~~~
+
+in the Raspberry Pi imager I have, there is not an option for downloading the buster OS
+Not sure where to go from here.
+Should i download an older .img file for buster and trying imaging that on to the SD drive?
+
+
 
 
 
