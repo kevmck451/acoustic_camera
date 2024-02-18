@@ -114,7 +114,8 @@ Their solution is to use another link
 curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
 
 But this ends up in
-The following signatures couldn't be verified because the public key is not available: NO_PUBKEY B16A1706B2DD19C3
+The following signatures couldn't be verified because the 
+public key is not available: NO_PUBKEY B16A1706B2DD19C3
 
 Workaround for this is to open the sources file
 
@@ -123,7 +124,8 @@ and edit it to:
 deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
 
 Another thing worth noting is that
-matrixio-creator-init seems to be not availablie on bullseye (neither 32 nor 64 bit), only on buster
+matrixio-creator-init seems to be not availablie on bullseye 
+(neither 32 nor 64 bit), only on buster
 ~~~
 
 in the Raspberry Pi imager I have, there is not an option for downloading the buster OS
