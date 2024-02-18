@@ -126,10 +126,79 @@ Another thing worth noting is that
 matrixio-creator-init seems to be not availablie on bullseye (neither 32 nor 64 bit), only on buster
 ~~~
 
-#### Next Step
-- in the Raspberry Pi imager I have, there is not an option for downloading the buster OS
-- Not sure where to go from here.
-- Should i download an older .img file for buster and trying imaging that on to the SD drive?
+#### Finding Buster OS
+- Googled "raspberry pi buster download 4" and found this [Link](https://raspberrypi.stackexchange.com/questions/144742/how-do-i-get-the-latest-version-of-raspberry-pi-os-buster-for-4)
+- A link was given to zip file [Link](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-05-28/2021-05-07-raspios-buster-armhf.zip)
+- Used Raspberry Pi imager to image the SD card with this .img file
+- When I turned on the pi, it said something about file resize and rebooted, then rebooted again and a couple more times
+- It finally booted up correctly, settings box popped up, new settings applied with reboot
+
+#### MatrixIO Kernal Module Steps Attempt with Buster OS
+- ssh into pi and try kernel install again
+- output is in "ALSA or kernel output.txt 2" file
+- Changed process from troubleshooting page:
+~~~
+sudo nano /etc/apt/sources.list.d/matrixlabs.list
+~~~
+and edit it to:
+~~~
+deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
+~~~
+~~~
+curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
+~~~
+
+#### Output:
+~~~
+pi@acousticpi:~ $ curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   146    0   146    0     0    185      0 --:--:-- --:--:-- --:--:--   185
+gpg: no valid OpenPGP data found.
+~~~
+- Update packages and install
+~~~
+pi@acousticpi:~ $ sudo apt-get update
+Err:1 https://apt.matrix.one/raspbian buster InRelease
+  Could not resolve 'apt.matrix.one'
+Get:2 http://raspbian.raspberrypi.org/raspbian buster InRelease [15.0 kB]          
+Get:3 http://archive.raspberrypi.org/debian buster InRelease [32.6 kB]             
+Get:4 http://raspbian.raspberrypi.org/raspbian buster/main armhf Packages [13.0 MB]
+Get:5 http://archive.raspberrypi.org/debian buster/main armhf Packages [400 kB]
+Get:6 http://raspbian.raspberrypi.org/raspbian buster/contrib armhf Packages [58.8 kB]
+Get:7 http://raspbian.raspberrypi.org/raspbian buster/non-free armhf Packages [110 kB]
+Fetched 13.6 MB in 8s (1,731 kB/s)                                                                                                                   
+Reading package lists... Done
+N: Ignoring file 'matrixlabs.listcurl' in directory '/etc/apt/sources.list.d/' as it has an invalid filename extension
+N: Repository 'http://raspbian.raspberrypi.org/raspbian buster InRelease' changed its 'Suite' value from 'stable' to 'oldoldstable'
+N: Repository 'http://archive.raspberrypi.org/debian buster InRelease' changed its 'Suite' value from 'testing' to 'oldoldstable'
+W: Failed to fetch https://apt.matrix.one/raspbian/dists/buster/InRelease  Could not resolve 'apt.matrix.one'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+~~~
+~~~
+pi@acousticpi:~ $ sudo apt-get upgrade
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Calculating upgrade... Done
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+
+The following packages have unmet dependencies:
+ vlc-bin : Depends: libvlc-bin (= 3.0.12-0+deb10u1+rpt1) but 3.0.20-0+deb10u1 is to be installed
+ vlc-plugin-base : Depends: vlc-data (= 3.0.12-0+deb10u1+rpt1) but 3.0.20-0+deb10u1 is to be installed
+ vlc-plugin-skins2 : Depends: vlc-plugin-qt (= 3.0.20-0+deb10u1) but 3.0.12-0+deb10u1+rpt1 is to be installed
+N: Ignoring file 'matrixlabs.listcurl' in directory '/etc/apt/sources.list.d/' as it has an invalid filename extension
+E: Broken packages
+~~~
+
+#### Trying Option 2
+- yeilded the same results
+
+
 
 
 
