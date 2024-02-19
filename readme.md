@@ -89,58 +89,29 @@ sudo apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel git
 sudo reboot
 git clone https://github.com/matrix-io/matrixio-kernel-modules
 cd matrixio-kernel-modules/src
-make && make install
+make
+sudo make install
+sudo nano /boot/config.txt
 ```
-- Output:
+- scroll to the bottom and comment out current dtoverlay and change:
 ~~~
-pi@acousticpi:~/matrixio-kernel-modules/src $ make && make install
-dtc -W no-unit_address_vs_reg -@ -I dts -O dtb -o matrixio.dtbo matrixio.dts
-make -C /lib/modules/5.10.103-v7l+/build M=/home/pi/matrixio-kernel-modules/src modules
-make[1]: Entering directory '/usr/src/linux-headers-5.10.103-v7l+'
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-core.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-uart.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-everloop.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-codec.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-mic.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-playback.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-gpio.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-env.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-imu.o
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-regmap.o
-  MODPOST /home/pi/matrixio-kernel-modules/src/Module.symvers
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-codec.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-codec.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-core.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-core.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-env.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-env.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-everloop.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-everloop.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-gpio.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-gpio.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-imu.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-imu.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-mic.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-mic.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-playback.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-playback.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-regmap.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-regmap.ko
-  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-uart.mod.o
-  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-uart.ko
-make[1]: Leaving directory '/usr/src/linux-headers-5.10.103-v7l+'
-make -C /lib/modules/5.10.103-v7l+/build M=/home/pi/matrixio-kernel-modules/src modules_install
-make[1]: Entering directory '/usr/src/linux-headers-5.10.103-v7l+'
-mkdir: cannot create directory ‘/lib/modules/5.10.103-v7l+/extra’: Permission denied
-make[1]: *** [Makefile:1740: _emodinst_] Error 1
-make[1]: Leaving directory '/usr/src/linux-headers-5.10.103-v7l+'
-make: *** [Makefile:11: install] Error 2
+dtoverlay=matrixio
 ~~~
+```zsh
+sudo cp ~/matrixio-kernel-modules/misc/matrixio.conf /etc/modules-load.d/
+sudo cp ~/matrixio-kernel-modules/misc/asound.conf /etc/
+sudo reboot
+```
 
-
-
-
-
-
+#### Following Alsa Mic Overview
+```zsh
+sudo apt install portaudio19-dev 
+sudo python3 -m pip install pyaudio
+```
+- Playback wont be needed but setting adjusted anyway
+```zsh
+sudo nano /etc/asound.conf
+```
+- rate 16000 added to file
 
 
