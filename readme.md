@@ -144,7 +144,7 @@ and edit it to:
 ~~~
 deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
 ~~~
-- rerun curl
+- re-run curl
 ~~~
 curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
 ~~~
@@ -197,9 +197,17 @@ N: Ignoring file 'matrixlabs.listcurl' in directory '/etc/apt/sources.list.d/' a
 E: Broken packages
 ~~~
 
-#### Trying Option 2
-- yeilded the same results
-
+#### Troubleshooting
+- Returned to this [Link](https://github.com/matrix-io/matrix-creator-init/issues/57)
+- At the bottom, there is a closed ticket for it [Here](https://github.com/Romkabouter/ESP32-Rhasspy-Satellite/issues/94)
+- I clicked on the person's profile [Here](https://github.com/Romkabouter/ESP32-Rhasspy-Satellite?tab=readme-ov-file)
+- In the readme file, theres a getting started with Matrix Voice which takes you [Here](https://github.com/Romkabouter/ESP32-Rhasspy-Satellite/blob/master/matrixvoice.md)
+- Then it says 
+~~~
+Since the matrix.io repository at apt.matrix.one is offline, install the matrix-creator-init by using this repo https://github.com/qnlbnsl/Matrix-IO
+~~~
+- That link takes us [Here](https://matrix-io.github.io/matrix-documentation/matrix-voice/esp32/)
+- Which includes the same curl command that was causing problems originally... it doesn't say how to get the key
 
 
 
