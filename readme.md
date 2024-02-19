@@ -74,141 +74,68 @@ sudo apt install -y ffmpeg
 - [ALSA Mic Overview](https://matrix-io.github.io/matrix-documentation/matrix-lite/py-reference/alsa-mics/)
 - [MatrixIO Kernal Modules](https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation)
 
-
 #### Following option 1 from MatrixIO Kernal Modules
-- reverting back to current stock Raspbian kernel use:
+- Supposedly only works with buster
+
+#### Buster OS
+- Link to zip file [Link](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-05-28/2021-05-07-raspios-buster-armhf.zip)
+- Used Raspberry Pi imager to image the SD card with this .img file
+- Reverting back to current stock Raspbian kernel use:
 
 ```zsh
 sudo apt-get install --reinstall raspberrypi-bootloader raspberrypi-kernel
+sudo apt update
+sudo apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel git 
+sudo reboot
+git clone https://github.com/matrix-io/matrixio-kernel-modules
+cd matrixio-kernel-modules/src
+make && make install
 ```
-
-- output is in "ALSA or kernel output.txt" file
-
-#### Add repo and key
-
-```zsh
-curl -L https://apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
-echo "deb https://apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
-```
-
-#### Output:
+- Output:
 ~~~
-pi@acousticpi:~ $ curl -L https://apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
-    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-    0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-curl: (6) Could not resolve host: apt.matrix.one
-Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
-gpg: no valid OpenPGP data found.
+pi@acousticpi:~/matrixio-kernel-modules/src $ make && make install
+dtc -W no-unit_address_vs_reg -@ -I dts -O dtb -o matrixio.dtbo matrixio.dts
+make -C /lib/modules/5.10.103-v7l+/build M=/home/pi/matrixio-kernel-modules/src modules
+make[1]: Entering directory '/usr/src/linux-headers-5.10.103-v7l+'
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-core.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-uart.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-everloop.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-codec.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-mic.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-playback.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-gpio.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-env.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-imu.o
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-regmap.o
+  MODPOST /home/pi/matrixio-kernel-modules/src/Module.symvers
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-codec.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-codec.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-core.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-core.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-env.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-env.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-everloop.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-everloop.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-gpio.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-gpio.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-imu.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-imu.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-mic.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-mic.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-playback.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-playback.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-regmap.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-regmap.ko
+  CC [M]  /home/pi/matrixio-kernel-modules/src/matrixio-uart.mod.o
+  LD [M]  /home/pi/matrixio-kernel-modules/src/matrixio-uart.ko
+make[1]: Leaving directory '/usr/src/linux-headers-5.10.103-v7l+'
+make -C /lib/modules/5.10.103-v7l+/build M=/home/pi/matrixio-kernel-modules/src modules_install
+make[1]: Entering directory '/usr/src/linux-headers-5.10.103-v7l+'
+mkdir: cannot create directory ‘/lib/modules/5.10.103-v7l+/extra’: Permission denied
+make[1]: *** [Makefile:1740: _emodinst_] Error 1
+make[1]: Leaving directory '/usr/src/linux-headers-5.10.103-v7l+'
+make: *** [Makefile:11: install] Error 2
 ~~~
-
-#### Troubleshooting
-- I googled this link from warning: https://apt.matrix.one/doc/apt-key.gpg
-- First link was this github site: [Link](https://github.com/matrix-io/matrix-creator-init/issues/57)
-- At the bottom, this was said from someone:
-
-~~~
-This issues is also adressed here matrix-org/synapse#1855
-
-Their solution is to use another link
-curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
-
-But this ends up in
-The following signatures couldn't be verified because the public key is not available: NO_PUBKEY B16A1706B2DD19C3
-
-Workaround for this is to open the sources file
-
-sudo nano /etc/apt/sources.list.d/matrixlabs.list
-and edit it to:
-deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
-
-Another thing worth noting is that
-matrixio-creator-init seems to be not availablie on bullseye (neither 32 nor 64 bit), only on buster
-~~~
-
-#### Finding Buster OS
-- Googled "raspberry pi buster download 4" and found this [Link](https://raspberrypi.stackexchange.com/questions/144742/how-do-i-get-the-latest-version-of-raspberry-pi-os-buster-for-4)
-- A link was given to zip file [Link](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-05-28/2021-05-07-raspios-buster-armhf.zip)
-- Used Raspberry Pi imager to image the SD card with this .img file
-- When I turned on the pi, it said something about file resize and rebooted, then rebooted again and a couple more times
-- It finally booted up correctly, settings box popped up, new settings applied with reboot
-
-#### MatrixIO Kernal Module Steps Attempt with Buster OS
-- ssh into pi and try kernel install again
-- output is in "ALSA or kernel output.txt 2" file
-- Changed process from troubleshooting page:
-~~~
-sudo nano /etc/apt/sources.list.d/matrixlabs.list
-~~~
-and edit it to:
-~~~
-deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
-~~~
-- re-run curl
-~~~
-curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
-~~~
-- no warning this time, but gpg still says no valid data found; doest that matter?
-
-#### Output:
-~~~
-pi@acousticpi:~ $ curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   146    0   146    0     0    185      0 --:--:-- --:--:-- --:--:--   185
-gpg: no valid OpenPGP data found.
-~~~
-- Update packages and install
-~~~
-pi@acousticpi:~ $ sudo apt-get update
-Err:1 https://apt.matrix.one/raspbian buster InRelease
-  Could not resolve 'apt.matrix.one'
-Get:2 http://raspbian.raspberrypi.org/raspbian buster InRelease [15.0 kB]          
-Get:3 http://archive.raspberrypi.org/debian buster InRelease [32.6 kB]             
-Get:4 http://raspbian.raspberrypi.org/raspbian buster/main armhf Packages [13.0 MB]
-Get:5 http://archive.raspberrypi.org/debian buster/main armhf Packages [400 kB]
-Get:6 http://raspbian.raspberrypi.org/raspbian buster/contrib armhf Packages [58.8 kB]
-Get:7 http://raspbian.raspberrypi.org/raspbian buster/non-free armhf Packages [110 kB]
-Fetched 13.6 MB in 8s (1,731 kB/s)                                                                                                                   
-Reading package lists... Done
-N: Ignoring file 'matrixlabs.listcurl' in directory '/etc/apt/sources.list.d/' as it has an invalid filename extension
-N: Repository 'http://raspbian.raspberrypi.org/raspbian buster InRelease' changed its 'Suite' value from 'stable' to 'oldoldstable'
-N: Repository 'http://archive.raspberrypi.org/debian buster InRelease' changed its 'Suite' value from 'testing' to 'oldoldstable'
-W: Failed to fetch https://apt.matrix.one/raspbian/dists/buster/InRelease  Could not resolve 'apt.matrix.one'
-W: Some index files failed to download. They have been ignored, or old ones used instead.
-~~~
-~~~
-pi@acousticpi:~ $ sudo apt-get upgrade
-Reading package lists... Done
-Building dependency tree       
-Reading state information... Done
-Calculating upgrade... Done
-Some packages could not be installed. This may mean that you have
-requested an impossible situation or if you are using the unstable
-distribution that some required packages have not yet been created
-or been moved out of Incoming.
-The following information may help to resolve the situation:
-
-The following packages have unmet dependencies:
- vlc-bin : Depends: libvlc-bin (= 3.0.12-0+deb10u1+rpt1) but 3.0.20-0+deb10u1 is to be installed
- vlc-plugin-base : Depends: vlc-data (= 3.0.12-0+deb10u1+rpt1) but 3.0.20-0+deb10u1 is to be installed
- vlc-plugin-skins2 : Depends: vlc-plugin-qt (= 3.0.20-0+deb10u1) but 3.0.12-0+deb10u1+rpt1 is to be installed
-N: Ignoring file 'matrixlabs.listcurl' in directory '/etc/apt/sources.list.d/' as it has an invalid filename extension
-E: Broken packages
-~~~
-
-#### Troubleshooting
-- Returned to this [Link](https://github.com/matrix-io/matrix-creator-init/issues/57)
-- At the bottom, there is a closed ticket for it [Here](https://github.com/Romkabouter/ESP32-Rhasspy-Satellite/issues/94)
-- I clicked on the person's profile [Here](https://github.com/Romkabouter/ESP32-Rhasspy-Satellite?tab=readme-ov-file)
-- In the readme file, theres a getting started with Matrix Voice which takes you [Here](https://github.com/Romkabouter/ESP32-Rhasspy-Satellite/blob/master/matrixvoice.md)
-- Then it says 
-~~~
-Since the matrix.io repository at apt.matrix.one is offline, install the matrix-creator-init by using this repo https://github.com/qnlbnsl/Matrix-IO
-~~~
-- That link takes us [Here](https://matrix-io.github.io/matrix-documentation/matrix-voice/esp32/)
-- Which includes the same curl command that was causing problems originally... it doesn't say how to get the key
-
 
 
 
