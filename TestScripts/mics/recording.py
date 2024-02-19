@@ -5,9 +5,9 @@ import wave
 CHUNK = 2048
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 96000
+RATE = 48000
 RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output.wav"
+WAVE_OUTPUT_FILENAME = "output2.wav"
 
 # create & configure microphone
 mic = pyaudio.PyAudio()
