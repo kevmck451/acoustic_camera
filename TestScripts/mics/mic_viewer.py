@@ -2,7 +2,7 @@ import pyaudio
 import time
 import numpy as np
 from matplotlib import pyplot as plt
-import scipy.signal as signal
+# import scipy.signal as signal
 
 
 
