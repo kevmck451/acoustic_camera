@@ -1,7 +1,7 @@
 # Acoustic Camera
 - Real Time Passive Acoustic Phase Array with Visual Display
 - Senior Design Project for the University of Memphis
-## 1. Hardware
+## Hardware
 #### Links:
 - [Raspberry Pi 4 Purchase Page](https://www.amazon.com/dp/B07TC2BK1X?ref=ppx_yo2ov_dt_b_product_details&th=1)
 - [SD Card Purchase Page](https://www.amazon.com/dp/B09X7BK27V?ref=ppx_yo2ov_dt_b_product_details&th=1)
@@ -14,7 +14,7 @@
 #### Connect Pi Hardware
 - Follow screen instructions for proper connection
 
-## 2. Raspberry Pi Setup
+## Raspberry Pi Setup
 - [RaspPi Set Up Guide](https://www.raspberrypi.com/documentation/computers/getting-started.html)
 
 #### Flash SD Card
@@ -62,7 +62,7 @@ sudo reboot
 
 
 ## -----------------------------------------------------------
-## 5. Microphone Module
+## Microphone Module
 #### Links:
 - [Device Overview PDF](https://www.farnell.com/datasheets/2608206.pdf?_ga=2.219371345.993533472.1539793131-901402398.1539269224)
 - [ALSA Mic Overview](https://matrix-io.github.io/matrix-documentation/matrix-lite/py-reference/alsa-mics/)
@@ -96,12 +96,11 @@ sudo reboot
 sudo voice_esp32_enable
 # Reset Matrix Voice to confirm operation. LED lights should turn off
 esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash
-```
 
-#### Following Alsa Mic Overview
-```zsh
+# install audio libraries
 sudo apt install portaudio19-dev 
 sudo python3 -m pip install pyaudio
+pip3 install sounddevice
 ```
 
 
@@ -110,7 +109,7 @@ sudo python3 -m pip install pyaudio
 
 
 ## -----------------------------------------------------------
-## 4. Camera Module
+## Camera Module
 #### Links:
 - [PiCamera2 Library Documentation](https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf)
 
