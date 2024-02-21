@@ -31,16 +31,26 @@
 
 #### SSH into Pi
 - Open terminal on pi (ctr + alt + t)
-- Need IP4 address: Use terminal command ```ifconfig``` Ex: IP4 192.168.0.111 or inet 192.168.0.111
-- If you set up a hostname, you can use it instead of the IP address
-- Need root user name (should be green): pi is default (pi@raspberrypi:~ $)
-- Type this command with your info replaced: ```ssh pi@192.168.0.111```
-#### Update everything
-- ```sudo apt update```
-- ```sudo apt full-upgrade```
-- ```sudo apt autoremove```
-- ```sudo apt clean```
-- ```sudo reboot```
+```zsh
+# Need IP4 address
+ifconfig
+# Look for IP4 192.168.0.111 or inet 192.168.0.111
+#If you set up a hostname, you can use it instead of the IP address
+
+# Need root user name (should be green): pi is default
+pi@raspberrypi:~ $
+# Type this command with your info replaced: 
+ssh pi@192.168.0.111
+# if using hostname
+# ssh pi@hostname.local
+
+# Update everything
+sudo apt update
+sudo apt full-upgrade
+sudo apt autoremove
+sudo apt clean
+sudo reboot
+````
 
 ## 3. Project Directory / Github Connection
 - My preferred work flow is to program and run files on the pi from my desktop computer as opposed to on the pi directly. 
