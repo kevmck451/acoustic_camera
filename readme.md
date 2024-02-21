@@ -84,14 +84,6 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo apt install matrixio-kernel-modules
 sudo reboot
-
-sudo apt install matrixio-creator-init
-# check if modules are installed
-lsmod | grep matrix
-
-sudo apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel git 
-sudo reboot
-
 git clone https://github.com/matrix-io/matrixio-kernel-modules
 cd matrixio-kernel-modules/src
 make && sudo make install
@@ -105,6 +97,11 @@ dtoverlay=matrixio
 sudo cp ~/matrixio-kernel-modules/misc/matrixio.conf /etc/modules-load.d/
 sudo cp ~/matrixio-kernel-modules/misc/asound.conf /etc/
 sudo reboot
+
+sudo voice_esp32_enable
+# Reset Matrix Voice to confirm operation. LED lights should turn off
+esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash
+
 ```
 
 #### Following Alsa Mic Overview
