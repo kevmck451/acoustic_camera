@@ -31,9 +31,7 @@ deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
 ### Following option 1 from MatrixIO Kernel Modules
 - Supposedly only works with buster
 
-#### Buster OS
-- Link to zip file [Link](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-05-28/2021-05-07-raspios-buster-armhf.zip)
-- Used Raspberry Pi imager to image the SD card with this .img file
+
 - Following steps from MatrixIO Kernel Modules
 
 ```zsh

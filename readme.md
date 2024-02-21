@@ -12,6 +12,9 @@
 - [RaspPi Set Up Guide](https://www.raspberrypi.com/documentation/computers/getting-started.html)
 
 #### Flash SD Card
+- Matrix Voice only works with Buster OS
+- Link to img zip file [Link](https://downloads.raspberrypi.org/raspios_armhf/images/raspios_armhf-2021-05-28/2021-05-07-raspios-buster-armhf.zip)
+- Used Raspberry Pi imager to image the SD card with this .img file
 - Settings
   - set username / password
   - turn ssh on
