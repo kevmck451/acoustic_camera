@@ -6,7 +6,7 @@ import sounddevice
 CHUNK = 2048
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 48000
+RATE = 24000
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output1.wav"
 
@@ -18,13 +18,14 @@ stream = mic.open(format=FORMAT,
                 input=True,
                 frames_per_buffer=CHUNK)
 
+
 print("* recording")
 
 # read & store microphone data per frame read
 frames = []
 for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
     data = stream.read(CHUNK)
-    print(data)
+    # print(data)
     frames.append(data)
 
 print("* done recording")
