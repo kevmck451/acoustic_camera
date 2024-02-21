@@ -85,13 +85,13 @@ sudo apt-get upgrade
 sudo apt install matrixio-kernel-modules
 sudo reboot
 
+sudo apt install matrixio-creator-init
+# check if modules are installed
+lsmod | grep matrix
+
 sudo apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel git 
 sudo reboot
 
-sudo apt install portaudio19-dev 
-sudo python3 -m pip install pyaudio
-
-# Try Next
 git clone https://github.com/matrix-io/matrixio-kernel-modules
 cd matrixio-kernel-modules/src
 make && sudo make install
