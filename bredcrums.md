@@ -44,7 +44,7 @@ sudo reboot
 git clone https://github.com/matrix-io/matrixio-kernel-modules
 cd matrixio-kernel-modules/src
 make
-sudo make install
+sudo make install # <------------------
 sudo nano /boot/config.txt
 ```
 - scroll to the bottom and comment out current dtoverlay and change:
@@ -69,7 +69,7 @@ sudo nano /etc/asound.conf
 - rate 16000 added to file
 
 
-### Following option 2 from MatrixIO Kernel Modules
+### Following option 2 from MatrixIO Kernel Modules !!!!!!!!!!!!!
 
 ##### Troubleshooting APT Repository and GPG Key Addition Option 1
 - Found this [link] and at the bottom he said:
@@ -146,6 +146,23 @@ Chip erase completed successfully in 9.6s
 Hard resetting via RTS pin...
 ~~~
 
+
+```zsh
+# Installation Kernel Packages
+sudo apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel git 
+
+# Installation Kernel Packages
+sudo apt-get -y install raspberrypi-kernel-headers raspberrypi-kernel git 
+
+# Reboot
+sudo reboot
+
+# Cloning & Compiling
+git clone https://github.com/matrix-io/matrixio-kernel-modules
+cd matrixio-kernel-modules/src
+make
+sudo make install
+```
 
 
 
