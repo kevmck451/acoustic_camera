@@ -1,5 +1,6 @@
 import pyaudio
 import wave
+import sounddevice
 
 # recording configs
 CHUNK = 2048

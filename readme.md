@@ -96,7 +96,6 @@ sudo reboot
 sudo voice_esp32_enable
 # Reset Matrix Voice to confirm operation. LED lights should turn off
 esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash
-
 ```
 
 #### Following Alsa Mic Overview
@@ -104,11 +103,7 @@ esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset -
 sudo apt install portaudio19-dev 
 sudo python3 -m pip install pyaudio
 ```
-- Playback wont be needed but setting adjusted anyway
-```zsh
-sudo nano /etc/asound.conf
-```
-- rate 16000 added to file
+
 
 
 
