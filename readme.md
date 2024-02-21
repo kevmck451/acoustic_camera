@@ -27,6 +27,9 @@
 
 #### Set Up
 - Go through on screen instructions
+- Change Interface Settings
+  - Home Icon / Preferences / Raspberry Pi Configuration
+    - Enable everything
 - Reboot as needed
 
 #### SSH into Pi
