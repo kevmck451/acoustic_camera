@@ -7,7 +7,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
 RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output4.wav"
+WAVE_OUTPUT_FILENAME = "output1.wav"
 
 # create & configure microphone
 mic = pyaudio.PyAudio()
