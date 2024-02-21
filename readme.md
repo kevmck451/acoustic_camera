@@ -64,7 +64,6 @@ sudo reboot
 ## -----------------------------------------------------------
 ## 5. Microphone Module
 #### Links:
-- 
 - [Device Overview PDF](https://www.farnell.com/datasheets/2608206.pdf?_ga=2.219371345.993533472.1539793131-901402398.1539269224)
 - [ALSA Mic Overview](https://matrix-io.github.io/matrix-documentation/matrix-lite/py-reference/alsa-mics/)
 - [MatrixIO Kernal Modules](https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation)
@@ -88,12 +87,8 @@ git clone https://github.com/matrix-io/matrixio-kernel-modules
 cd matrixio-kernel-modules/src
 make && sudo make install
 sudo nano /boot/config.txt
-```
-- scroll to the bottom and comment out current dtoverlay and change:
-~~~
-dtoverlay=matrixio
-~~~
-```zsh
+# scroll to bottom and make sure that dtoverlay=matrixio
+
 sudo cp ~/matrixio-kernel-modules/misc/matrixio.conf /etc/modules-load.d/
 sudo cp ~/matrixio-kernel-modules/misc/asound.conf /etc/
 sudo reboot
