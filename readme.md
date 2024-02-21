@@ -115,49 +115,6 @@ sudo nano /etc/asound.conf
 - rate 16000 added to file
 
 
-#### Following option 2 from MatrixIO Kernel Modules
-
-##### Troubleshooting APT Repository and GPG Key Addition
-
-1. Download the GPG Key Manually
-```bash
-curl -L https://apt.matrix.one/doc/apt-key.gpg -o matrix_key.gpg
-```
-- Instead of piping the output of curl directly to apt-key add, first save the GPG key to a file to ensure it's correctly downloaded.
-- `-o matrix_key.gpg` saves the downloaded file as `matrix_key.gpg` in your current directory.
-- After downloading, you can check if the `matrix_key.gpg` file looks correct (it should not be empty or contain error messages).
-
-2. Manually Add the GPG Key
-```bash
-sudo apt-key add matrix_key.gpg
-```
-- After verifying the GPG key file, manually add it to your APT trusted keys.
-- If there's an error in this step, it could be related to permissions, the GPG key itself, or your APT configuration.
-
-3. Manually Add the Repository
-```bash
-lsb_release -sc
-```
-- Before adding the repository, ensure the command substitution `$(lsb_release -sc)` works correctly by running:
-- This should output the codename of your Linux distribution (e.g., `buster` for Debian 10). If there's an issue here
-- It might be because the `lsb-release` package isn't installed or there's a problem with your distribution's release information.
-
-4. Manually construct the repository line and add it to your sources:
-```bash
-echo "deb https://apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
-```
-- Ensure this command successfully creates the `matrixlabs.list` file in `/etc/apt/sources.list.d/` and the content is correct.
-
-5. Update APT and Install
-```bash
-sudo apt update
-```
-- After adding the key and repository, update your package lists:
-
-
-
-
-
 
 
 

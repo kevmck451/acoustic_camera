@@ -9,6 +9,25 @@
 - [ALSA Mic Overview](https://matrix-io.github.io/matrix-documentation/matrix-lite/py-reference/alsa-mics/)
 - [MatrixIO Kernal Modules](https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation)
 
+
+
+#### Troubleshooting
+- I googled this link from warning: https://apt.matrix.one/doc/apt-key.gpg
+- First link was this github site: [Link](https://github.com/matrix-io/matrix-creator-init/issues/57)
+- At the bottom, this was said from someone:
+
+~~~
+This issues is also adressed here matrix-org/synapse#1855
+Their solution is to use another link
+curl https://packages.matrix.org/debian/matrix-org-archive-keyring.asc | sudo apt-key add -
+But this ends up in
+The following signatures couldn't be verified because the public key is not available: NO_PUBKEY B16A1706B2DD19C3
+Workaround for this is to open the sources file
+sudo nano /etc/apt/sources.list.d/matrixlabs.list
+and edit it to:
+deb [trusted=yes]  https://apt.matrix.one/raspbian buster main
+~~~
+
 ### Following option 1 from MatrixIO Kernel Modules
 - Supposedly only works with buster
 
@@ -52,7 +71,7 @@ sudo nano /etc/asound.conf
 
 ### Following option 2 from MatrixIO Kernel Modules
 
-##### Troubleshooting APT Repository and GPG Key Addition
+##### Troubleshooting APT Repository and GPG Key Addition Option 1
 - Found this [link] and at the bottom he said:
 ~~~
 All the websites referencing the voice pi setup (matrix, hackster) 
@@ -61,56 +80,71 @@ the key but an expired one. Here, for anyone reading this thread,
 is the correct way to install the matrix software and prepare it 
 for flashing your satellite project.
 ~~~
-~~~
+```zsh
 curl https://s3.amazonaws.com/apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
-echo "deb https://apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
+echo "deb https://s3.amazonaws.com/apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt install matrixio-kernel-modules
+```
+- Ouput:
+~~~
+Unpacking matrixio-kernel-modules (0.2.5) ...
+dpkg: error processing archive /tmp/apt-dpkg-install-kNojMo/13-matrixio-kernel-modules_0.2.5_all.deb (--unpack):
+ unable to make backup link of './boot/overlays/matrixio.dtbo' before installing new version: Operation not permitted
+Errors were encountered while processing:
+ /tmp/apt-dpkg-install-kNojMo/13-matrixio-kernel-modules_0.2.5_all.deb
+E: Sub-process /usr/bin/dpkg returned an error code (1)
+~~~
+- backup .dtbo file
+```zsh
+sudo cp /boot/overlays/matrixio.dtbo /home/pi/Desktop/
+```
+- remove .dtbo file thats causing issues
+```zsh
+sudo rm /boot/overlays/matrixio.dtbo
+```
+- try install again
+```zsh
+sudo apt install matrixio-kernel-modules
+```
+- appears to have worked
+```zsh
 sudo reboot
 sudo apt install matrixio-creator-init
+```
+- check if modules are installed
+```zsh
+lsmod | grep matrix
+```
+- If modules present, then continue. If not, good luck
+```zsh
 sudo reboot
 sudo voice_esp32_enable
+```
+- Reset Matrix Voice to confirm operation. LED lights should turn off
+```zsh
 esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash
+```
+- output:
 ~~~
-
-
-##### Troubleshooting APT Repository and GPG Key Addition
-
-1. Download the GPG Key Manually
-```bash
-curl -L https://apt.matrix.one/doc/apt-key.gpg -o matrix_key.gpg
-```
-- Instead of piping the output of curl directly to apt-key add, first save the GPG key to a file to ensure it's correctly downloaded.
-- `-o matrix_key.gpg` saves the downloaded file as `matrix_key.gpg` in your current directory.
-- After downloading, you can check if the `matrix_key.gpg` file looks correct (it should not be empty or contain error messages).
-
-2. Manually Add the GPG Key
-```bash
-sudo apt-key add matrix_key.gpg
-```
-- After verifying the GPG key file, manually add it to your APT trusted keys.
-- If there's an error in this step, it could be related to permissions, the GPG key itself, or your APT configuration.
-
-3. Manually Add the Repository
-```bash
-lsb_release -sc
-```
-- Before adding the repository, ensure the command substitution `$(lsb_release -sc)` works correctly by running:
-- This should output the codename of your Linux distribution (e.g., `buster` for Debian 10). If there's an issue here
-- It might be because the `lsb-release` package isn't installed or there's a problem with your distribution's release information.
-
-4. Manually construct the repository line and add it to your sources:
-```bash
-echo "deb https://apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
-```
-- Ensure this command successfully creates the `matrixlabs.list` file in `/etc/apt/sources.list.d/` and the content is correct.
-
-5. Update APT and Install
-```bash
-sudo apt update
-```
-- After adding the key and repository, update your package lists:
+esptool.py v3.3.3
+Serial port /dev/ttyS0
+Connecting...
+Failed to get PID of a device on /dev/ttyS0, using standard reset sequence.
+.
+Chip is ESP32-D0WDQ6 (revision v1.0)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+WARNING: Detected crystal freq 41.01MHz is quite different to normalized freq 40MHz. Unsupported crystal in use?
+Crystal is 40MHz
+MAC: 24:0a:c4:ab:df:70
+Uploading stub...
+Running stub...
+Stub running...
+Erasing flash (this may take a while)...
+Chip erase completed successfully in 9.6s
+Hard resetting via RTS pin...
+~~~
 
 
 
