@@ -101,6 +101,17 @@ esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset -
 sudo apt install portaudio19-dev 
 sudo python3 -m pip install pyaudio
 pip3 install sounddevice
+sudo reboot
+
+# Check Hardware Connection
+sudo /usr/share/matrixlabs/matrixio-devices/matrix-init.bash
+# Should Get the Following:
+*** MATRIX Voice has a updated firmware
+*** MATRIX Voice initial process has been launched
+
+# Adjust asound.conf file
+sudo nano /etc/asound.conf
+
 ```
 
 
