@@ -10,5 +10,25 @@ All the parameters are optional, and default values will be chosen if omitted. T
 # picam2.start()
 
 
-picam2 = Picamera2()
-picam2.start_preview(Preview.QTGL)
+# picam2 = Picamera2()
+# picam2.start_preview(Preview.QTGL)
+
+import cv2
+
+# Initialize the video capture object at video source 0 (default camera)
+cap = cv2.VideoCapture(0)
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+
+    if ret:
+        # Display the resulting frame
+        cv2.imshow('Frame', frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# When everything done, release the capture
+cap.release()
+cv2.destroyAllWindows()
