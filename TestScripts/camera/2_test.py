@@ -28,7 +28,7 @@ class CameraGUI:
                 if event.type == QUIT:
                     running = False
 
-            frame = self.picam2.get_frame()
+            frame = self.picam2.get_preview_frame()  # Corrected method
             if frame is not None:
                 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
