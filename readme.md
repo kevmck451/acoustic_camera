@@ -131,6 +131,12 @@ sudo nano /etc/asound.conf
 ```zsh
 rpicam-hello
 ```
+- if using through ssh, then you can type this command before rpicam-hello
+```zsh
+export DISPLAY=:0
+```
+
+
 #### Install Dependecies
 - Install OpenCV
 - OpenCV (Open Source Computer Vision Library) is a library of programming functions mainly aimed at real-time computer vision

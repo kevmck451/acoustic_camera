@@ -5,7 +5,6 @@ from matplotlib import pyplot as plt
 # import scipy.signal as signal
 
 
-
 CHANNELS = 1
 RATE = 44100
 
