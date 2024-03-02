@@ -110,3 +110,16 @@ cd acoustic_camera/TestScripts/camera/picam/
   - 3.12. Recording to a circular stream
   - this would be good for if confident detection made, start recording video
 - 9_test.py: 
+  - not totally worked out, but if needed will come back
+- 10_test.py: 
+  - 3.14. Overlays
+
+
+
+
+
+
+
+
+
+
