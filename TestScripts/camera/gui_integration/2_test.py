@@ -31,6 +31,8 @@ def update_gui():
     root.after(1, update_gui)
 
 root = tk.Tk()
+root.title("Camera Feed")
+root.attributes('-fullscreen', True)  # Start in full-screen mode
 label = tk.Label(root)
 label.pack()
 
