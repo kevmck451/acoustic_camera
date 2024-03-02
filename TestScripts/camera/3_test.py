@@ -7,9 +7,10 @@ import time
 # From ch3 in doc
 
 picam2 = Picamera2()
+picam2.stop()
 picam2.start_preview(Preview.QTGL)
 picam2.start_preview(Preview.QTGL, width=400, height=400)
 
 picam2.start()
-
+picam2.stop()
 time.sleep(20)
