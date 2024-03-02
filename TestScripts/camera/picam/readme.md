@@ -97,6 +97,7 @@ cd acoustic_camera/TestScripts/camera/picam/
 ```
 1_test.py: works
 2_test.py: works
+3_test.py: works
 
 
 
