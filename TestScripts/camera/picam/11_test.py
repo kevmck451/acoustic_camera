@@ -19,10 +19,10 @@ with picamera.PiCamera() as camera:
     # Camera is now set to use the full sensor area
     # Adjust the zoom tuple as needed to simulate zooming out
 
-o = camera.add_overlay(a.tobytes(), layer=3, alpha=64)
-try:
-    # Wait indefinitely until the user terminates the script
-    while True:
-        time.sleep(1)
-finally:
-    camera.remove_overlay(o)
+    o = camera.add_overlay(a.tobytes(), layer=3, alpha=64)
+    try:
+        # Wait indefinitely until the user terminates the script
+        while True:
+            time.sleep(1)
+    finally:
+        camera.remove_overlay(o)
