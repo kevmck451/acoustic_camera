@@ -43,10 +43,11 @@ ifconfig
 # Need root user name (should be green): pi is default
 pi@raspberrypi:~ $
 # Type this command with your info replaced: 
-ssh pi@192.168.0.111
+ssh -X pi@192.168.0.111
 # if using hostname
-# ssh pi@hostname.local
+# ssh -X pi@hostname.local
 # ssh-keygen -f "/Users/KevMcK/.ssh/known_hosts" -R "192.168.0.147"
+# -X is to show diaply on remote screen
 
 # Update everything
 sudo apt update
@@ -64,12 +65,30 @@ sudo reboot
 git clone https://github.com/kevmck451/acoustic_camera
 ```
 
-
 ## ---------------------------------------------------------
 ## Camera Module
 #### Links:
+- [PiCamera2 Library Documentation](https://picamera.readthedocs.io/en/release-1.13/install.html)
 
+#### First Connection
+- ```python -c "import picamera"```
+- If no error, you're good
+- ```raspistill -o image.jpg```
+- If shows preview window and save image, you're good
 
+## Example Scripts
+
+#### Setup your Virtual Environment
+```zsh
+# cd into folder
+cd acoustic_camera/
+# create virtual env with system packages
+python3 -m venv --system-site-packages camera_venv
+# activate environ
+source camera_venv/bin/activate
+# add it to your gitignore
+nano .gitignore # add camera_venv/ 
+```
 
 
 
