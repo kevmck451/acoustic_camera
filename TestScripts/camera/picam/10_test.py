@@ -10,6 +10,7 @@ a[360, :, :] = 0xff
 a[:, 640, :] = 0xff
 
 camera = picamera.PiCamera()
+camera.rotation = 90
 camera.resolution = (1280, 720)
 camera.framerate = 24
 camera.start_preview()
