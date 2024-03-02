@@ -9,5 +9,5 @@ camera.start_preview()
 # Camera warm-up time
 sleep(2)
 camera.capture(my_stream, 'jpeg')
-sleep(2)
+sleep(10)
 my_stream.close()
