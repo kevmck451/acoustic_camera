@@ -5,8 +5,8 @@ import numpy as np
 
 def moving_overlay(number):
     a = np.zeros((720, 1280, 3), dtype=np.uint8)
-    a[360, :, :] = 0xff
-    a[:, 640, :] = 0xff
+    a[640, :, :] = 0xff
+    a[:, 360, :] = 0xff
 
     return a
 
