@@ -101,15 +101,13 @@ sudo apt install -y ffmpeg
 
 #### Setup your Virtual Environment
 ```zsh
+# cd into folder
 cd acoustic_camera/
-```
-```zsh
+# create virtual env with system packages
 python3 -m venv --system-site-packages camera_venv
-```
-```zsh
+# activate environ
 source camera_venv/bin/activate
-```
-```zsh
+# add it to your gitignore
 nano .gitignore # add camera_venv/ 
 ```
 

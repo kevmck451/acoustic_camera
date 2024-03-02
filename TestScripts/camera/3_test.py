@@ -1,20 +1,10 @@
-from picamera2 import Picamera2
-import time
+from picamera2 import Picamera2, Preview
+from libcamera import Transform
 
-# ssh -X username@your_pi_address
+# Messing with parameters
+# From ch3 in doc
 
-def main():
-    picam2 = Picamera2()
-    # Start the camera preview
-    picam2.start_preview(fullscreen=True)  # Set fullscreen to True for better viewing experience
-    try:
-        while True:
-            time.sleep(1)  # Keep the script running until interrupted
-    except KeyboardInterrupt:
-        pass
-    finally:
-        # Clean up: Stop the camera preview
-        picam2.stop_preview()
-
-if __name__ == "__main__":
-    main()
+picam2 = Picamera2()
+picam2.start_preview(Preview.QTGL, x=100, y=200, width=800, height=600,
+transform=Transform(hflip=1))
+picam2.start()
