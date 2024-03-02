@@ -59,7 +59,7 @@ sudo reboot
 
 
 
-## -----------------------------------------------------------
+## ---------------------------------------------------------
 ## Camera Module
 #### Links:
 - [PiCamera2 Library Documentation](https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf)
