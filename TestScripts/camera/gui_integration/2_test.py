@@ -11,7 +11,7 @@ def capture_frames():
     with PiCamera() as camera:
         camera.rotation = 90
         # camera.resolution = (640, 480)
-        camera.resolution = (1280, 720)  # Set a default resolution
+        camera.resolution = (960, 540)  # Set a default resolution
         camera.framerate = 24
         stream = BytesIO()
         for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
