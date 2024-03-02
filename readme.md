@@ -56,7 +56,14 @@ sudo apt autoremove
 sudo apt clean
 sudo reboot
 ````
-
+## Project Directory / Github Connection
+- My preferred work flow is to program and run files on the pi from my desktop computer as opposed to on the pi directly. 
+- If you are doing everything on the pi, then you can skip this step. 
+- It's still recommended to create a github repo to back up your work and tracking progress.
+- clone repo to pi and desktop computer
+```zsh
+git clone https://github.com/kevmck451/acoustic_camera
+```
 
 
 ## ---------------------------------------------------------
@@ -91,17 +98,19 @@ sudo apt install -y opencv-data
 sudo apt install -y ffmpeg
 ```
 
+## Example Scripts
+cd acoustic_camera/TestScripts/camera/
+
+1_test.py: works
+- got this message 
+  - ```QStandardPaths: wrong permissions on runtime directory /run/user/1000, 0770 instead of 0700```
+  - this stopped it:
+  - ```chmod 0700 /run/user/1000```
 
 
 
 
 
 
-## 3. Project Directory / Github Connection
-- My preferred work flow is to program and run files on the pi from my desktop computer as opposed to on the pi directly. 
-- If you are doing everything on the pi, then you can skip this step. 
-- It's still recommended to create a github repo to back up your work and tracking progress.
-- clone repo to pi and desktop computer
-```zsh
-git clone https://github.com/kevmck451/acoustic_camera
-```
+
+
