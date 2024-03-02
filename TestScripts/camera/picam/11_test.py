@@ -10,6 +10,7 @@ a[:, 640, :] = 0xff
 
 with picamera.PiCamera() as camera:
     camera.resolution = (1280, 720)  # Adjust the camera resolution to match the overlay
+    camera.rotation = 90
     camera.zoom = (0.0, 0.0, 1.0, 1.0)
     camera.start_preview()
 
