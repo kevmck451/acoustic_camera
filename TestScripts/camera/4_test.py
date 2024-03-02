@@ -15,6 +15,7 @@ The QtGL preview window can be started with:
 '''
 picam2 = Picamera2()
 picam2.start_preview(Preview.QTGL)
+time.sleep(10)
 
 '''
 The QtGL preview window is not recommended when the image needs 
