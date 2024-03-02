@@ -59,66 +59,6 @@ sudo reboot
 
 
 
-
-
-## -----------------------------------------------------------
-## Microphone Module
-#### Links:
-- [Device Overview PDF](https://www.farnell.com/datasheets/2608206.pdf?_ga=2.219371345.993533472.1539793131-901402398.1539269224)
-- [ALSA Mic Overview](https://matrix-io.github.io/matrix-documentation/matrix-lite/py-reference/alsa-mics/)
-- [MatrixIO Kernal Modules](https://github.com/matrix-io/matrixio-kernel-modules/blob/master/README.md#option-1-package-installation)
-
-#### Following option 2 from MatrixIO Kernel Modules
-- Supposedly only works with buster
-- This drivers only works with current stock raspbian kernel
-- To reverting back to current stock Raspbian kernel use:
-```zsh
-sudo apt-get install --reinstall raspberrypi-bootloader raspberrypi-kernel
-````
-- Following basic steps from MatrixIO Kernel Module 
-```zsh
-curl https://s3.amazonaws.com/apt.matrix.one/doc/apt-key.gpg | sudo apt-key add -
-echo "deb https://s3.amazonaws.com/apt.matrix.one/raspbian $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/matrixlabs.list
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt install matrixio-kernel-modules
-sudo reboot
-git clone https://github.com/matrix-io/matrixio-kernel-modules
-cd matrixio-kernel-modules/src
-make && sudo make install
-sudo nano /boot/config.txt
-# scroll to bottom and make sure that dtoverlay=matrixio
-
-sudo cp ~/matrixio-kernel-modules/misc/matrixio.conf /etc/modules-load.d/
-sudo cp ~/matrixio-kernel-modules/misc/asound.conf /etc/
-sudo reboot
-
-sudo voice_esp32_enable
-# Reset Matrix Voice to confirm operation. LED lights should turn off
-esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash
-
-# install audio libraries
-sudo apt install portaudio19-dev 
-sudo python3 -m pip install pyaudio
-pip3 install sounddevice
-sudo reboot
-
-# Check Hardware Connection
-sudo /usr/share/matrixlabs/matrixio-devices/matrix-init.bash
-# Should Get the Following:
-*** MATRIX Voice has a updated firmware
-*** MATRIX Voice initial process has been launched
-
-# Adjust asound.conf file
-sudo nano /etc/asound.conf
-
-```
-
-
-
-
-
-
 ## -----------------------------------------------------------
 ## Camera Module
 #### Links:
