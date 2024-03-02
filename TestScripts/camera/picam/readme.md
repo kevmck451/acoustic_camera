@@ -67,6 +67,7 @@ git clone https://github.com/kevmck451/acoustic_camera
 
 ## ---------------------------------------------------------
 ## Camera Module
+This is for BusterOS
 #### Links:
 - [PiCamera2 Library Documentation](https://picamera.readthedocs.io/en/release-1.13/install.html)
 

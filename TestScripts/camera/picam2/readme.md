@@ -67,6 +67,7 @@ git clone https://github.com/kevmck451/acoustic_camera
 
 ## ---------------------------------------------------------
 ## Camera Module
+This is for bookworm OS
 #### Links:
 - [PiCamera2 Library Documentation](https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf)
 
