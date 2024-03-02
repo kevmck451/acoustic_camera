@@ -98,6 +98,9 @@ cd acoustic_camera/TestScripts/camera/picam/
 1_test.py: works
 2_test.py: works
 3_test.py: works
+4_test.py: works
+5_test.py: works
 
+3.8. Capturing to a network stream: this would be good when transfering from pi to pi
 
 
