@@ -10,7 +10,9 @@ frame_queue = queue.Queue(maxsize=1)
 def capture_frames():
     with PiCamera() as camera:
         camera.rotation = 90
-        camera.resolution = (640, 480)
+        # camera.resolution = (640, 480)
+        camera.resolution = (1280, 720)  # Set a default resolution
+        camera.framerate = 24
         stream = BytesIO()
         for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
             stream.seek(0)
@@ -31,8 +33,6 @@ def update_gui():
     root.after(1, update_gui)
 
 root = tk.Tk()
-root.title("Camera Feed")
-root.attributes('-fullscreen', True)  # Start in full-screen mode
 label = tk.Label(root)
 label.pack()
 
