@@ -31,7 +31,7 @@ with picamera.PiCamera() as camera:
     camera.start_preview()
 
     # Add the overlay with the specified format and size
-    o = camera.add_overlay(a.tobytes(), size=(screen_width_size, screen_height_size), layer=3, alpha=64, format='rgb')
+    o = camera.add_overlay(a.tobytes(), size=(zoom_width, zoom_height), layer=3, alpha=64, format='rgb')
     try:
         # Wait indefinitely until the user terminates the script
         while True:
