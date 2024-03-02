@@ -115,6 +115,7 @@ cd acoustic_camera/TestScripts/camera/picam/
   - 3.14. Overlays
 - 11_test.py: 
   - zooming with overlays
+  - not totally worked out, but will come back if needed
 
 
 
