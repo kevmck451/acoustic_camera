@@ -10,7 +10,7 @@ frame_queue = queue.Queue(maxsize=1)
 def capture_frames():
     with PiCamera() as camera:
         camera.rotation = 90
-        camera.resolution = (640, 480)
+        camera.resolution = (1000, 500)
         stream = BytesIO()
         for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
             stream.seek(0)
