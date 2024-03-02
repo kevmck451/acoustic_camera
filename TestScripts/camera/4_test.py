@@ -1,12 +1,22 @@
+from picamera2 import Picamera2, Preview
 
+import time
 
-from picamera2 import Picamera2
-import numpy as np
+# Messing with QtGL preview window
+# From ch3 in doc
+
+'''
+This preview window is implemented using the Qt GUI toolkit and 
+uses GLES hardware graphics acceleration. 
+It is the most efficient way to display images on the screen 
+when using the GUI environment and we would recommend it in
+nearly all circumstances when a GUI is required. 
+The QtGL preview window can be started with:
+'''
 picam2 = Picamera2()
-picam2.configure(picam2.create_preview_configuration())
-picam2.start(show_preview=True)
-overlay = np.zeros((300, 400, 4), dtype=np.uint8)
-overlay[:150, 200:] = (255, 0, 0, 64) # reddish
-# overlay[150:, :200] = (0, 255, 0, 64) # greenish
-# overlay[150:, 200:] = (0, 0, 255, 64) # blueish
-picam2.set_overlay(overlay)
+picam2.start_preview(Preview.QTGL)
+
+'''
+The QtGL preview window is not recommended when the image needs 
+to be shown on a remote display (not connected to the Pi)
+'''
