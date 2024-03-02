@@ -111,8 +111,10 @@ cd acoustic_camera/TestScripts/camera/picam/
   - this would be good for if confident detection made, start recording video
 - 9_test.py: 
   - not totally worked out, but if needed will come back
-- 10_test.py: 
+- 10_test.py: works
   - 3.14. Overlays
+- 11_test.py: 
+  - zooming with overlays
 
 
 
