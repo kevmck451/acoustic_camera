@@ -93,6 +93,6 @@ def client():
 
 
 if __name__ == '__main__':
-    if input("'s' for server | 'c' for client") == 's':
+    if input("'s' for server | 'c' for client: ") == 's':
         server()
     else: client()
