@@ -90,5 +90,11 @@ source camera_venv/bin/activate
 nano .gitignore # add camera_venv/ 
 ```
 
+#### Go through example scripts
+```zsh
+cd acoustic_camera/TestScripts/camera/picam/
+```
+1_test.py: works
+
 
 
