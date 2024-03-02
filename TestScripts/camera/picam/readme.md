@@ -95,6 +95,7 @@ nano .gitignore # add camera_venv/
 cd acoustic_camera/TestScripts/camera/picam/
 ```
 1_test.py: works
+2_test.py: works
 
 
 
