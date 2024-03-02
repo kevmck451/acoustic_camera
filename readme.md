@@ -65,10 +65,6 @@ git clone https://github.com/kevmck451/acoustic_camera
 ```
 
 
-## ---------------------------------------------------------
-## Camera Module
-#### Links:
-
 
 
 
