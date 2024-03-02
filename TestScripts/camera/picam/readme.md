@@ -100,10 +100,13 @@ cd acoustic_camera/TestScripts/camera/picam/
 - 3_test.py: works
 - 4_test.py: works
 - 5_test.py: works
-
-##### 3.8. Capturing to a network stream: 
-- this would be good when transfering from pi to pi
 - 6_test.py: works
+  - 3.8. Capturing to a network stream: 
+  - this would be good when transfering from pi to pi
   - ran server through ssh'd session
   - ran client directly from pi terminal 
-
+- 7_test.py: works
+- 8_test.py: works
+  - 3.12. Recording to a circular stream
+  - this would be good for if confident detection made, start recording video
+- 9_test.py: 
