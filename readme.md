@@ -99,6 +99,17 @@ sudo apt install -y ffmpeg
 ```
 
 ## Example Scripts
+
+#### Create Virtual Environment
+```zsh
+python3 -m venv --system-site-packages camera_venv
+```
+```zsh
+source camera_venv/bin/activate
+```
+
+
+
 cd acoustic_camera/TestScripts/camera/
 
 1_test.py: works
