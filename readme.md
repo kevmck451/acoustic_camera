@@ -43,10 +43,11 @@ ifconfig
 # Need root user name (should be green): pi is default
 pi@raspberrypi:~ $
 # Type this command with your info replaced: 
-ssh pi@192.168.0.111
+ssh -X pi@192.168.0.111
 # if using hostname
-# ssh pi@hostname.local
+# ssh -X pi@hostname.local
 # ssh-keygen -f "/Users/KevMcK/.ssh/known_hosts" -R "192.168.0.147"
+# -X is to show diaply on remote screen
 
 # Update everything
 sudo apt update

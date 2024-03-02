@@ -11,6 +11,7 @@ label.pack()
 
 # Initialize the camera
 camera = PiCamera()
+camera.rotation = 90
 camera.resolution = (640, 480)
 
 def update_camera_feed():
@@ -21,7 +22,7 @@ def update_camera_feed():
     photo = ImageTk.PhotoImage(image)
     label.config(image=photo)
     label.image = photo
-    root.after(100, update_camera_feed)  # Update the feed every 100 milliseconds
+    root.after(10, update_camera_feed)  # Update the feed every 100 milliseconds
 
 update_camera_feed()  # Start the camera feed
 root.mainloop()  # Start the GUI event loop
