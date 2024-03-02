@@ -17,6 +17,10 @@ picam2 = Picamera2()
 picam2.start_preview(Preview.QTGL)
 time.sleep(10)
 
+
+picam2 = Picamera2()
+picam2.start_preview(Preview.QTGL, x=100, y=200, width=800, height=600, transform=Transform(hflip=1, vflip=1))
+picam2.start()
 '''
 The QtGL preview window is not recommended when the image needs 
 to be shown on a remote display (not connected to the Pi)
