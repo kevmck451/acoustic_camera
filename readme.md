@@ -8,7 +8,6 @@
 - [Screen Purchase Page](https://www.amazon.com/dp/B0CJNKFVPY?ref=ppx_yo2ov_dt_b_product_details&th=1)
 - [Keyboard/Mouse Purchase Page](https://www.amazon.com/dp/B07KPVZ1Y4?ref=ppx_yo2ov_dt_b_product_details&th=1)
 - [Power Supply Purchase Page](https://www.amazon.com/dp/B097P2NLVH?psc=1&ref=ppx_yo2ov_dt_b_product_details)
-- [Matrix Voice Mic Module](https://www.newark.com/matrix-labs/matrix-voice-esp/voice-development-board-spartan/dp/55AC2404?gclid=Cj0KCQjwiIOmBhDjARIsAP6YhSVaI4keeU8VfIYhUSqK6x4ST3JNHzf88cvQXWHzEGxW4CGrv8TJlCUaAo5qEALw_wcB&mckv=_dc%7Cpcrid%7C%7Cplid%7C%7Ckword%7C%7Cmatch%7C%7Cslid%7C%7Cproduct%7C55AC2404%7Cpgrid%7C%7Cptaid%7C%7C&CMP=KNC-GUSA-PMAX-Shopping-High-ROAS-S40)
 - [Pi Camera V2](https://www.amazon.com/gp/product/B01ER2SKFS/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&th=1)
 
 #### Connect Pi Hardware
@@ -100,18 +99,24 @@ sudo apt install -y ffmpeg
 
 ## Example Scripts
 
-#### Create Virtual Environment
+#### Setup your Virtual Environment
+```zsh
+cd acoustic_camera/
+```
 ```zsh
 python3 -m venv --system-site-packages camera_venv
 ```
 ```zsh
 source camera_venv/bin/activate
 ```
+```zsh
+nano .gitignore # add camera_venv/ 
+```
 
-
-
+#### Go through example scripts
+```zsh
 cd acoustic_camera/TestScripts/camera/
-
+```
 1_test.py: works
 - got this message 
   - ```QStandardPaths: wrong permissions on runtime directory /run/user/1000, 0770 instead of 0700```
