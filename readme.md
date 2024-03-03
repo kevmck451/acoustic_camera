@@ -87,6 +87,46 @@ python3 -m app.app_main
 ```
 if window size is larger than screen, adjust the camera height and width 
 
+## Add Desktop Icon
+- create bash script to start VE and run program
+```zsh
+nano ~/start_my_app.sh
+```
+- copy and paste into file
+~~~
+#!/bin/bash
 
+# Change directory to the correct folder
+cd /home/pi/Desktop/acoustic_camera
 
+# Activate the virtual environment
+source camera_venv/bin/activate
 
+# Run the Python application
+python3 -m app.app_main
+~~~
+- change script permissions to executable
+```zsh
+chmod +x ~/start_my_app.sh
+```
+- create desktop app entry
+```zsh
+nano ~/Desktop/MyAppLauncher.desktop
+```
+- copy and paste into file
+~~~
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Acoustic Camera App
+Comment=Start Acoustic Camera App
+Exec=/home/pi/start_my_app.sh
+Icon=/home/pi/Desktop/acoustic_camera/docs/papa_icon.png
+Terminal=false
+Categories=Utility;
+~~~
+- change script permissions to executable
+```zsh
+chmod +x ~/Desktop/MyAppLauncher.desktop
+```
+- When icon is first double clicked, hit the execute button on the far left
