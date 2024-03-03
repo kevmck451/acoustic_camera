@@ -86,6 +86,8 @@ class Left_Frame(ctk.CTkFrame):
         super().__init__(parent)
         self.event_handler = event_handler
 
+        self.demo_button_state = True
+
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
         self.start_icon = PhotoImage(file=configuration.start_icon_filepath)
@@ -159,8 +161,22 @@ class Left_Frame(ctk.CTkFrame):
                                           image=self.load_icon, command=lambda: self.event_handler(Event.DEMO))
         self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-
-
+    # BUTTON TOGGLE STATES ------------------------
+    def toggle_demo_button(self):
+        if self.demo_button_state:
+            self.demo_button.configure(text="Demo Overlay",
+                                               fg_color=configuration.start_fg_color,
+                                               hover_color=configuration.start_hover_color,
+                                               image=self.start_icon,
+                                               command=lambda: self.event_handler(Event.DEMO))
+            self.demo_button_state = False
+        else:
+            self.demo_button.configure(text="Stop Demo",
+                                               fg_color=configuration.button_fg_color,
+                                               hover_color=configuration.button_hover_color,
+                                               image=self.stop_icon,
+                                               command=lambda: self.event_handler(Event.DEMO))
+            self.demo_button_state = True
 
 
 # ---------------------------------------------------
