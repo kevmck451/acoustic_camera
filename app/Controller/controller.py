@@ -71,13 +71,44 @@ class Controller:
 
     def demo(self):
         # Create a list to hold properties for 4 squares
-        squares = [{
-            'position': [100, 100],  # Starting position
-            'direction': [2, 3],  # Initial movement direction
-            'size': 50,
-            'color': [0, 100, 200],
-            'transparency': 0.6
-        } for _ in range(4)]  # Creates 4 square dicts with the same initial properties
+        # squares = [{
+        #     'position': [100, 100],  # Starting position
+        #     'direction': [2, 3],  # Initial movement direction
+        #     'size': 50,
+        #     'color': [0, 100, 200],
+        #     'transparency': 0.6
+        # } for _ in range(4)]  # Creates 4 square dicts with the same initial properties
+
+        squares = [
+            {
+                'position': [100, 100],  # Starting position
+                'direction': [2, 2],  # Initial movement direction
+                'size': 50,
+                'color': [255, 0, 0],  # Red
+                'transparency': 0.5
+            },
+            {
+                'position': [200, 100],  # Starting position
+                'direction': [-2, 3],  # Initial movement direction, moving left and down
+                'size': 60,
+                'color': [0, 255, 0],  # Green
+                'transparency': 0.6
+            },
+            {
+                'position': [300, 100],  # Starting position
+                'direction': [3, -2],  # Initial movement direction, moving right and up
+                'size': 70,
+                'color': [0, 0, 255],  # Blue
+                'transparency': 0.7
+            },
+            {
+                'position': [400, 100],  # Starting position
+                'direction': [-3, -2],  # Initial movement direction, moving left and up
+                'size': 80,
+                'color': [255, 255, 0],  # Yellow
+                'transparency': 0.8
+            }
+        ]
 
         max_width, max_height = 580, 580  # Maximum dimensions
         min_size, max_size = 20, 150  # Size range
