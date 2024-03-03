@@ -1,4 +1,7 @@
 
+
+
+
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from picamera import PiCamera
@@ -6,6 +9,8 @@ from io import BytesIO
 import tkinter as tk
 import threading
 import queue
+import cv2
+
 
 
 import app.View.configuration as configuration
@@ -69,6 +74,10 @@ class Main_Window(ctk.CTk):
         # Then close the application
         self.on_close()
 
+
+# ---------------------------------------------------
+# LEFT FRAME --------------------------------------
+# ---------------------------------------------------
 class Left_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
@@ -105,43 +114,53 @@ class Left_Frame(ctk.CTkFrame):
 
 
 
-
+# ---------------------------------------------------
+# VIDEO FRAME --------------------------------------
+# ---------------------------------------------------
 class Video_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.event_handler = event_handler
-        self.parent = parent
 
-        self.frame_queue = queue.Queue(maxsize=1)
+        self.frame_queue = queue.Queue(maxsize=10)  # Adjust size as needed
 
-        label = tk.Label(self.parent)  # Continue using Tkinter Label for the image
-        label.pack()
+        self.label = tk.Label(self)  # Assuming video display within the custom frame
+        self.label.pack()
 
         threading.Thread(target=self.capture_frames, daemon=True).start()
-        self.update_gui(label)
+        self.update_gui()
 
     def capture_frames(self):
-        with PiCamera() as camera:
-            camera.rotation = 90
-            camera.resolution = (640, 480)
-            stream = BytesIO()
-            for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
-                stream.seek(0)
+        # Placeholder for capturing frames and putting them in the queue
+        cap = cv2.VideoCapture(0)
+        while True:
+            ret, frame = cap.read()
+            if ret:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = Image.fromarray(frame)
+                frame = ImageTk.PhotoImage(image=frame)
                 if not self.frame_queue.full():
-                    self.frame_queue.put(stream.read())
-                stream.seek(0)
-                stream.truncate()
+                    self.frame_queue.put(frame)
+            else:
+                break
 
-    def update_gui(self, label):
+    def update_gui(self):
         try:
-            frame_data = self.frame_queue.get_nowait()
-            image = Image.open(BytesIO(frame_data))
-            photo = ImageTk.PhotoImage(image)
-            label.config(image=photo)
-            label.image = photo
+            frame = self.frame_queue.get_nowait()
+            self.label.configure(image=frame)
+            self.label.image = frame
         except queue.Empty:
             pass
-        self.parent.after(1, self.update_gui)
+        finally:
+            self.after(10, self.update_gui)
+
+
+
+
+
+# ---------------------------------------------------
+# RIGHT FRAME --------------------------------------
+# ---------------------------------------------------
 
 class Right_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
