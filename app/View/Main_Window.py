@@ -50,7 +50,7 @@ class Main_Window(ctk.CTk):
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.columnconfigure(1, weight=4)  # Right column with 1/3 of the space
+        self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
 
         # Place the frames using grid
