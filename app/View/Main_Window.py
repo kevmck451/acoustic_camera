@@ -5,7 +5,6 @@
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from picamera import PiCamera
-from io import BytesIO
 import tkinter as tk
 import threading
 import queue
@@ -50,7 +49,7 @@ class Main_Window(ctk.CTk):
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
+        self.columnconfigure(1, weight=5)  # Right column with 1/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
 
         # Place the frames using grid
