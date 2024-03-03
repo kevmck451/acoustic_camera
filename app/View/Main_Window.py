@@ -5,6 +5,13 @@ import tkinter as tk
 import warnings
 from tkinter import ttk
 
+import tkinter as tk
+from PIL import Image, ImageTk
+from picamera import PiCamera
+from io import BytesIO
+import threading
+import queue
+
 import app.View.configuration as configuration
 from app.Controller.events import Event
 
@@ -103,14 +110,52 @@ class Left_Frame(ctk.CTkFrame):
 
 
 
-
+# class Video_Frame(ctk.CTkFrame):
+#     def __init__(self, parent, event_handler):
+#         super().__init__(parent)
+#         self.event_handler = event_handler
 
 class Video_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.event_handler = event_handler
+        self.frame_queue = queue.Queue(maxsize=1)
 
+        # Setup label for displaying camera feed
+        self.label = ctk.CTkLabel(self)
+        self.label.grid(row=0, column=0, sticky='nsew')
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
+        # Start capturing frames from the camera in a separate thread
+        self.thread = threading.Thread(target=self.capture_frames, daemon=True)
+        self.thread.start()
+
+        # Start updating the GUI with frames from the camera
+        self.update_gui()
+
+    def capture_frames(self):
+        with PiCamera() as camera:
+            camera.rotation = 90  # Adjust rotation according to your setup
+            camera.resolution = (640, 480)
+            stream = BytesIO()
+            for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
+                stream.seek(0)
+                if not self.frame_queue.full():
+                    self.frame_queue.put(stream.read())
+                stream.seek(0)
+                stream.truncate()
+
+    def update_gui(self):
+        try:
+            frame_data = self.frame_queue.get_nowait()
+            image = Image.open(BytesIO(frame_data))
+            photo = ImageTk.PhotoImage(image)
+            self.label.config(image=photo)
+            self.label.image = photo  # Keep a reference to avoid garbage collection
+        except queue.Empty:
+            pass
+        self.after(1, self.update_gui)  # Schedule next update
 
 
 
