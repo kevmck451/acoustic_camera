@@ -12,8 +12,8 @@ class Camera:
         # Example inputs for the square's position and color
         self.square_position = (100, 100)  # (x, y) position of the top-left corner
         self.square_size = 50  # Length of the square's side
-        self.square_color = (0, 255, 0)  # Color of the square in BGR (green)
-        self.square_transparency = 0.5  # Transparency of the square
+        self.square_color = (0, 0, 0)  # Color of the square in BGR (green)
+        self.square_transparency = 0  # Transparency of the square
         threading.Thread(target=self.capture_frames, daemon=True).start()
 
     def overlay_square(self, frame, position, size, color, transparency):
@@ -34,7 +34,7 @@ class Camera:
                 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 
                 # Overlay the square on the frame
-                self.overlay_square(frame, self.square_position, self.square_size, self.square_color)
+                self.overlay_square(frame, self.square_position, self.square_size, self.square_color, self.square_transparency)
 
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frame = Image.fromarray(frame)
