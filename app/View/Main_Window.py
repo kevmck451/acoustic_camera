@@ -257,22 +257,21 @@ class Right_Frame(ctk.CTkFrame):
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.capture_image_button = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
+        self.capture_image_button = ctk.CTkButton(frame, text='Save Image', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.start_fg_color, hover_color=configuration.start_hover_color,
-                                          image=self.start_icon, command=lambda: self.event_handler(Event.TAKE_PICTURE))
+                                          image=self.load_icon, command=lambda: self.event_handler(Event.TAKE_PICTURE))
         self.capture_image_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.capture_video_button = ctk.CTkButton(frame, text='Button 2',
+        self.capture_video_button = ctk.CTkButton(frame, text='Rec Video',
                                           font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.button_fg_color,
                                           hover_color=configuration.button_hover_color,
-                                          image=self.pause_icon, command=lambda: self.event_handler(Event.RECORD_VIDEO))
+                                          image=self.load_icon, command=lambda: self.event_handler(Event.RECORD_VIDEO))
         self.capture_video_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.settings_button = ctk.CTkButton(frame, text='Recording Time', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
-                                        image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
-        self.settings_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-
+        self.total_time_display = ctk.CTkLabel(frame, text='00:00',
+                                               font=(configuration.main_font_style, configuration.main_font_size))
+        self.total_time_display.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
+                                     sticky='nsew')
 
