@@ -2,9 +2,12 @@
 
 from ..Model.camera.camera import Camera
 
-import customtkinter as ctk
+
+from tkinter import PhotoImage
 from PIL import Image, ImageTk
+import customtkinter as ctk
 import tkinter as tk
+import warnings
 import queue
 
 
@@ -80,7 +83,15 @@ class Left_Frame(ctk.CTkFrame):
         super().__init__(parent)
         self.event_handler = event_handler
 
-
+        self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
+        self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
+        self.start_icon = PhotoImage(file=configuration.start_icon_filepath)
+        self.stop_icon = PhotoImage(file=configuration.stop_icon_filepath)
+        self.pause_icon = PhotoImage(file=configuration.pause_icon_filepath)
+        self.load_icon = PhotoImage(file=configuration.load_icon_filepath)
+        self.settings_icon = PhotoImage(file=configuration.settings_icon_filepath)
+        self.reset_icon = PhotoImage(file=configuration.reset_icon_filepath)
+        warnings.filterwarnings('ignore', category=UserWarning, module='customtkinter.*')
 
 
 
@@ -109,8 +120,32 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-    # FRAMES ---------------------------------------------
+        self.start_stop_frames(top_frame)
 
+    # FRAMES ---------------------------------------------
+    def start_stop_frames(self, frame):
+
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.start_button = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.start_fg_color, hover_color=configuration.start_hover_color,
+                                          image=self.start_icon, command=lambda: self.event_handler(Event.START_EXPERIMENT))
+        self.start_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.pause_button = ctk.CTkButton(frame, text='Button 2',
+                                          font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.button_fg_color,
+                                          hover_color=configuration.button_hover_color,
+                                          image=self.pause_icon, command=lambda: self.event_handler(Event.PAUSE))
+        self.pause_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.settings_button = ctk.CTkButton(frame, text='Button 3', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                        image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
+        self.settings_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
 # ---------------------------------------------------
@@ -126,15 +161,6 @@ class Video_Frame(ctk.CTkFrame):
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
-        # Overlay properties
-        self.overlay_position = [50, 50]  # Default position
-        self.overlay_size = 100  # Default size (square)
-        self.overlay_color = (255, 0, 0)  # Default color (green, in BGR format)
-
-        # Movement properties
-        self.move_direction = 1  # 1 for right, -1 for left
-        self.move_speed = 2  # Pixels per update
-
         self.update_gui()
 
     def update_gui(self):
@@ -147,14 +173,6 @@ class Video_Frame(ctk.CTkFrame):
 
         self.after(10, self.update_gui)
 
-    def update_overlay(self, position=None, size=None, color=None):
-        if position is not None:
-            self.overlay_position = position
-        if size is not None:
-            self.overlay_size = size
-        if color is not None:
-            # Convert color from RGB (or whatever format you use) to BGR for OpenCV
-            self.overlay_color = color[::-1]  # Assuming color is given in RGB and converting to BGR
 
 
 
@@ -167,7 +185,15 @@ class Right_Frame(ctk.CTkFrame):
         super().__init__(parent)
         self.event_handler = event_handler
 
-
+        self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
+        self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
+        self.start_icon = PhotoImage(file=configuration.start_icon_filepath)
+        self.stop_icon = PhotoImage(file=configuration.stop_icon_filepath)
+        self.pause_icon = PhotoImage(file=configuration.pause_icon_filepath)
+        self.load_icon = PhotoImage(file=configuration.load_icon_filepath)
+        self.settings_icon = PhotoImage(file=configuration.settings_icon_filepath)
+        self.reset_icon = PhotoImage(file=configuration.reset_icon_filepath)
+        warnings.filterwarnings('ignore', category=UserWarning, module='customtkinter.*')
 
         # Top Frame
         top_frame = ctk.CTkFrame(self)
@@ -193,8 +219,32 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-    # FRAMES ---------------------------------------------
+        self.start_stop_frames(top_frame)
 
+    # FRAMES ---------------------------------------------
+    def start_stop_frames(self, frame):
+
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.start_button = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.start_fg_color, hover_color=configuration.start_hover_color,
+                                          image=self.start_icon, command=lambda: self.event_handler(Event.START_EXPERIMENT))
+        self.start_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.pause_button = ctk.CTkButton(frame, text='Button 2',
+                                          font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.button_fg_color,
+                                          hover_color=configuration.button_hover_color,
+                                          image=self.pause_icon, command=lambda: self.event_handler(Event.PAUSE))
+        self.pause_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                        image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
+        self.settings_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
 
