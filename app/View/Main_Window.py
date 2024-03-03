@@ -152,8 +152,8 @@ class Left_Frame(ctk.CTkFrame):
     def demo_frame(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
-        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
-        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        # frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        # frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
         self.demo_button = ctk.CTkButton(frame, text='Demo Overlay', font=(configuration.main_font_style, configuration.main_font_size),
