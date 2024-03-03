@@ -47,7 +47,7 @@ class Main_Window(ctk.CTk):
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.columnconfigure(1, weight=5)  # Right column with 1/3 of the space
+        self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
 
         # Place the frames using grid
@@ -121,7 +121,6 @@ class Video_Frame(ctk.CTkFrame):
         super().__init__(parent)
         self.event_handler = event_handler
 
-        # self.frame_queue = queue.Queue(maxsize=10)  # Adjust size as needed
         self.Camera = Camera()
 
         self.label = tk.Label(self)  # Assuming video display within the custom frame
@@ -137,7 +136,6 @@ class Video_Frame(ctk.CTkFrame):
         self.move_speed = 2  # Pixels per update
 
         self.update_gui()
-
 
     def update_gui(self):
         try:
