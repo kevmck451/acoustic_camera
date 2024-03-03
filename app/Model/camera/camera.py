@@ -1,5 +1,4 @@
 
-from picamera import PiCamera
 from PIL import Image, ImageTk
 import threading
 import queue

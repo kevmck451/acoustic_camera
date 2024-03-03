@@ -50,9 +50,7 @@ ssh -X pi@192.168.0.111
 # -X is to show diaply on remote screen
 
 # When using ssh, you might need this command to have screen on pi 
-```zsh
-export DISPLAY=:0
-```
+
 
 # Update everything
 sudo apt update
@@ -61,6 +59,11 @@ sudo apt autoremove
 sudo apt clean
 sudo reboot
 ````
+
+```zsh
+export DISPLAY=:0
+```
+
 ## Project Directory / Github Connection
 - My preferred work flow is to program and run files on the pi from my desktop computer as opposed to on the pi directly. 
 - If you are doing everything on the pi, then you can skip this step. 
@@ -70,6 +73,11 @@ sudo reboot
 git clone https://github.com/kevmck451/acoustic_camera
 ```
 
+## Run Application
+```zsh
+# Inside the acoustic_camera folder run:
+python3 -m app.app_main
+```
 
 
 
