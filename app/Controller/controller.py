@@ -69,53 +69,112 @@ class Controller:
         self.demo_stop = False
         self.gui.Camera.square_transparency = 0
 
-
     def demo(self):
-        # Initial setup
-        direction = [2, 3]  # Initial direction for movement (x, y)
-        max_width, max_height = 580, 580  # Maximum dimensions based on the camera setup
-        min_size, max_size = 20, 150  # Min and max square sizes
-        size_increment = 1  # Size change per iteration
-        transparency_increment = 0.1  # Transparency change per iteration
-        color_increment = [1, 1, 1]  # RGB color change per iteration
+        # Create a list to hold properties for 4 squares
+        squares = [{
+            'position': [100, 100],  # Starting position
+            'direction': [2, 3],  # Initial movement direction
+            'size': 50,
+            'color': [0, 100, 200],
+            'transparency': 0.6
+        } for _ in range(4)]  # Creates 4 square dicts with the same initial properties
+
+        max_width, max_height = 580, 580  # Maximum dimensions
+        min_size, max_size = 20, 150  # Size range
+        size_increment = 1
+        transparency_increment = 0.01
+        color_increment = [1, 2, 3]  # Adjust as needed for visual effect
 
         while self.demo_stop:
-            position = list(self.gui.Camera.square_position)
-            size = self.gui.Camera.square_size
-            transparency = 0.6
-            color = list(self.gui.Camera.square_color)
+            for square in squares:
+                position = square['position']
+                size = square['size']
+                color = square['color']
 
-            # Update position
-            for i in range(2):
-                position[i] += direction[i]
-                if position[i] >= max_width - size or position[i] <= 0:
-                    direction[i] *= -1  # Reverse direction on hitting bounds
+                # Update position and reverse direction on bounds
+                for i in range(2):
+                    position[i] += square['direction'][i]
+                    if position[i] >= max_width - size or position[i] <= 0:
+                        square['direction'][i] *= -1
 
-            # Update size
-            size += size_increment
-            if size >= max_size or size <= min_size:
-                size_increment *= -1  # Reverse size change direction
+                # Update size
+                size += size_increment
+                if size >= max_size or size <= min_size:
+                    size_increment *= -1
 
-            # Update transparency
-            # transparency += transparency_increment
-            # if transparency >= 1.0 or transparency <= 0.1:
-            #     transparency_increment *= -1  # Reverse transparency change direction
+                # Update transparency (Example logic, customize as needed)
+                square['transparency'] += transparency_increment
+                if square['transparency'] >= 1.0 or square['transparency'] <= 0.1:
+                    transparency_increment *= -1
 
-            # Update color
-            for i in range(3):
-                color[i] += color_increment[i]
-                if color[i] > 255 or color[i] < 0:
-                    color_increment[i] *= -1  # Reverse color change direction
-                color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
+                # Update color
+                for i in range(3):
+                    color[i] += color_increment[i]
+                    if color[i] > 255 or color[i] < 0:
+                        color_increment[i] *= -1
+                    color[i] = max(0, min(255, color[i]))
 
-            # Apply updates
-            self.gui.Camera.square_position = tuple(position)
-            self.gui.Camera.square_size = size
-            self.gui.Camera.square_transparency = transparency
-            self.gui.Camera.square_color = tuple(color)
+                # Apply updates
+                square['position'] = position
+                square['size'] = size
+                square['color'] = color
 
-            # Wait a bit before the next update to make the movement visible
+            # Draw each square on the frame
+            # Assuming there is a method in gui.Camera to clear previous squares
+            self.gui.Camera.clear_squares()
+            for square in squares:
+                self.gui.Camera.add_square(square['position'], square['size'], tuple(square['color']),
+                                           square['transparency'])
+
             time.sleep(0.05)
+
+
+    # def demo(self):
+    #     # Initial setup
+    #     direction = [2, 3]  # Initial direction for movement (x, y)
+    #     max_width, max_height = 580, 580  # Maximum dimensions based on the camera setup
+    #     min_size, max_size = 20, 150  # Min and max square sizes
+    #     size_increment = 1  # Size change per iteration
+    #     transparency_increment = 0.1  # Transparency change per iteration
+    #     color_increment = [1, 1, 1]  # RGB color change per iteration
+    #
+    #     while self.demo_stop:
+    #         position = list(self.gui.Camera.square_position)
+    #         size = self.gui.Camera.square_size
+    #         transparency = 0.6
+    #         color = list(self.gui.Camera.square_color)
+    #
+    #         # Update position
+    #         for i in range(2):
+    #             position[i] += direction[i]
+    #             if position[i] >= max_width - size or position[i] <= 0:
+    #                 direction[i] *= -1  # Reverse direction on hitting bounds
+    #
+    #         # Update size
+    #         size += size_increment
+    #         if size >= max_size or size <= min_size:
+    #             size_increment *= -1  # Reverse size change direction
+    #
+    #         # Update transparency
+    #         # transparency += transparency_increment
+    #         # if transparency >= 1.0 or transparency <= 0.1:
+    #         #     transparency_increment *= -1  # Reverse transparency change direction
+    #
+    #         # Update color
+    #         for i in range(3):
+    #             color[i] += color_increment[i]
+    #             if color[i] > 255 or color[i] < 0:
+    #                 color_increment[i] *= -1  # Reverse color change direction
+    #             color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
+    #
+    #         # Apply updates
+    #         self.gui.Camera.square_position = tuple(position)
+    #         self.gui.Camera.square_size = size
+    #         self.gui.Camera.square_transparency = transparency
+    #         self.gui.Camera.square_color = tuple(color)
+    #
+    #         # Wait a bit before the next update to make the movement visible
+    #         time.sleep(0.05)
 
 
 
