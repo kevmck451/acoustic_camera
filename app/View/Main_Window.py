@@ -158,24 +158,25 @@ class Left_Frame(ctk.CTkFrame):
 
         self.demo_button = ctk.CTkButton(frame, text='Demo Overlay', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
-                                          image=self.load_icon, command=lambda: self.event_handler(Event.DEMO))
+                                          image=self.start_icon, command=lambda: self.event_handler(Event.DEMO))
         self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     # BUTTON TOGGLE STATES ------------------------
     def toggle_demo_button(self):
         if self.demo_button_state:
-            self.demo_button.configure(text="Demo Overlay",
-                                               fg_color=configuration.start_fg_color,
-                                               hover_color=configuration.start_hover_color,
-                                               image=self.start_icon,
-                                               command=lambda: self.event_handler(Event.DEMO))
+            self.demo_button.configure(text="Stop Demo",
+                                       fg_color=configuration.reset_fg_color,
+                                       hover_color=configuration.reset_hover_color,
+                                       image=self.stop_icon,
+                                       command=lambda: self.event_handler(Event.DEMO))
+
             self.demo_button_state = False
         else:
-            self.demo_button.configure(text="Stop Demo",
-                                               fg_color=configuration.button_fg_color,
-                                               hover_color=configuration.button_hover_color,
-                                               image=self.stop_icon,
-                                               command=lambda: self.event_handler(Event.DEMO))
+            self.demo_button.configure(text="Demo Overlay",
+                                       fg_color=configuration.start_fg_color,
+                                       hover_color=configuration.start_hover_color,
+                                       image=self.start_icon,
+                                       command=lambda: self.event_handler(Event.DEMO))
             self.demo_button_state = True
 
 

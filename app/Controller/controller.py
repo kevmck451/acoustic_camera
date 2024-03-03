@@ -13,6 +13,7 @@ from app.Controller.events_states import State
 class Controller:
     def __init__(self):
         self.app_state = State.IDLE
+        self.demo_stop = True
 
     def set_gui(self, gui):
         self.gui = gui
