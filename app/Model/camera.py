@@ -11,11 +11,10 @@ class Camera:
         self.frame_queue = queue.Queue(maxsize=10)
         self.frame_width = frame_width
         self.frame_height = frame_height
-        self.squares = []  # List to hold square data
+        self.squares = []  # Initialize an empty list for squares
         threading.Thread(target=self.capture_frames, daemon=True).start()
 
     def add_square(self, position, size, color, transparency):
-        # Add a new square's properties to the list
         self.squares.append({
             'position': position,
             'size': size,
@@ -23,14 +22,16 @@ class Camera:
             'transparency': transparency
         })
 
-    def overlay_square(self, frame, square):
-        overlay = frame.copy()
-        top_left_corner = square['position']
-        bottom_right_corner = (top_left_corner[0] + square['size'], top_left_corner[1] + square['size'])
-        cv2.rectangle(overlay, top_left_corner, bottom_right_corner, square['color'], -1)
+    def clear_squares(self):
+        self.squares.clear()  # Clears the list of squares
 
-        # Blend the original frame and the overlay with the square
-        cv2.addWeighted(overlay, square['transparency'], frame, 1 - square['transparency'], 0, frame)
+    def overlay_squares(self, frame):
+        for square in self.squares:
+            overlay = frame.copy()
+            top_left_corner = square['position']
+            bottom_right_corner = (top_left_corner[0] + square['size'], top_left_corner[1] + square['size'])
+            cv2.rectangle(overlay, top_left_corner, bottom_right_corner, square['color'], -1)
+            cv2.addWeighted(overlay, square['transparency'], frame, 1 - square['transparency'], 0, frame)
 
     def capture_frames(self):
         cap = cv2.VideoCapture(0)
@@ -40,9 +41,8 @@ class Camera:
                 frame = cv2.resize(frame, (self.frame_width, self.frame_height))
                 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 
-                # Overlay each square on the frame
-                for square in self.squares:
-                    self.overlay_square(frame, square)
+                # Overlay squares on the frame
+                self.overlay_squares(frame)
 
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frame = Image.fromarray(frame)
