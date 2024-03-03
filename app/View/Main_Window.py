@@ -164,10 +164,7 @@ class Video_Frame(ctk.CTkFrame):
         except queue.Empty:
             pass
 
-        # Move the overlay
-        self.overlay_position[0] += self.move_speed * self.move_direction
-        if self.overlay_position[0] >= self.label.winfo_width() - self.overlay_size or self.overlay_position[0] <= 0:
-            self.move_direction *= -1  # Change direction
+        self.demo_overlay_movement()
 
         self.after(10, self.update_gui)
 
@@ -180,6 +177,13 @@ class Video_Frame(ctk.CTkFrame):
             # Convert color from RGB (or whatever format you use) to BGR for OpenCV
             self.overlay_color = color[::-1]  # Assuming color is given in RGB and converting to BGR
 
+
+    def demo_overlay_movement(self):
+        # Temporarily move the overlay diagonally down-right for debugging
+        self.overlay_position[0] += 5  # Move right
+        self.overlay_position[1] += 5  # Move down
+        if self.overlay_position[0] > 200:  # Simple boundary condition for debugging
+            self.overlay_position = [50, 50]  # Reset to starting position for debuggin
 
 # ---------------------------------------------------
 # RIGHT FRAME --------------------------------------
