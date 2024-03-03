@@ -78,7 +78,7 @@ git clone https://github.com/kevmck451/acoustic_camera
 # Inside the acoustic_camera folder run:
 python3 -m app.app_main
 ```
-
+if window size is larger than screen, adjust the camera height and width 
 
 
 
