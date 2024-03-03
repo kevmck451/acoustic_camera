@@ -12,3 +12,4 @@ class Event(Enum):
     TAKE_PICTURE = auto()
     RECORD_VIDEO = auto()
     DEMO = auto()
+    DUMMY_BUTTON = auto()
