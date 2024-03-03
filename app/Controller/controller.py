@@ -67,7 +67,7 @@ class Controller:
         while True:
             position = list(self.gui.Camera.square_position)
             size = self.gui.Camera.square_size
-            transparency = self.gui.Camera.square_transparency
+            transparency = 0.6
             color = list(self.gui.Camera.square_color)
 
             # Update position
@@ -82,9 +82,9 @@ class Controller:
                 size_increment *= -1  # Reverse size change direction
 
             # Update transparency
-            transparency += transparency_increment
-            if transparency >= 1.0 or transparency <= 0.1:
-                transparency_increment *= -1  # Reverse transparency change direction
+            # transparency += transparency_increment
+            # if transparency >= 1.0 or transparency <= 0.1:
+            #     transparency_increment *= -1  # Reverse transparency change direction
 
             # Update color
             for i in range(3):
