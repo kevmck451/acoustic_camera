@@ -112,6 +112,8 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
+    # FRAMES ---------------------------------------------
+
 
 
 # ---------------------------------------------------
@@ -126,6 +128,15 @@ class Video_Frame(ctk.CTkFrame):
 
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
+
+        # Overlay properties
+        self.overlay_position = (50, 50)  # Default position
+        self.overlay_size = 100  # Default size (square)
+        self.overlay_color = (255, 0, 0)  # Default color (green, in BGR format)
+
+        # Movement properties
+        self.move_direction = 1  # 1 for right, -1 for left
+        self.move_speed = 2  # Pixels per update
 
         threading.Thread(target=self.capture_frames, daemon=True).start()
         self.update_gui()
@@ -152,11 +163,22 @@ class Video_Frame(ctk.CTkFrame):
             self.label.image = frame
         except queue.Empty:
             pass
-        finally:
-            self.after(10, self.update_gui)
 
+        # Move the overlay
+        self.overlay_position[0] += self.move_speed * self.move_direction
+        if self.overlay_position[0] >= self.label.winfo_width() - self.overlay_size or self.overlay_position[0] <= 0:
+            self.move_direction *= -1  # Change direction
 
+        self.after(10, self.update_gui)
 
+    def update_overlay(self, position=None, size=None, color=None):
+        if position is not None:
+            self.overlay_position = position
+        if size is not None:
+            self.overlay_size = size
+        if color is not None:
+            # Convert color from RGB (or whatever format you use) to BGR for OpenCV
+            self.overlay_color = color[::-1]  # Assuming color is given in RGB and converting to BGR
 
 
 # ---------------------------------------------------
@@ -193,3 +215,15 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)  # Middle row
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
+
+    # FRAMES ---------------------------------------------
+
+
+
+
+
+
+
+
+
+
