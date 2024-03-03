@@ -179,6 +179,8 @@ class Video_Frame(ctk.CTkFrame):
 
 
     def demo_overlay_movement(self):
+        print('Overlay Demo')
+        self.update_overlay()
         # Temporarily move the overlay diagonally down-right for debugging
         self.overlay_position[0] += 5  # Move right
         self.overlay_position[1] += 5  # Move down
