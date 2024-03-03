@@ -102,7 +102,6 @@ class Left_Frame(ctk.CTkFrame):
         top_frame = ctk.CTkFrame(self)
         top_frame.grid(row=0, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
 
-
         top_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Middle Frame
@@ -136,18 +135,18 @@ class Left_Frame(ctk.CTkFrame):
 
         self.button_1 = ctk.CTkButton(frame, text='Detect Sounds', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                          image=self.start_icon, command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_2 = ctk.CTkButton(frame, text='Detect Drones',
                                           font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                          image=self.start_icon, command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_3 = ctk.CTkButton(frame, text='Detect Vehicles', font=(configuration.main_font_style, configuration.main_font_size),
                                         fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                        image=self.start_icon, command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+                                        command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_3.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     def demo_frame(self, frame):
@@ -248,20 +247,20 @@ class Right_Frame(ctk.CTkFrame):
 
         self.settings_button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
-                                          image=self.load_icon, command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
+                                          command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
         self.settings_button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
 
         self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
                                         fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
-                                        image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
+                                        command=lambda: self.event_handler(Event.SETTINGS))
         self.settings_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.exit_button = ctk.CTkButton(frame, text='EXIT',
                                          font=(configuration.main_font_style, configuration.main_font_size),
                                          fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
-                                         image=self.reset_icon, command=self.parent.close_application)
+                                         command=self.parent.close_application)
         self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
@@ -274,14 +273,14 @@ class Right_Frame(ctk.CTkFrame):
 
         self.capture_image_button = ctk.CTkButton(frame, text='Save Image', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.start_fg_color, hover_color=configuration.start_hover_color,
-                                          image=self.load_icon, command=lambda: self.event_handler(Event.TAKE_PICTURE))
+                                          command=lambda: self.event_handler(Event.TAKE_PICTURE))
         self.capture_image_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.capture_video_button = ctk.CTkButton(frame, text='Rec Video',
                                           font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.button_fg_color,
                                           hover_color=configuration.button_hover_color,
-                                          image=self.load_icon, command=lambda: self.event_handler(Event.RECORD_VIDEO))
+                                          command=lambda: self.event_handler(Event.RECORD_VIDEO))
         self.capture_video_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
