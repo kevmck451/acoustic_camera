@@ -52,7 +52,7 @@ class Main_Window(ctk.CTk):
 
         # Ending Procedures
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self.bind("<Escape>", self.on_close)
+        self.bind("<Escape>", self.close_application)
 
     def on_close(self):
         # Perform any cleanup or process termination steps here
@@ -61,7 +61,10 @@ class Main_Window(ctk.CTk):
         self.event_handler(Event.ON_CLOSE)
         self.destroy()
 
-
+    def close_application(self, event=None):
+        # Perform any cleanup or process termination steps here
+        # Then close the application
+        self.on_close()
 
 class Left_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
