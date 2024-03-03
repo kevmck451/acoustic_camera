@@ -164,8 +164,6 @@ class Video_Frame(ctk.CTkFrame):
         except queue.Empty:
             pass
 
-        self.demo_overlay_movement()
-
         self.after(10, self.update_gui)
 
     def update_overlay(self, position=None, size=None, color=None):
@@ -178,14 +176,6 @@ class Video_Frame(ctk.CTkFrame):
             self.overlay_color = color[::-1]  # Assuming color is given in RGB and converting to BGR
 
 
-    def demo_overlay_movement(self):
-        print('Overlay Demo')
-        self.update_overlay()
-        # Temporarily move the overlay diagonally down-right for debugging
-        self.overlay_position[0] += 5  # Move right
-        self.overlay_position[1] += 5  # Move down
-        if self.overlay_position[0] > 200:  # Simple boundary condition for debugging
-            self.overlay_position = [50, 50]  # Reset to starting position for debuggin
 
 # ---------------------------------------------------
 # RIGHT FRAME --------------------------------------
