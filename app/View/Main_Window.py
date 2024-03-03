@@ -41,16 +41,19 @@ class Main_Window(ctk.CTk):
         # self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
         # self.minsize(configuration.min_window_width, configuration.min_window_height)
 
-        # self.Console_Frame = Console_Frame(self)
-        # self.Main_Frame = Main_Frame(self, self.Console_Frame, self.event_handler)
+
+        self.Camera = Camera()
+
         self.Left_Frame = Left_Frame(self, self.event_handler)
-        self.Video_Frame = Video_Frame(self, self.event_handler)
+        self.Video_Frame = Video_Frame(self, self.event_handler, self.Camera)
         self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
         self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
+
+
 
         # Place the frames using grid
         self.Left_Frame.grid(row=0, column=0, sticky='nsew')  # Left frame in column 0
@@ -161,11 +164,10 @@ class Left_Frame(ctk.CTkFrame):
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------
 class Video_Frame(ctk.CTkFrame):
-    def __init__(self, parent, event_handler):
+    def __init__(self, parent, event_handler, camera):
         super().__init__(parent)
         self.event_handler = event_handler
-
-        self.Camera = Camera()
+        self.camera = camera
 
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
@@ -174,7 +176,7 @@ class Video_Frame(ctk.CTkFrame):
 
     def update_gui(self):
         try:
-            frame = self.Camera.frame_queue.get_nowait()
+            frame = self.camera.frame_queue.get_nowait()
             self.label.configure(image=frame)
             self.label.image = frame
         except queue.Empty:

@@ -13,14 +13,17 @@ class Camera:
         self.square_position = (100, 100)  # (x, y) position of the top-left corner
         self.square_size = 50  # Length of the square's side
         self.square_color = (0, 255, 0)  # Color of the square in BGR (green)
+        self.square_transparency = 0.5  # Transparency of the square
         threading.Thread(target=self.capture_frames, daemon=True).start()
 
-    def overlay_square(self, frame, position, size, color):
-        # Calculate bottom right corner of square from top left position and size
+    def overlay_square(self, frame, position, size, color, transparency):
+        overlay = frame.copy()
         top_left_corner = position
         bottom_right_corner = (position[0] + size, position[1] + size)
-        # Draw the square on the frame
-        cv2.rectangle(frame, top_left_corner, bottom_right_corner, color, -1)  # -1 fills the rectangle
+        cv2.rectangle(overlay, top_left_corner, bottom_right_corner, color, -1)
+
+        # Blend the original frame and the overlay with the square
+        cv2.addWeighted(overlay, transparency, frame, 1 - transparency, 0, frame)
 
     def capture_frames(self):
         cap = cv2.VideoCapture(0)
