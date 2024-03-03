@@ -130,7 +130,7 @@ class Video_Frame(ctk.CTkFrame):
         self.label.pack()
 
         # Overlay properties
-        self.overlay_position = (50, 50)  # Default position
+        self.overlay_position = [50, 50]  # Default position
         self.overlay_size = 100  # Default size (square)
         self.overlay_color = (255, 0, 0)  # Default color (green, in BGR format)
 
