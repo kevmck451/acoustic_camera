@@ -36,6 +36,12 @@ class Controller:
         elif event == Event.RECORD_VIDEO:
             print('RECORD VIDEO')
 
+        elif event == Event.DUMMY_BUTTON:
+            print('BUTTON PRESSED')
+
+        elif event == Event.DEMO:
+            print('DEMO BUTTON PRESSED')
+
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
             pass
