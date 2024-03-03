@@ -28,8 +28,11 @@ class Camera:
     def overlay_squares(self, frame):
         for square in self.squares:
             overlay = frame.copy()
-            top_left_corner = square['position']
-            bottom_right_corner = (top_left_corner[0] + square['size'], top_left_corner[1] + square['size'])
+            # Ensure top_left_corner and bottom_right_corner are tuples of integers
+            top_left_corner = (int(square['position'][0]), int(square['position'][1]))
+            bottom_right_corner = (int(top_left_corner[0] + square['size']), int(top_left_corner[1] + square['size']))
+
+            # Use the corrected points to draw the rectangle
             cv2.rectangle(overlay, top_left_corner, bottom_right_corner, square['color'], -1)
             cv2.addWeighted(overlay, square['transparency'], frame, 1 - square['transparency'], 0, frame)
 
