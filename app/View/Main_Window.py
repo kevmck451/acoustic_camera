@@ -121,6 +121,7 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
         self.start_stop_frames(top_frame)
+        self.demo_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
     def start_stop_frames(self, frame):
