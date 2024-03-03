@@ -104,9 +104,9 @@ class Controller:
             # Update color
             for i in range(3):
                 color[i] += color_increment[i]
-                if color[i] > 255 or color[i] < 0:
+                if color[i] > 255 or color[i] < 30:
                     color_increment[i] *= -1  # Reverse color change direction
-                color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
+                color[i] = max(30, min(255, color[i]))  # Ensure color stays within valid range
 
             # Apply updates
             self.gui.Camera.square_position = tuple(position)
