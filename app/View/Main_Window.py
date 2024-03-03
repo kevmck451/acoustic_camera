@@ -160,6 +160,9 @@ class Left_Frame(ctk.CTkFrame):
         self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
+
+
+
 # ---------------------------------------------------
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------

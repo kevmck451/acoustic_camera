@@ -21,3 +21,4 @@ class State(Enum):
     IDLE = auto()
     SHUTTING_DOWN = auto()
     SETTINGS_OPEN = auto()
+    DEMO_IN_PROGRESS = auto()
