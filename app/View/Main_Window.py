@@ -200,7 +200,7 @@ class Video_Frame(ctk.CTkFrame):
         except queue.Empty:
             pass
 
-        self.after(10, self.update_gui)
+        self.after(5, self.update_gui)
 
 
 
