@@ -29,7 +29,7 @@ import cv2
 
 
 class Camera:
-    def __init__(self, frame_width=640, frame_height=480):
+    def __init__(self, frame_width=500, frame_height=400):
         self.frame_queue = queue.Queue(maxsize=10)  # Adjust size as needed
         self.frame_width = frame_width
         self.frame_height = frame_height
