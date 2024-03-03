@@ -1,6 +1,11 @@
 
 import customtkinter as ctk
 from PIL import Image, ImageTk
+from picamera import PiCamera
+from io import BytesIO
+import tkinter as tk
+import threading
+import queue
 
 
 import app.View.configuration as configuration
@@ -105,10 +110,38 @@ class Video_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.event_handler = event_handler
+        self.parent = parent
 
+        self.frame_queue = queue.Queue(maxsize=1)
 
+        label = tk.Label(self.parent)  # Continue using Tkinter Label for the image
+        label.pack()
 
+        threading.Thread(target=self.capture_frames, daemon=True).start()
+        self.update_gui(label)
 
+    def capture_frames(self):
+        with PiCamera() as camera:
+            camera.rotation = 90
+            camera.resolution = (640, 480)
+            stream = BytesIO()
+            for _ in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
+                stream.seek(0)
+                if not self.frame_queue.full():
+                    self.frame_queue.put(stream.read())
+                stream.seek(0)
+                stream.truncate()
+
+    def update_gui(self, label):
+        try:
+            frame_data = self.frame_queue.get_nowait()
+            image = Image.open(BytesIO(frame_data))
+            photo = ImageTk.PhotoImage(image)
+            label.config(image=photo)
+            label.image = photo
+        except queue.Empty:
+            pass
+        self.parent.after(1, self.update_gui)
 
 class Right_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
