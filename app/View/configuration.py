@@ -8,8 +8,8 @@ def base_path(relative_path):
 # Main App Settings
 window_title = 'University of Memphis: Passive Acoustic Phase Array'
 
-window_width = 990 # 1400
-window_height = 490  # 800
+window_width = 500 # 990
+window_height = 400  # 490
 min_window_width = window_width
 min_window_height = window_height
 x_pad_main = 2
