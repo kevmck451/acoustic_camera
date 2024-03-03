@@ -136,6 +136,7 @@ class Video_Frame(ctk.CTkFrame):
         while True:
             ret, frame = cap.read()
             if ret:
+                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 frame = Image.fromarray(frame)
                 frame = ImageTk.PhotoImage(image=frame)
