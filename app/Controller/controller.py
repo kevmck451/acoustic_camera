@@ -72,7 +72,7 @@ class Controller:
 
     def demo(self):
         # Initial setup
-        direction = [2, 2]  # Initial direction for movement (x, y)
+        direction = [2, 3]  # Initial direction for movement (x, y)
         max_width, max_height = 580, 580  # Maximum dimensions based on the camera setup
         min_size, max_size = 20, 150  # Min and max square sizes
         size_increment = 1  # Size change per iteration
@@ -102,11 +102,12 @@ class Controller:
             #     transparency_increment *= -1  # Reverse transparency change direction
 
             # Update color
-            for i in range(3):
-                color[i] += color_increment[i]
-                if color[i] > 255 or color[i] < 30:
-                    color_increment[i] *= -1  # Reverse color change direction
-                color[i] = max(30, min(255, color[i]))  # Ensure color stays within valid range
+            if size % 3 == 0:
+                for i in range(3):
+                    color[i] += color_increment[i]
+                    if color[i] > 255 or color[i] < 0:
+                        color_increment[i] *= -1  # Reverse color change direction
+                    color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
 
             # Apply updates
             self.gui.Camera.square_position = tuple(position)
