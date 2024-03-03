@@ -67,7 +67,7 @@ class Controller:
     def stop_demo(self):
         print('stop demo')
         self.demo_stop = False
-        self.gui.Camera.square_transparency = 0
+        self.gui.Camera.clear_squares()
 
     def demo(self):
         # Create a list to hold properties for 4 squares
