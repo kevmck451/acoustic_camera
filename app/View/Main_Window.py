@@ -132,18 +132,18 @@ class Left_Frame(ctk.CTkFrame):
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
         self.button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.button_fg_color, hover_color=configuration.button_hover_color,
+                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
                                           image=self.load_icon, command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_2 = ctk.CTkButton(frame, text='Button 2',
                                           font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.button_fg_color, hover_color=configuration.button_hover_color,
+                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
                                           image=self.load_icon, command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_3 = ctk.CTkButton(frame, text='Button 3', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.button_fg_color, hover_color=configuration.button_hover_color,
+                                        fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
                                         image=self.load_icon, command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_3.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
