@@ -47,11 +47,9 @@ ssh -X pi@192.168.0.111
 # if using hostname
 # ssh -X pi@hostname.local
 # ssh-keygen -f "/Users/KevMcK/.ssh/known_hosts" -R "192.168.0.147"
-# -X is to show diaply on remote screen
-
-# When using ssh, you might need this command to have screen on pi 
-
-
+# -X is to show display on remote screen
+````
+```zsh
 # Update everything
 sudo apt update
 sudo apt full-upgrade
@@ -60,21 +58,30 @@ sudo apt clean
 sudo reboot
 ````
 
+## Project Directory
 ```zsh
+git clone git@github.com:kevmck451/acoustic_camera.git
+```
+
+#### Virtual Environment & Install Libraries
+```zsh
+# cd into folder
+cd acoustic_camera/
+# create virtual env with system packages
+python3 -m venv --system-site-packages camera_venv
+# activate environ
+source camera_venv/bin/activate
+# add it to your gitignore
+nano .gitignore # add camera_venv/ 
+# install libraries
+pip install -r requirement.txt
+```
+
+
+#### Run Application
+```zsh
+# If starting app through SSH, set remote display for app
 export DISPLAY=:0
-```
-
-## Project Directory / Github Connection
-- My preferred work flow is to program and run files on the pi from my desktop computer as opposed to on the pi directly. 
-- If you are doing everything on the pi, then you can skip this step. 
-- It's still recommended to create a github repo to back up your work and tracking progress.
-- clone repo to pi and desktop computer
-```zsh
-git clone https://github.com/kevmck451/acoustic_camera
-```
-
-## Run Application
-```zsh
 # Inside the acoustic_camera folder run:
 python3 -m app.app_main
 ```
