@@ -102,7 +102,7 @@ class Controller:
             #     transparency_increment *= -1  # Reverse transparency change direction
 
             # Update color
-            if size % 3 == 0:
+            if size % 10 == 0:
                 for i in range(3):
                     color[i] += color_increment[i]
                     if color[i] > 255 or color[i] < 0:
