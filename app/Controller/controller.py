@@ -61,7 +61,7 @@ class Controller:
         max_width, max_height = 580, 580  # Maximum dimensions based on the camera setup
         min_size, max_size = 20, 100  # Min and max square sizes
         size_increment = 1  # Size change per iteration
-        transparency_increment = 0.01  # Transparency change per iteration
+        transparency_increment = 0.1  # Transparency change per iteration
         color_increment = [1, 2, 3]  # RGB color change per iteration
 
         while True:
@@ -100,7 +100,7 @@ class Controller:
             self.gui.Camera.square_color = tuple(color)
 
             # Wait a bit before the next update to make the movement visible
-            time.sleep(0.05)
+            time.sleep(0.1)
 
 
 
