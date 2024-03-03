@@ -12,9 +12,8 @@ import queue
 
 
 
-
 import app.View.configuration as configuration
-from app.Controller.events import Event
+from app.Controller.events_states import Event
 
 
 class Main_Window(ctk.CTk):
@@ -76,8 +75,6 @@ class Main_Window(ctk.CTk):
 
 
 
-
-
 # ---------------------------------------------------
 # LEFT FRAME --------------------------------------
 # ---------------------------------------------------
@@ -95,8 +92,6 @@ class Left_Frame(ctk.CTkFrame):
         self.settings_icon = PhotoImage(file=configuration.settings_icon_filepath)
         self.reset_icon = PhotoImage(file=configuration.reset_icon_filepath)
         warnings.filterwarnings('ignore', category=UserWarning, module='customtkinter.*')
-
-
 
         # Top Frame
         top_frame = ctk.CTkFrame(self)

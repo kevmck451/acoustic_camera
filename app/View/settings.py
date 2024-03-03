@@ -5,7 +5,7 @@ import numpy as np
 import warnings
 
 import app.View.configuration as configuration
-from app.Controller.events import Event
+from app.Controller.events_states import Event
 
 
 

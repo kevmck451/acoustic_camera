@@ -13,3 +13,11 @@ class Event(Enum):
     RECORD_VIDEO = auto()
     DEMO = auto()
     DUMMY_BUTTON = auto()
+
+
+
+# Define the states using an enumeration
+class State(Enum):
+    IDLE = auto()
+    SHUTTING_DOWN = auto()
+    SETTINGS_OPEN = auto()

@@ -1,12 +1,13 @@
 
-from enum import Enum, auto
+
 from threading import Thread
 import time
 import threading
 
 
 from app.View.settings import Settings_Window
-from app.Controller.events import Event
+from app.Controller.events_states import Event
+from app.Controller.events_states import State
 
 
 class Controller:
@@ -52,11 +53,7 @@ class Controller:
 
 
 
-# Define the states using an enumeration
-class State(Enum):
-    IDLE = auto()
-    SHUTTING_DOWN = auto()
-    SETTINGS_OPEN = auto()
+
 
 
 
