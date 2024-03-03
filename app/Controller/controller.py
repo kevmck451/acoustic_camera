@@ -30,6 +30,12 @@ class Controller:
         elif event == Event.SETTINGS_BUTTON_2:
             print('SETTINGS BUTTON 2 PRESSED')
 
+        elif event == Event.TAKE_PICTURE:
+            print('TAKE PICTURE')
+
+        elif event == Event.RECORD_VIDEO:
+            print('RECORD VIDEO')
+
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
             pass

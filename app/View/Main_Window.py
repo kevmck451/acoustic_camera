@@ -220,10 +220,11 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        self.start_stop_frames(bottom_frame)
+        self.camera_settings_frame(top_frame)
+        self.settings_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
-    def start_stop_frames(self, frame):
+    def settings_frame(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
         frame.grid_rowconfigure(1, weight=1)  # Row for the load button
@@ -249,7 +250,29 @@ class Right_Frame(ctk.CTkFrame):
         self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
+    def camera_settings_frame(self, frame):
 
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.capture_image_button = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.start_fg_color, hover_color=configuration.start_hover_color,
+                                          image=self.start_icon, command=lambda: self.event_handler(Event.TAKE_PICTURE))
+        self.capture_image_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.capture_video_button = ctk.CTkButton(frame, text='Button 2',
+                                          font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.button_fg_color,
+                                          hover_color=configuration.button_hover_color,
+                                          image=self.pause_icon, command=lambda: self.event_handler(Event.RECORD_VIDEO))
+        self.capture_video_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.settings_button = ctk.CTkButton(frame, text='Recording Time', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                        image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
+        self.settings_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
 
