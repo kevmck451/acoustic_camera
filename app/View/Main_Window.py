@@ -148,6 +148,19 @@ class Left_Frame(ctk.CTkFrame):
         self.settings_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
+    def demo_frame(self, frame):
+
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.demo_button = ctk.CTkButton(frame, text='Demo Overlay', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
+                                          image=self.load_icon, command=lambda: self.event_handler(Event.DEMO))
+        self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+
 # ---------------------------------------------------
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------
