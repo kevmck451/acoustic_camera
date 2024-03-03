@@ -10,8 +10,8 @@ window_title = 'University of Memphis: Passive Acoustic Phase Array'
 
 window_width = 1000 # 1400
 window_height = 500  # 800
-min_window_width = 1300
-min_window_height = 640
+min_window_width = window_width-200
+min_window_height = window_height-100
 x_pad_main = 2
 y_pad_main = 2
 x_pad_1 = 10
