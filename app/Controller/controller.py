@@ -102,12 +102,11 @@ class Controller:
             #     transparency_increment *= -1  # Reverse transparency change direction
 
             # Update color
-            if size % 5 == 0:
-                for i in range(3):
-                    color[i] += color_increment[i]
-                    if color[i] > 255 or color[i] < 0:
-                        color_increment[i] *= -1  # Reverse color change direction
-                    color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
+            for i in range(3):
+                color[i] += color_increment[i]
+                if color[i] > 255 or color[i] < 0:
+                    color_increment[i] *= -1  # Reverse color change direction
+                color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
 
             # Apply updates
             self.gui.Camera.square_position = tuple(position)
