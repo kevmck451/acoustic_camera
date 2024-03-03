@@ -1,6 +1,6 @@
 
 
-from ..Model.camera.camera import Camera
+from app.Model.camera import Camera
 
 
 from tkinter import PhotoImage

@@ -50,10 +50,10 @@ class Controller:
         elif event == Event.START_CAMERA:
             pass
 
+    # Action Functions ------------------------------
 
-
-
-
+    def start_demo(self):
+        pass
 
 
 
