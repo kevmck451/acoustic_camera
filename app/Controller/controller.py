@@ -13,7 +13,6 @@ class Controller:
     def __init__(self):
         self.app_state = State.IDLE
 
-
     def set_gui(self, gui):
         self.gui = gui
 
@@ -29,7 +28,8 @@ class Controller:
         elif event == Event.ON_CLOSE:
             pass
 
-
+        elif event == Event.START_CAMERA:
+            pass
 
 
 

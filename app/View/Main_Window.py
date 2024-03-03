@@ -1,14 +1,12 @@
 
 
-
+from ..Model.camera.camera import Camera
 
 import customtkinter as ctk
 from PIL import Image, ImageTk
-from picamera import PiCamera
 import tkinter as tk
-import threading
 import queue
-import cv2
+
 
 
 
@@ -123,7 +121,8 @@ class Video_Frame(ctk.CTkFrame):
         super().__init__(parent)
         self.event_handler = event_handler
 
-        self.frame_queue = queue.Queue(maxsize=10)  # Adjust size as needed
+        # self.frame_queue = queue.Queue(maxsize=10)  # Adjust size as needed
+        self.Camera = Camera()
 
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
@@ -137,27 +136,12 @@ class Video_Frame(ctk.CTkFrame):
         self.move_direction = 1  # 1 for right, -1 for left
         self.move_speed = 2  # Pixels per update
 
-        threading.Thread(target=self.capture_frames, daemon=True).start()
         self.update_gui()
 
-    def capture_frames(self):
-        # Placeholder for capturing frames and putting them in the queue
-        cap = cv2.VideoCapture(0)
-        while True:
-            ret, frame = cap.read()
-            if ret:
-                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame = Image.fromarray(frame)
-                frame = ImageTk.PhotoImage(image=frame)
-                if not self.frame_queue.full():
-                    self.frame_queue.put(frame)
-            else:
-                break
 
     def update_gui(self):
         try:
-            frame = self.frame_queue.get_nowait()
+            frame = self.Camera.frame_queue.get_nowait()
             self.label.configure(image=frame)
             self.label.image = frame
         except queue.Empty:

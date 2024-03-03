@@ -6,3 +6,4 @@ from enum import Enum, auto
 class Event(Enum):
     ON_CLOSE = auto()
     SETTINGS = auto()
+    START_CAMERA = auto()
