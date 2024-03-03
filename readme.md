@@ -49,6 +49,11 @@ ssh -X pi@192.168.0.111
 # ssh-keygen -f "/Users/KevMcK/.ssh/known_hosts" -R "192.168.0.147"
 # -X is to show diaply on remote screen
 
+# When using ssh, you might need this command to have screen on pi 
+```zsh
+export DISPLAY=:0
+```
+
 # Update everything
 sudo apt update
 sudo apt full-upgrade
