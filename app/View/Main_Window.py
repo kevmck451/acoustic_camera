@@ -235,19 +235,18 @@ class Right_Frame(ctk.CTkFrame):
                                           image=self.load_icon, command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
         self.settings_button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.exit_button = ctk.CTkButton(frame, text='EXIT',
-                                          font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
-                                          image=self.reset_icon, command=self.parent.close_application)
-        self.exit_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
 
         self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
                                         fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
                                         image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
-        self.settings_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+        self.settings_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-
-
+        self.exit_button = ctk.CTkButton(frame, text='EXIT',
+                                         font=(configuration.main_font_style, configuration.main_font_size),
+                                         fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
+                                         image=self.reset_icon, command=self.parent.close_application)
+        self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
 
