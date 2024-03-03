@@ -12,7 +12,7 @@ class Camera:
         # Example inputs for the square's position and color
         self.square_position = (100, 100)  # (x, y) position of the top-left corner
         self.square_size = 50  # Length of the square's side
-        self.square_color = (0, 0, 0)  # Color of the square in BGR (green)
+        self.square_color = (0, 20, 40)  # Color of the square in BGR (green)
         self.square_transparency = 0  # Transparency of the square
         threading.Thread(target=self.capture_frames, daemon=True).start()
 

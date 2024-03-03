@@ -77,7 +77,7 @@ class Controller:
         min_size, max_size = 20, 150  # Min and max square sizes
         size_increment = 1  # Size change per iteration
         transparency_increment = 0.1  # Transparency change per iteration
-        color_increment = [1, 20, 40]  # RGB color change per iteration
+        color_increment = [1, 1, 1]  # RGB color change per iteration
 
         while self.demo_stop:
             position = list(self.gui.Camera.square_position)
