@@ -23,13 +23,16 @@ class Main_Window(ctk.CTk):
         # Main Setup ------------------------------------------------------------
         self.title(configuration.window_title)
 
+        # Start full screen
+        self.attributes('-fullscreen', True)
+
         # Get the screen dimension
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        center_x = int((screen_width / 2) - (configuration.window_width / 2))
-        center_y = int((screen_height / 2) - (configuration.window_height / 2))
-        self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
-        self.minsize(configuration.min_window_width, configuration.min_window_height)
+        # screen_width = self.winfo_screenwidth()
+        # screen_height = self.winfo_screenheight()
+        # center_x = int((screen_width / 2) - (configuration.window_width / 2))
+        # center_y = int((screen_height / 2) - (configuration.window_height / 2))
+        # self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
+        # self.minsize(configuration.min_window_width, configuration.min_window_height)
 
         # self.Console_Frame = Console_Frame(self)
         # self.Main_Frame = Main_Frame(self, self.Console_Frame, self.event_handler)
@@ -49,6 +52,7 @@ class Main_Window(ctk.CTk):
 
         # Ending Procedures
         self.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.bind("<Escape>", self.on_close)
 
     def on_close(self):
         # Perform any cleanup or process termination steps here
