@@ -77,7 +77,7 @@ class Controller:
         min_size, max_size = 20, 150  # Min and max square sizes
         size_increment = 1  # Size change per iteration
         transparency_increment = 0.1  # Transparency change per iteration
-        color_increment = [1, 5, 10]  # RGB color change per iteration
+        color_increment = [1, 20, 40]  # RGB color change per iteration
 
         while self.demo_stop:
             position = list(self.gui.Camera.square_position)
@@ -102,7 +102,7 @@ class Controller:
             #     transparency_increment *= -1  # Reverse transparency change direction
 
             # Update color
-            if size % 10 == 0:
+            if size % 5 == 0:
                 for i in range(3):
                     color[i] += color_increment[i]
                     if color[i] > 255 or color[i] < 0:
