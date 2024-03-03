@@ -234,6 +234,12 @@ class Right_Frame(ctk.CTkFrame):
                                           image=self.load_icon, command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
         self.settings_button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
+        self.settings_button_2 = ctk.CTkButton(frame, text='Button 2',
+                                          font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                          image=self.load_icon, command=lambda: self.event_handler(Event.SETTINGS_BUTTON_2))
+        self.settings_button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
         self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
                                         fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
                                         image=self.settings_icon, command=lambda: self.event_handler(Event.SETTINGS))
