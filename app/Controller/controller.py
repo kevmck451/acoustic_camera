@@ -85,7 +85,7 @@ class Controller:
                 'direction': [2, 2],  # Initial movement direction
                 'size': 50,
                 'color': [255, 0, 0],  # Red
-                'transparency': 0.5
+                'transparency': 0.6
             },
             {
                 'position': [200, 100],  # Starting position
@@ -99,14 +99,14 @@ class Controller:
                 'direction': [3, -2],  # Initial movement direction, moving right and up
                 'size': 70,
                 'color': [0, 0, 255],  # Blue
-                'transparency': 0.7
+                'transparency': 0.6
             },
             {
                 'position': [400, 100],  # Starting position
                 'direction': [-3, -2],  # Initial movement direction, moving left and up
                 'size': 80,
                 'color': [255, 255, 0],  # Yellow
-                'transparency': 0.8
+                'transparency': 0.6
             }
         ]
 
@@ -134,9 +134,9 @@ class Controller:
                     size_increment *= -1
 
                 # Update transparency (Example logic, customize as needed)
-                square['transparency'] += transparency_increment
-                if square['transparency'] >= 1.0 or square['transparency'] <= 0.1:
-                    transparency_increment *= -1
+                # square['transparency'] += transparency_increment
+                # if square['transparency'] >= 1.0 or square['transparency'] <= 0.1:
+                #     transparency_increment *= -1
 
                 # Update color
                 for i in range(3):
