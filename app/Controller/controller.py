@@ -42,7 +42,6 @@ class Controller:
             print('BUTTON PRESSED')
 
         elif event == Event.DEMO:
-            print('DEMO BUTTON PRESSED')
             if self.app_state == State.IDLE:
                 self.app_state = State.DEMO_IN_PROGRESS
                 self.gui.Left_Frame.toggle_demo_button()
@@ -61,10 +60,12 @@ class Controller:
 
     # Action Functions ------------------------------
     def start_demo(self):
+        print('start demo')
         self.demo_stop = True
         threading.Thread(target=self.demo, daemon=True).start()
 
     def stop_demo(self):
+        print('stop demo')
         self.demo_stop = False
         self.gui.Camera.square_transparency = 0
 

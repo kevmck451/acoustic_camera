@@ -165,16 +165,14 @@ class Left_Frame(ctk.CTkFrame):
     def toggle_demo_button(self):
         if self.demo_button_state:
             self.demo_button.configure(text="Stop Demo",
-                                       fg_color=configuration.reset_fg_color,
-                                       hover_color=configuration.reset_hover_color,
+                                       fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
                                        image=self.stop_icon,
                                        command=lambda: self.event_handler(Event.DEMO))
 
             self.demo_button_state = False
         else:
             self.demo_button.configure(text="Demo Overlay",
-                                       fg_color=configuration.start_fg_color,
-                                       hover_color=configuration.start_hover_color,
+                                       fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
                                        image=self.start_icon,
                                        command=lambda: self.event_handler(Event.DEMO))
             self.demo_button_state = True
