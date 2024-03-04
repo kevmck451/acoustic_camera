@@ -56,7 +56,7 @@ def update_plot(frame):
             # Check if any value in channel_data exceeds the threshold
             if np.any(np.abs(channel_data) > THRESHOLD):
                 lines[i].set_color('red')  # Change color to red if threshold is exceeded
-            elif THRESHOLD_M < np.any(np.abs(channel_data) < THRESHOLD):
+            if THRESHOLD_M < np.any(np.abs(channel_data) < THRESHOLD):
                 lines[i].set_color('green')
             else:
                 lines[i].set_color('blue')  # Reset to default color otherwise
