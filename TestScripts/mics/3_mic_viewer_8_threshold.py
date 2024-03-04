@@ -41,6 +41,7 @@ for ax in axs:
     line, = ax.plot(x, y, color='blue')  # Set the default color to blue
     ax.set_ylim(-8192, 8192)
     ax.set_yticklabels([])
+    ax.set_xticklabels([])
     lines.append(line)
 
 fig.tight_layout(pad=1)
