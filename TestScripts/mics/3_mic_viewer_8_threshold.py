@@ -12,7 +12,8 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
 DEVICE_INDEX = 3
-THRESHOLD = 4000  # Define your threshold value here
+THRESHOLD = 3000  # Define your threshold value here
+THRESHOLD_M = 2000  # Define your threshold value here
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -39,7 +40,8 @@ for ax in axs:
     x = np.arange(0, CHUNK)
     y = np.zeros(CHUNK)
     line, = ax.plot(x, y, color='blue')  # Set the default color to blue
-    ax.set_ylim(-8192, 8192)
+    # ax.set_ylim(-8192, 8192)
+    ax.set_ylim(-4096, 4096)
     ax.set_yticklabels([])
     ax.set_xticklabels([])
     lines.append(line)
@@ -54,6 +56,8 @@ def update_plot(frame):
             # Check if any value in channel_data exceeds the threshold
             if np.any(np.abs(channel_data) > THRESHOLD):
                 lines[i].set_color('red')  # Change color to red if threshold is exceeded
+            elif THRESHOLD_M < np.any(np.abs(channel_data) < THRESHOLD):
+                lines[i].set_color('green')  # Change color to red if threshold is exceeded
             else:
                 lines[i].set_color('blue')  # Reset to default color otherwise
             lines[i].set_ydata(channel_data)
