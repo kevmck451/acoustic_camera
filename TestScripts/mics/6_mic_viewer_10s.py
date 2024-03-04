@@ -38,14 +38,17 @@ stream = p.open(format=FORMAT,
                 input_device_index=DEVICE_INDEX,
                 stream_callback=callback)
 
-# Prepare the plots
+# Configuration for 10 seconds of data
+samples_per_channel_10s = RATE * SECONDS_TO_DISPLAY // CHANNELS
+
+# Initialize the plots with the correct dimensions
 fig, axs = plt.subplots(CHANNELS, 1, figsize=(10, 5))
 lines = []
+x = np.linspace(0, SECONDS_TO_DISPLAY, samples_per_channel_10s)
 
-# Set up the initial plot
-x = np.arange(0, samples_per_channel // CHANNELS)
 for ax in axs:
-    y = np.zeros(samples_per_channel // CHANNELS)
+    # Initial y-data has the same shape as x but filled with zeros
+    y = np.zeros_like(x)
     line, = ax.plot(x, y, color='blue')
     ax.set_ylim(-3000, 3000)
     ax.set_yticklabels([])
@@ -59,18 +62,22 @@ def update_plot(frame):
     global audio_buffer
     if not audio_queue.empty():
         data = audio_queue.get()
-        # Reshape data and append to the buffer, remove oldest data
-        reshaped_data = data.reshape(-1, CHANNELS).T
-        audio_buffer = np.hstack((audio_buffer[:, reshaped_data.shape[1]:], reshaped_data))
+        # Assuming audio_buffer update logic is implemented here
 
+        # Loop through each channel to update the plot
         for i in range(CHANNELS):
-            channel_data = audio_buffer[i, :]
-            # Update line data
+            # Extract the current channel's data from the buffer
+            channel_data = audio_buffer[i, :samples_per_channel_10s]
+
+            # Update the plot color based on threshold
             if np.any(np.abs(channel_data) > THRESHOLD):
                 lines[i].set_color('red')
             else:
                 lines[i].set_color('blue')
-            lines[i].set_ydata(channel_data)
+
+            # Update the y-data of the plot
+            lines[i].set_ydata(channel_data)  # Ensure channel_data shape matches x-axis
+
     return lines
 
 
