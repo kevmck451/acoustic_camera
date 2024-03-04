@@ -2,44 +2,58 @@ import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import threading
+import queue
 
-# Audio Configuration
+# Configuration
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 48000
+RATE = 24000
+DEVICE_INDEX = 3  # Assuming this is your desired input device index
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
 
-# Initialize Plot
-fig, axs = plt.subplots(CHANNELS, 1, figsize=(10, 20))
-lines = [ax.plot(np.arange(0, CHUNK), np.zeros((CHUNK,)))[0] for ax in axs]
+# Queue for transferring data from audio callback to main thread
+audio_queue = queue.Queue()
 
-# Function to update each channel in the plot
+def callback(in_data, frame_count, time_info, status):
+    audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
+    return (None, pyaudio.paContinue)
+
+stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK,
+                input_device_index=DEVICE_INDEX,
+                stream_callback=callback)
+
+# Prepare the plot for updating
+fig, ax = plt.subplots()
+x = np.arange(0, CHUNK)
+y = np.zeros(CHUNK)
+line, = ax.plot(x, y)
+ax.set_ylim(-32768, 32767)
+
 def update_plot(frame):
-    data_int = np.frombuffer(stream.read(CHUNK, exception_on_overflow=False), dtype=np.int16)
-    for i in range(CHANNELS):
-        # Extract and plot data for each channel
-        data = np.array(data_int[i::CHANNELS])
-        lines[i].set_ydata(data)
-    return lines
+    if not audio_queue.empty():
+        data = audio_queue.get()
+        # Assuming you want to visualize only the first channel for simplicity
+        line.set_ydata(data[::CHANNELS])
+    return line,
 
-def stream_audio():
-    global stream
-    stream = p.open(format=FORMAT,
-                    channels=CHANNELS,
-                    rate=RATE,
-                    input=True,
-                    frames_per_buffer=CHUNK,
-                    input_device_index=3)  # Specify the device index here
-    ani = FuncAnimation(fig, update_plot, blit=True, interval=50)
-    for ax in axs:
-        ax.set_ylim(-32768, 32767)
-        ax.set_xlim(0, CHUNK)
+ani = FuncAnimation(fig, update_plot, blit=True, interval=20)
+
+# Start the stream and show the plot
+stream.start_stream()
+
+try:
     plt.show()
+except KeyboardInterrupt:
+    pass
 
-# Run streaming in a separate thread to prevent blocking
-thread = threading.Thread(target=stream_audio)
-thread.start()
+# Stop and close the stream
+stream.stop_stream()
+stream.close()
+p.terminate()
