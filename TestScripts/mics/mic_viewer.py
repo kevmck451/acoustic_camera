@@ -1,50 +1,45 @@
 import pyaudio
-import time
 import numpy as np
-from matplotlib import pyplot as plt
-# import scipy.signal as signal
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+import threading
 
+# Audio Configuration
+CHUNK = 1024
+FORMAT = pyaudio.paInt16
+CHANNELS = 8
+RATE = 48000
 
-CHANNELS = 1
-RATE = 44100
-
+# Initialize PyAudio
 p = pyaudio.PyAudio()
-fulldata = np.array([])
-dry_data = np.array([])
 
-def main():
-    stream = p.open(format=pyaudio.paInt16,
-                channels=8,  # Assuming you want to use all 8 channels
-                rate=48000,
-                input=True,
-                input_device_index=3,  # Use MATRIXIO-SOUND device
-                frames_per_buffer=1024)
+# Initialize Plot
+fig, axs = plt.subplots(CHANNELS, 1, figsize=(10, 20))
+lines = [ax.plot(np.arange(0, CHUNK), np.zeros((CHUNK,)))[0] for ax in axs]
 
-    stream.start_stream()
+# Function to update each channel in the plot
+def update_plot(frame):
+    data_int = np.frombuffer(stream.read(CHUNK, exception_on_overflow=False), dtype=np.int16)
+    for i in range(CHANNELS):
+        # Extract and plot data for each channel
+        data = np.array(data_int[i::CHANNELS])
+        lines[i].set_ydata(data)
+    return lines
 
-    while stream.is_active():
-        time.sleep(10)
-        stream.stop_stream()
-    stream.close()
-
-    numpydata = np.hstack(fulldata)
-    plt.plot(numpydata)
-    plt.title("Wet")
+def stream_audio():
+    global stream
+    stream = p.open(format=FORMAT,
+                    channels=CHANNELS,
+                    rate=RATE,
+                    input=True,
+                    frames_per_buffer=CHUNK,
+                    input_device_index=3)  # Specify the device index here
+    ani = FuncAnimation(fig, update_plot, blit=True, interval=50)
+    for ax in axs:
+        ax.set_ylim(-32768, 32767)
+        ax.set_xlim(0, CHUNK)
     plt.show()
 
-    numpydata = np.hstack(dry_data)
-    plt.plot(numpydata)
-    plt.title("Dry")
-    plt.show()
-
-    p.terminate()
-
-def callback(in_data, frame_count, time_info, flag):
-    global b,a,fulldata,dry_data,frames
-    audio_data = np.fromstring(in_data, dtype=np.float32)
-    dry_data = np.append(dry_data,audio_data)
-    #do processing here
-    fulldata = np.append(fulldata,audio_data)
-    return (audio_data, pyaudio.paContinue)
-
-main()
+# Run streaming in a separate thread to prevent blocking
+thread = threading.Thread(target=stream_audio)
+thread.start()
