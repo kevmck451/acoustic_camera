@@ -1,15 +1,15 @@
 import customtkinter as ctk
 import numpy as np
 import matplotlib
+
 matplotlib.use('TkAgg')  # Ensure TkAgg is used
-import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-from matplotlib.animation import FuncAnimation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pyaudio
 import queue
+import threading
 
-# Configuration
+# Your original audio configuration
 CHUNK = 16384
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
@@ -23,9 +23,11 @@ p = pyaudio.PyAudio()
 # Queue for audio data
 audio_queue = queue.Queue()
 
+
 def audio_callback(in_data, frame_count, time_info, status):
     audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
     return (None, pyaudio.paContinue)
+
 
 stream = p.open(format=FORMAT,
                 channels=CHANNELS,
@@ -35,32 +37,32 @@ stream = p.open(format=FORMAT,
                 input_device_index=DEVICE_INDEX,
                 stream_callback=audio_callback)
 
-# Create customTkinter application window
+# CustomTkinter application window
 app = ctk.CTk()
 app.geometry("800x600")
 
-# Create a Matplotlib figure and axes
-fig = Figure(figsize=(5, 5))
+# Matplotlib figure and axes for each channel
+fig = Figure(figsize=(5, 5), dpi=100)
 axs = fig.subplots(CHANNELS, 1)
 lines = []
 
-for ax in axs:
-    x = np.arange(0, CHUNK)
-    y = np.zeros(CHUNK)
-    line, = ax.plot(x, y, color='blue')
+for i, ax in enumerate(axs):
     ax.set_ylim(-8192, 8192)
-    ax.set_yticklabels([])
-    ax.set_xticklabels([])
+    ax.set_xlim(0, CHUNK / CHANNELS)
+    line, = ax.plot([], [], lw=1)
     lines.append(line)
+    ax.set_xticks([])
+    ax.set_yticks([])
 
-fig.tight_layout(pad=1)
+fig.tight_layout()
 
 # Embed the Matplotlib figure in the customTkinter window
-canvas = FigureCanvasTkAgg(fig, master=app)  # master specifies the Tkinter widget
-canvas.draw()
-canvas.get_tk_widget().pack(fill="both", expand=True)
+canvas = FigureCanvasTkAgg(fig, master=app)
+canvas_widget = canvas.get_tk_widget()
+canvas_widget.pack(fill="both", expand=True)
 
-def update_plot(frame):
+
+def update_plot():
     if not audio_queue.empty():
         data = audio_queue.get()
         for i in range(CHANNELS):
@@ -70,18 +72,24 @@ def update_plot(frame):
             else:
                 lines[i].set_color('blue')
             lines[i].set_ydata(channel_data)
-    return lines
+            lines[i].set_xdata(np.arange(len(channel_data)))
+        canvas.draw()
 
-ani = FuncAnimation(fig, update_plot, blit=True, interval=20)
+    # Schedule the next update
+    app.after(1, update_plot)
 
-# Start the audio stream
-stream.start_stream()
+
+def start_stream_and_update():
+    stream.start_stream()
+    update_plot()
+
+
+# Use threading to prevent audio stream from blocking GUI
+thread = threading.Thread(target=start_stream_and_update, daemon=True)
+thread.start()
 
 # Run the customTkinter application
-try:
-    app.mainloop()
-except KeyboardInterrupt:
-    pass
+app.mainloop()
 
 # Cleanup on exit
 stream.stop_stream()
