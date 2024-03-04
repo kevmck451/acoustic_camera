@@ -12,7 +12,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
 DEVICE_INDEX = 3
-THRESHOLD = 1000  # Define your threshold value here
+THRESHOLD = 850  # Define your threshold value here
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
