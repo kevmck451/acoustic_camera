@@ -19,10 +19,10 @@ device_index = 2  # Replace with the correct device index for your sound card
 
 # Open a stream with the specific device
 stream = p.open(format=pyaudio.paInt16,
-                channels=1,
+                channels=8,  # Assuming you want to use all 8 channels
                 rate=44100,
                 input=True,
-                input_device_index=device_index,
+                input_device_index=3,  # Use MATRIXIO-SOUND device
                 frames_per_buffer=1024)
 
 # Do something with the stream (e.g., record audio)
