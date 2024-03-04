@@ -6,29 +6,23 @@ import sounddevice
 CHUNK = 2048
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 44100
+RATE = 48000
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output4.wav"
 
 # create & configure microphone
 mic = pyaudio.PyAudio()
-# stream = mic.open(format=FORMAT,
-#                 channels=CHANNELS,
-#                 rate=RATE,
-#                 input=True,
-#                 frames_per_buffer=CHUNK)
-
 
 stream = mic.open(format=pyaudio.paInt16,
                 channels=CHANNELS,  # Assuming you want to use all 8 channels
                 rate=RATE,
                 input=True,
                 input_device_index=3,  # Use MATRIXIO-SOUND device
-                frames_per_buffer=1024)
+                frames_per_buffer=CHUNK)
 
 
 print("* recording")
-
+print('Should see something other than x00')
 # read & store microphone data per frame read
 frames = []
 for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):

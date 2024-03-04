@@ -13,12 +13,12 @@ fulldata = np.array([])
 dry_data = np.array([])
 
 def main():
-    stream = p.open(format=pyaudio.paFloat32,
-                    channels=CHANNELS,
-                    rate=RATE,
-                    output=True,
-                    input=True,
-                    stream_callback=callback)
+    stream = p.open(format=pyaudio.paInt16,
+                channels=8,  # Assuming you want to use all 8 channels
+                rate=48000,
+                input=True,
+                input_device_index=3,  # Use MATRIXIO-SOUND device
+                frames_per_buffer=1024)
 
     stream.start_stream()
 
