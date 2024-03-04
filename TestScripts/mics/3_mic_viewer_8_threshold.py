@@ -13,7 +13,7 @@ CHANNELS = 8
 RATE = 48000
 DEVICE_INDEX = 3
 THRESHOLD = 3000  # Define your threshold value here
-THRESHOLD_M = 2000  # Define your threshold value here
+THRESHOLD_M = 1000  # Define your threshold value here
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -57,7 +57,7 @@ def update_plot(frame):
             if np.any(np.abs(channel_data) > THRESHOLD):
                 lines[i].set_color('red')  # Change color to red if threshold is exceeded
             elif THRESHOLD_M < np.any(np.abs(channel_data) < THRESHOLD):
-                lines[i].set_color('green')  # Change color to red if threshold is exceeded
+                lines[i].set_color('green')
             else:
                 lines[i].set_color('blue')  # Reset to default color otherwise
             lines[i].set_ydata(channel_data)
