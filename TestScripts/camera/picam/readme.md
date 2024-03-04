@@ -2,7 +2,7 @@
 - This worked fine but didnt seem to integrated well into customtkinter
 - Becuase of this, switched to using cv2 and moved to gui_integration with cv2 and ctk
 - This is for BusterOS
-- 
+
 #### Links:
 - [PiCamera2 Library Documentation](https://picamera.readthedocs.io/en/release-1.13/install.html)
 
