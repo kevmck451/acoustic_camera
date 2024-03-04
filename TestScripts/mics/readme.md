@@ -136,6 +136,30 @@ scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/output
 - Device 3: MATRIXIO-SOUND: - (hw:3,0) (Input Channels: 8)
 - So for PyAudio.open() settings need to set 'input_device_index=3'
 
+```python
+import pyaudio
+import numpy as np
+import queue
+
+# Initialize PyAudio
+p = pyaudio.PyAudio()
+
+# Queue for transferring data from audio callback to main thread
+audio_queue = queue.Queue()
+
+def callback(in_data, frame_count, time_info, status):
+    audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
+    return (None, pyaudio.paContinue)
+
+stream = p.open(format=pyaudio.paInt16,
+                channels=8,
+                rate=48000,
+                input=True,
+                frames_per_buffer=16384,
+                input_device_index=3,
+                stream_callback=callback)
+```
+
 ##### Mic Viewer libraries installed:
 
 ```zsh

@@ -1,10 +1,11 @@
 import pyaudio
 import numpy as np
+import queue
 import matplotlib
 matplotlib.use('TkAgg')  # Use TkAgg or another backend that works on your system
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import queue
+
 
 # Configuration
 CHUNK = 1024
