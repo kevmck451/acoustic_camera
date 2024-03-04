@@ -38,7 +38,9 @@ for ax in axs:
     x = np.arange(0, CHUNK)
     y = np.zeros(CHUNK)
     line, = ax.plot(x, y)
-    ax.set_ylim(-32768, 32767)
+    # ax.set_ylim(-32768, 32767)
+    ax.set_ylim(-16384, 16384)
+    ax.set_yticklabels([])
     lines.append(line)
 
 def update_plot(frame):
