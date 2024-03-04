@@ -58,17 +58,19 @@ def update_plot(frame):
         data = audio_queue.get()
         reshaped_data = data.reshape(-1, CHANNELS).T
         new_samples = reshaped_data.shape[1]
-        # Shift the buffer and append new data
+        # Ensure the buffer is updated without changing its overall shape
         audio_buffer = np.roll(audio_buffer, -new_samples, axis=1)
         audio_buffer[:, -new_samples:] = reshaped_data
 
         for i in range(CHANNELS):
-            channel_data = audio_buffer[i, :]
+            # Extract the current channel's data ensuring it matches the plot's expected length
+            channel_data = audio_buffer[i, -samples_per_channel // CHANNELS:]
             if np.any(np.abs(channel_data) > THRESHOLD):
                 lines[i].set_color('red')
             else:
                 lines[i].set_color('blue')
-            lines[i].set_ydata(channel_data)
+            lines[i].set_ydata(channel_data)  # Set the Y data for plotting
+
     return lines
 
 ani = FuncAnimation(fig, update_plot, blit=True, interval=20)
