@@ -33,7 +33,7 @@ stream = p.open(format=FORMAT,
                 stream_callback=callback)
 
 # Prepare the plots for updating
-fig, axs = plt.subplots(CHANNELS, 1, figsize=(10, 10))
+fig, axs = plt.subplots(CHANNELS, 1, figsize=(5, 5))
 lines = []
 for ax in axs:
     x = np.arange(0, CHUNK)
