@@ -10,7 +10,7 @@ import queue
 import threading
 
 # Your original audio configuration
-CHUNK = 16384
+CHUNK = 8192
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
