@@ -5,13 +5,13 @@ from matplotlib.animation import FuncAnimation
 import queue
 
 # Configuration
-CHUNK = 1024  # Smaller chunk size for more frequent updates
+CHUNK = 4096  # Smaller chunk size for more frequent updates
 FORMAT = pyaudio.paInt16
 CHANNELS = 1  # Simplified to 1 channel for clarity
 RATE = 48000
 DEVICE_INDEX = 3  # None for default device
 THRESHOLD = 800
-DISPLAY_SECONDS = 3  # Display last 10 seconds of data
+DISPLAY_SECONDS = 2  # Display last 10 seconds of data
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
