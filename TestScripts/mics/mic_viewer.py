@@ -8,7 +8,7 @@ import queue
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 24000
+RATE = 48000
 DEVICE_INDEX = 3  # Assuming this is your desired input device index
 
 # Initialize PyAudio
