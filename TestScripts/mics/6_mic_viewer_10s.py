@@ -5,13 +5,16 @@ from matplotlib.animation import FuncAnimation
 import queue
 
 # Configuration
-CHUNK = 4096  # Smaller chunk size for more frequent updates
+CHUNK = 4096  # Adjust based on experimentation
 FORMAT = pyaudio.paInt16
-CHANNELS = 1  # Simplified to 1 channel for clarity
+CHANNELS = 1
 RATE = 48000
-DEVICE_INDEX = 3  # None for default device
+DEVICE_INDEX = 3
 THRESHOLD = 800
-DISPLAY_SECONDS = 2  # Display last 10 seconds of data
+DISPLAY_SECONDS = 2  # Display last 2 seconds of data
+
+# Calculate total samples to display for 2-second window
+total_samples = RATE * DISPLAY_SECONDS
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -19,22 +22,14 @@ p = pyaudio.PyAudio()
 # Queue for transferring data from audio callback to main thread
 audio_queue = queue.Queue()
 
-# Calculate total samples to display for 10-second window
-total_samples = RATE * DISPLAY_SECONDS
-
-# Initialize an empty buffer
-audio_buffer = np.empty(0, dtype=np.int16)
-
+# Initialize a rolling buffer
+audio_buffer = np.zeros(total_samples, dtype=np.int16)
 
 def callback(in_data, frame_count, time_info, status):
     if status:
         print(f"Error status: {status}")
-    try:
-        audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
-    except Exception as e:
-        print(f"Error processing audio data: {e}")
+    audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
     return (None, pyaudio.paContinue)
-
 
 stream = p.open(format=FORMAT,
                 channels=CHANNELS,
@@ -44,34 +39,26 @@ stream = p.open(format=FORMAT,
                 input_device_index=DEVICE_INDEX,
                 stream_callback=callback)
 
-# Prepare the plot
 fig, ax = plt.subplots(1, 1, figsize=(10, 5))
 x = np.linspace(0, DISPLAY_SECONDS, total_samples)
 line, = ax.plot(x, np.zeros(total_samples), color='blue')
 ax.set_ylim(-3000, 3000)
 ax.set_xlim(0, DISPLAY_SECONDS)
 
-
 def update_plot(frame):
     global audio_buffer
     while not audio_queue.empty():
         data = audio_queue.get()
-        audio_buffer = np.append(audio_buffer, data)
-        # Keep only the last 10 seconds of data
-        if len(audio_buffer) > total_samples:
-            audio_buffer = audio_buffer[-total_samples:]
+        # Efficiently roll the buffer and append new data
+        audio_buffer = np.roll(audio_buffer, -len(data))
+        audio_buffer[-len(data):] = data
 
-    # Update plot
-    current_length = len(audio_buffer)
-    x_data = np.linspace(0, DISPLAY_SECONDS * current_length / total_samples, current_length)
-    line.set_data(x_data, audio_buffer)
-    ax.set_xlim(0, max(x_data[-1], 1))  # Update xlim to show up to 10 seconds
+    # The plot updates with the rolling buffer
+    line.set_ydata(audio_buffer)
     return line,
-
 
 ani = FuncAnimation(fig, update_plot, blit=False, interval=20)
 
-# Start the stream and show the plot
 stream.start_stream()
 
 try:
@@ -79,7 +66,6 @@ try:
 except KeyboardInterrupt:
     print("Stream stopped")
 
-# Stop and close the stream
 stream.stop_stream()
 stream.close()
 p.terminate()
