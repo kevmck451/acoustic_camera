@@ -7,10 +7,10 @@ from matplotlib.animation import FuncAnimation
 import queue
 
 # Configuration
-CHUNK = 1024
+CHUNK = 4096
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 48000
+RATE = 41000
 DEVICE_INDEX = 3
 
 # Initialize PyAudio
@@ -39,9 +39,11 @@ for ax in axs:
     y = np.zeros(CHUNK)
     line, = ax.plot(x, y)
     # ax.set_ylim(-32768, 32767)
-    ax.set_ylim(-16384, 16384)
+    ax.set_ylim(-8192, 8192)
     ax.set_yticklabels([])
     lines.append(line)
+
+fig.tight_layout(pad=1)
 
 def update_plot(frame):
     if not audio_queue.empty():
