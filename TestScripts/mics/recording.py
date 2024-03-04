@@ -27,7 +27,7 @@ for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
     data = stream.read(CHUNK)
     # print(data)
     frames.append(data)
-print(frames[0][:50])
+print(frames[0][:64])
 print("* done recording")
 
 # kill the mic and recording
