@@ -4,7 +4,7 @@
 - This is for BusterOS
 
 #### Links:
-- [PiCamera2 Library Documentation](https://picamera.readthedocs.io/en/release-1.13/install.html)
+- [PiCam Library Documentation](https://picamera.readthedocs.io/en/release-1.13/install.html)
 
 #### First Connection
 - ```python -c "import picamera"```
