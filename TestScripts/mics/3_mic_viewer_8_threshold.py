@@ -10,7 +10,7 @@ import queue
 CHUNK = 16384
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
-RATE = 48000
+RATE = 24000
 DEVICE_INDEX = 3
 THRESHOLD = 800  # Define your threshold value here
 
