@@ -144,10 +144,6 @@ pip install cairocffi
 sudo apt-get install libcairo2-dev
 sudo apt-get install python3-gi python3-gi-cairo gir1.2-gtk-3.0
 pip install pycairo
-
-
-
-sudo nice -n -20 python3 mic_viewer_8.py
 ```
 
 
