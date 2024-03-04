@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 import queue
 
 # Configuration
-CHUNK = 8192
+CHUNK = 32768
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
