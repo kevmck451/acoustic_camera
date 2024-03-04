@@ -27,7 +27,12 @@ audio_buffer = np.empty(0, dtype=np.int16)
 
 
 def callback(in_data, frame_count, time_info, status):
-    audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
+    if status:
+        print(f"Error status: {status}")
+    try:
+        audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
+    except Exception as e:
+        print(f"Error processing audio data: {e}")
     return (None, pyaudio.paContinue)
 
 
