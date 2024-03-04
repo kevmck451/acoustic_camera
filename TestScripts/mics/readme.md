@@ -126,22 +126,25 @@ bindings {
 }
 ~~~
 ```zsh
-
 arecord -D plughw:3,0 -f S16_LE -r 48000 -c 8 -d 10 -t wav test_8ch_16bit.wav
 scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/test_8ch_16bit.wav /Users/KevMcK/Desktop
 # IT WORKED!!!
 python3 recording.py
 scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/output4.wav /Users/KevMcK/Desktop
-
 ```
 - ran 'check_sound_settings.py' to see which devices were available
 - Device 3: MATRIXIO-SOUND: - (hw:3,0) (Input Channels: 8)
 - So for PyAudio.open() settings need to set 'input_device_index=3'
 
+##### Mic Viewer libraries installed:
 
-
-
-
+```zsh
+pip install pycairo
+pip install cairocffi
+sudo apt-get install libcairo2-dev
+sudo apt-get install python3-gi python3-gi-cairo gir1.2-gtk-3.0
+pip install pycairo
+```
 
 
 

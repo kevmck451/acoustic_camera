@@ -1,7 +1,7 @@
 import pyaudio
 import numpy as np
 import matplotlib
-matplotlib.use('TkAgg')  # Use TkAgg or another backend that works on your system
+matplotlib.use('TkAgg')  # Specify the backend
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import queue
@@ -11,7 +11,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
-DEVICE_INDEX = 3  # Assuming this is your desired input device index
+DEVICE_INDEX = 3
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -31,19 +31,22 @@ stream = p.open(format=FORMAT,
                 input_device_index=DEVICE_INDEX,
                 stream_callback=callback)
 
-# Prepare the plot for updating
-fig, ax = plt.subplots()
-x = np.arange(0, CHUNK)
-y = np.zeros(CHUNK)
-line, = ax.plot(x, y)
-ax.set_ylim(-32768, 32767)
+# Prepare the plots for updating
+fig, axs = plt.subplots(CHANNELS, 1, figsize=(10, 20))
+lines = []
+for ax in axs:
+    x = np.arange(0, CHUNK)
+    y = np.zeros(CHUNK)
+    line, = ax.plot(x, y)
+    ax.set_ylim(-32768, 32767)
+    lines.append(line)
 
 def update_plot(frame):
     if not audio_queue.empty():
         data = audio_queue.get()
-        # Assuming you want to visualize only the first channel for simplicity
-        line.set_ydata(data[::CHANNELS])
-    return line,
+        for i in range(CHANNELS):
+            lines[i].set_ydata(data[i::CHANNELS])
+    return lines
 
 ani = FuncAnimation(fig, update_plot, blit=True, interval=20)
 
