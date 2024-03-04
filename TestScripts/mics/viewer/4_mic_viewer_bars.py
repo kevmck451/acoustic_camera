@@ -1,8 +1,8 @@
-import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import queue
+import pyaudio
 
 # Configuration
 CHUNK = 16384
@@ -35,25 +35,28 @@ stream = p.open(format=FORMAT,
 fig, ax = plt.subplots()
 x = np.arange(1, CHANNELS + 1)  # Channel numbers as x-axis
 bars = ax.bar(x, np.zeros(CHANNELS), align='center', alpha=0.5)  # Initialize bars with zero height
-ax.set_ylim(0, 10)  # Set a suitable y-axis limit
+ax.set_ylim(-80, 0)  # Set the y-axis limit from -80 dB to 0 dB
 
 
 def update_bars(frame):
     if not audio_queue.empty():
         data = audio_queue.get()
-        rms_values = []
-        for i in range(CHANNELS):
+        for i, bar in enumerate(bars):
             channel_data = data[i::CHANNELS]
-            # Calculate RMS power for each channel
             rms = np.sqrt(np.mean(np.square(channel_data)))
-            rms_values.append(rms)
+            # Convert RMS to dB, assuming a reference level of 32767 for 16-bit audio
+            db = 20 * np.log10(rms / 32767)
 
-        # Normalize or scale RMS values to fit within the plot's y-axis limits if necessary
-        # For this example, we assume RMS values are already suitable or you can apply scaling
+            # Update bar height based on dB value
+            bar.set_height(db)
 
-        # Update bar heights
-        for bar, height in zip(bars, rms_values):
-            bar.set_height(height)
+            # Update bar color based on intensity range
+            if db < -20:
+                bar.set_color('green')
+            elif -20 <= db < -10:
+                bar.set_color('yellow')
+            else:
+                bar.set_color('red')
 
     return bars
 
