@@ -1,9 +1,8 @@
-# Acoustic Camera
-- Real Time Passive Acoustic Phase Array with Visual Display
-- Senior Design Project for the University of Memphis
-
-## Camera Module
-This is for BusterOS
+## PiCam Camera Module
+- This worked fine but didnt seem to integrated well into customtkinter
+- Becuase of this, switched to using cv2 and moved to gui_integration with cv2 and ctk
+- This is for BusterOS
+- 
 #### Links:
 - [PiCamera2 Library Documentation](https://picamera.readthedocs.io/en/release-1.13/install.html)
 

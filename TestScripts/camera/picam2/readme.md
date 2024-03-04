@@ -1,9 +1,7 @@
-# Acoustic Camera
-- Real Time Passive Acoustic Phase Array with Visual Display
-- Senior Design Project for the University of Memphis
+## PiCam2 Camera Module
+- Never got this to work well so witched to buster and tried PiCam
+- This is for bookworm OS
 
-## Camera Module
-This is for bookworm OS
 #### Links:
 - [PiCamera2 Library Documentation](https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf)
 
