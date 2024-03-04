@@ -1,5 +1,5 @@
 ## PiCam2 Camera Module
-- Never got this to work well so witched to buster and tried PiCam
+- Never got this to work well so switched to buster and tried PiCam
 - This is for bookworm OS
 
 #### Links:
