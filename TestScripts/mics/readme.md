@@ -29,8 +29,21 @@ sudo python3 -m pip install pyaudio
 nano /etc/asound.conf
 # check speaker output like in link
 ```
+- [Mic Link](https://matrix-io.github.io/matrix-documentation/matrix-voice/resources/microphone/)
+```zsh
+arecord recording.wav -f S16_LE -r 16000 -d 5
+aplay recording.wav
+
+scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/recording.wav /Users/KevMcK/Desktop
+```
+- Recording file didnt have any data, all 0's
+```zsh
+sudo apt install python3-pyaudio
 
 
 
+
+
+```
 
 
