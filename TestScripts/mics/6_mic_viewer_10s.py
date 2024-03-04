@@ -5,7 +5,7 @@ from matplotlib.animation import FuncAnimation
 import queue
 
 # Configuration
-CHUNK = 8192  # Smaller chunk size for more frequent updates
+CHUNK = 32768  # Smaller chunk size for more frequent updates
 FORMAT = pyaudio.paInt16
 CHANNELS = 1  # Simplified to 1 channel for clarity
 RATE = 48000
