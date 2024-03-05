@@ -53,7 +53,7 @@ class Controller:
 
         elif event == Event.ACOUSTIC_VIEWER:
             print('ACOUSTIC_VIEWER')
-
+            self.gui.Left_Frame.update_mic_levels()
 
         elif event == Event.GET_PLOT_VALUES:
             self.get_audio_visuals()
