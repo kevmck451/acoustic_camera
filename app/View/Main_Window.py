@@ -7,6 +7,9 @@ from app.Model.camera import Camera
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.animation import FuncAnimation
+import matplotlib
+matplotlib.use('TkAgg')  # Specify the backend
+import matplotlib.pyplot as plt
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import customtkinter as ctk
@@ -152,11 +155,23 @@ class Left_Frame(ctk.CTkFrame):
 
     def mic_levels_frame(self, frame):
         # self.event_handler(Event.NEED_ACOUSTIC_FIGURE)
+        self.audio_feed_figure, axs = plt.subplots(8, 1, figsize=(2, 2), dpi=100)
+        line_objects = []
+        for ax in axs:
+            x = np.arange(0, 16384)
+            y = np.zeros(16384)
+            ax.plot(x, y, color='blue')  # Set the default color to blue
+            ax.set_ylim(-3000, 3000)
+            ax.set_yticklabels([])
+            ax.set_xticklabels([])
+            ax.set_xticks([])
+
+        self.audio_feed_figure.tight_layout(pad=.1)
 
         # Create a canvas and add the figure to it
-        canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
-        canvas.draw()
-        widget = canvas.get_tk_widget()
+        self.mic_canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
+        self.mic_canvas.draw()
+        widget = self.mic_canvas.get_tk_widget()
         widget.pack(fill=tk.BOTH, expand=True)
 
     def demo_frame(self, frame):

@@ -87,13 +87,20 @@ class Controller:
     def get_audio_visuals(self):
         threshold = 800
         data = self.matrix_mics.get_audio_data()
-        for i in range(self.matrix_mics.mic_channels):
-            channel_data = data[i::self.matrix_mics.mic_channels]
-            if np.any(np.abs(channel_data) > threshold):
-                self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('red')  # Change color to red if threshold is exceeded
-            else:
-                self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('blue')  # Reset to default color otherwise
-            self.gui.Left_Frame.audio_feed_figure.lines[i].set_ydata(channel_data)
+        if data is not None:  # Ensure there is data to process
+            for i in range(self.matrix_mics.mic_channels):
+                channel_data = data[i::self.matrix_mics.mic_channels]
+
+                if np.any(np.abs(channel_data) > threshold):
+                    self.gui.Left_Frame.audio_feed_figure.lines[i].set_color(
+                        'red')  # Change color to red if threshold is exceeded
+                else:
+                    self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('blue')  # Reset to default color otherwise
+
+                self.gui.Left_Frame.audio_feed_figure.lines[i].set_ydata(channel_data)
+
+            # Ensure the canvas is redrawn to display the updates
+            self.gui.Left_Frame.mic_canvas.draw_idle()
 
 
 
