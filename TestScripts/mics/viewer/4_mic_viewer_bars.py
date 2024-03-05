@@ -1,8 +1,8 @@
+import pyaudio
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import queue
-import pyaudio
 
 # Configuration
 CHUNK = 16384
@@ -10,6 +10,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
 DEVICE_INDEX = 3
+MAX_INT16 = np.iinfo(np.int16).max
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -35,33 +36,33 @@ stream = p.open(format=FORMAT,
 fig, ax = plt.subplots()
 x = np.arange(1, CHANNELS + 1)  # Channel numbers as x-axis
 bars = ax.bar(x, np.zeros(CHANNELS), align='center', alpha=0.5)  # Initialize bars with zero height
-ax.set_ylim(-80, 0)  # Set the y-axis limit from -80 dB to 0 dB
+ax.set_ylim(-80, 0)  # dB range
 
 
 def update_bars(frame):
     if not audio_queue.empty():
         data = audio_queue.get()
-        for i, bar in enumerate(bars):
+        for i in range(CHANNELS):
             channel_data = data[i::CHANNELS]
+            # Calculate RMS and then convert to dB
             rms = np.sqrt(np.mean(np.square(channel_data)))
-            # Convert RMS to dB, assuming a reference level of 32767 for 16-bit audio
-            db = 20 * np.log10(rms / 32767)
+            rms_db = 20 * np.log10(rms / MAX_INT16 + 1e-10)  # Avoid log(0) by adding a small number
 
-            # Update bar height based on dB value
-            bar.set_height(db)
+            # Set bar height based on dB value
+            bars[i].set_height(rms_db)
 
-            # Update bar color based on intensity range
-            if db < -20:
-                bar.set_color('green')
-            elif -20 <= db < -10:
-                bar.set_color('yellow')
+            # Set bar color based on intensity thresholds
+            if rms_db < -20:
+                bars[i].set_color('green')
+            elif -20 <= rms_db < -10:
+                bars[i].set_color('yellow')
             else:
-                bar.set_color('red')
+                bars[i].set_color('red')
 
-    return bars
+    return [bar for bar in bars]
 
 
-ani = FuncAnimation(fig, update_bars, blit=False, interval=20)
+ani = FuncAnimation(fig, update_bars, blit=True, interval=20)
 
 # Start the stream and show the plot
 stream.start_stream()
