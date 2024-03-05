@@ -1,37 +1,63 @@
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import numpy as np
 import queue
+import pyaudio
 
-# Configuration and PyAudio initialization code remains the same
+# Configuration
+CHUNK = 16384
+FORMAT = pyaudio.paInt16
+CHANNELS = 8
+RATE = 48000
+DEVICE_INDEX = 3
 
-# Initialize the plot for vertical bars with the dB scale adjusted
+# Initialize PyAudio
+p = pyaudio.PyAudio()
+
+# Queue for transferring data from audio callback to main thread
+audio_queue = queue.Queue()
+
+
+def callback(in_data, frame_count, time_info, status):
+    audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
+    return (None, pyaudio.paContinue)
+
+
+stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK,
+                input_device_index=DEVICE_INDEX,
+                stream_callback=callback)
+
+# Initialize the plot for vertical bars
 fig, ax = plt.subplots()
 x = np.arange(1, CHANNELS + 1)  # Channel numbers as x-axis
 bars = ax.bar(x, np.zeros(CHANNELS), align='center', alpha=0.5)  # Initialize bars with zero height
-ax.set_ylim(0, 100)  # Adjust y-axis limit to 0 to 100 scale
+ax.set_ylim(0, 100)  # Adjusted for the new dB scale range
 
 
 def update_bars(frame):
     if not audio_queue.empty():
         data = audio_queue.get()
-        rms_values = []
-        for i in range(CHANNELS):
+        for i, bar in enumerate(bars):
             channel_data = data[i::CHANNELS]
-            # Calculate RMS power for each channel and convert to dB scale
             rms = np.sqrt(np.mean(np.square(channel_data)))
-            # Convert RMS to a scale of 0 to 100 (Assuming RMS values are pre-processed for dB conversion)
-            # Here you might need to adjust the conversion based on your actual RMS value range
-            scaled_rms = np.interp(rms, [min_rms, max_rms], [0, 100])
 
-            rms_values.append(scaled_rms)
+            # Convert RMS to a dB scale (simulated conversion for demonstration)
+            db_value = 20 * np.log10(rms / np.max(np.abs(data))) + 100  # Adjusting formula to fit the scale
 
-        # Update bar heights and colors
-        for bar, height in zip(bars, rms_values):
-            bar.set_height(height)
-            if height <= 40:
+            # Ensure db_value falls within the 0 to 100 range
+            db_value = np.clip(db_value, 0, 100)
+
+            # Update bar height
+            bar.set_height(db_value)
+
+            # Update bar color based on intensity
+            if db_value <= 40:
                 bar.set_color('green')
-            elif height <= 60:
+            elif db_value <= 60:
                 bar.set_color('yellow')
             else:
                 bar.set_color('red')
