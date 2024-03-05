@@ -143,7 +143,7 @@ class Left_Frame(ctk.CTkFrame):
     def mic_levels_frame(self, frame):
 
         # Create a matplotlib figure
-        fig = Figure(figsize=(5, 4), dpi=100)
+        fig = Figure(dpi=100) # figsize=(5, 4),
         plot = fig.add_subplot(1, 1, 1)
         plot.plot([0.1, 0.2, 0.3, 0.4], [10, 20, 25, 30])  # Example data
 
