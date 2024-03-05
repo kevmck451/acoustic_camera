@@ -160,11 +160,12 @@ class Left_Frame(ctk.CTkFrame):
         for ax in axs:
             x = np.arange(0, 16384)
             y = np.zeros(16384)
-            ax.plot(x, y, color='blue')  # Set the default color to blue
+            (line,) = ax.plot(x, y, color='blue')
             ax.set_ylim(-3000, 3000)
             ax.set_yticklabels([])
             ax.set_xticklabels([])
             ax.set_xticks([])
+            line_objects.append(line)
 
         self.audio_feed_figure.tight_layout(pad=.1)
 
