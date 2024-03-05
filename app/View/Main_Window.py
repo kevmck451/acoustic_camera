@@ -150,8 +150,7 @@ class Left_Frame(ctk.CTkFrame):
         self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     def mic_levels_frame(self, frame):
-
-        self.audio_feed_figure = self.parent.matrix_mics.ch8_viewer_figure()
+        self.event_handler(Event.NEED_ACOUSTIC_FIGURE)
 
         # Create a canvas and add the figure to it
         canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
