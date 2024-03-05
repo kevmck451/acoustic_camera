@@ -154,7 +154,7 @@ class Left_Frame(ctk.CTkFrame):
         CHUNK_SIZE = self.parent.matrix_mics.chunk_size
 
         # Create a matplotlib figure
-        fig = Figure(figsize=(10, 5))  # Adjust size as needed
+        fig = Figure(figsize=(2, 2))  # Adjust size as needed
         ax = fig.add_subplot(1, 1, 1)
         ax.set_xlim(0, CHANNELS)  # Set x-axis limits to number of channels
         ax.set_ylim(0, 1)  # Adjust y-axis limits based on expected max values
