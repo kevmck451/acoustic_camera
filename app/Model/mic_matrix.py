@@ -1,3 +1,5 @@
+
+import threading
 import pyaudio
 import numpy as np
 import queue
@@ -15,6 +17,8 @@ class Matrix_Mics:
         self.audio_queue = queue.Queue()
         self.p = pyaudio.PyAudio()
         self.stream = None
+
+        self.stream_thread = threading.Thread(target=self.start_stream, daemon=True).start()
 
     def audio_callback(self, in_data, frame_count, time_info, status):
         self.audio_queue.put(np.frombuffer(in_data, dtype=np.int16))

@@ -1,13 +1,17 @@
 
 
+from app.Model.mic_matrix import Matrix_Mics
 from app.Model.camera import Camera
+
 
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.animation import FuncAnimation
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import customtkinter as ctk
 import tkinter as tk
+import numpy as np
 import warnings
 import queue
 
@@ -34,7 +38,10 @@ class Main_Window(ctk.CTk):
         # Start full screen
         self.attributes('-fullscreen', True)
 
+        # Audio / Visual
         self.Camera = Camera()
+        self.matrix_mics = Matrix_Mics()
+
 
         self.Left_Frame = Left_Frame(self, self.event_handler)
         self.Video_Frame = Video_Frame(self, self.event_handler, self.Camera)
@@ -58,7 +65,7 @@ class Main_Window(ctk.CTk):
     def on_close(self):
         # Perform any cleanup or process termination steps here
         # For example, safely terminate any running threads, save state, release resources, etc.
-
+        self.matrix_mics.stop_stream()
         self.event_handler(Event.ON_CLOSE)
         self.destroy()
 
@@ -76,6 +83,7 @@ class Left_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.event_handler = event_handler
+        self.parent = parent
 
         self.demo_button_state = True
 
@@ -142,17 +150,56 @@ class Left_Frame(ctk.CTkFrame):
 
     def mic_levels_frame(self, frame):
 
+        # # Create a matplotlib figure
+        # fig = Figure(figsize=(2, 2), dpi=100)
+        # plot = fig.add_subplot(1, 1, 1)
+        # plot.plot([0.1, 0.2, 0.3, 0.4], [10, 20, 25, 30])  # Example data
+        # fig.tight_layout(pad=1)
+        #
+        # # Create a canvas and add the figure to it
+        # canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
+        # canvas.draw()
+        # widget = canvas.get_tk_widget()
+        # widget.pack(fill=tk.BOTH, expand=True)
+
         # Create a matplotlib figure
-        fig = Figure(figsize=(1, 1), dpi=100)
-        plot = fig.add_subplot(1, 1, 1)
-        plot.plot([0.1, 0.2, 0.3, 0.4], [10, 20, 25, 30])  # Example data
+        fig = Figure(figsize=(10, 5))
+        axs = [fig.add_subplot(self.parent.matrix_mics.mic_channels, 1, i + 1) for i in range(self.parent.matrix_mics.mic_channels)]
+        for ax in axs:
+            ax.set_ylim(-5, 5)  # Adjusted for the transformed data range
+            ax.set_yticklabels([])
+            ax.set_xticklabels([])
+
         fig.tight_layout(pad=1)
 
-        # Create a canvas and add the figure to it
-        canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
+        # Create lines for each channel
+        lines = [ax.plot(np.arange(0, self.parent.matrix_mics.chunk_size), np.zeros(self.parent.matrix_mics.chunk_size), color='blue')[0] for ax in axs]
+
+        def nonlinear_transform(data, scale_factor=0.01):
+            return np.sign(data) * np.log1p(np.abs(data) * scale_factor)
+
+        def update_plot(frame, self):
+            if not self.matrix_mics.audio_queue.empty():
+                data = self.matrix_mics.get_audio_data()
+                for i, line in enumerate(lines):
+                    channel_data = data[i::self.matrix_mics.mic_channels]
+                    # Apply the non-linear transformation
+                    transformed_data = nonlinear_transform(channel_data)
+                    line.set_ydata(transformed_data)
+            return lines
+
+        canvas = FigureCanvasTkAgg(fig, master=frame)
         canvas.draw()
         widget = canvas.get_tk_widget()
         widget.pack(fill=tk.BOTH, expand=True)
+
+        ani = FuncAnimation(fig, update_plot, blit=True, interval=20, fargs=(self,))
+
+
+
+
+
+
 
 
     def demo_frame(self, frame):

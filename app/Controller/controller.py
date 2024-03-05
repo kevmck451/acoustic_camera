@@ -6,7 +6,6 @@ import threading
 
 
 from app.View.settings import Settings_Window
-from app.Model.mic_matrix import Matrix_Mics
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
 
@@ -16,9 +15,7 @@ class Controller:
         self.app_state = State.IDLE
         self.demo_stop = True
 
-        # Audio / Visual
-        self.matrix_mics = Matrix_Mics()
-        stream_thread = threading.Thread(target=self.matrix_mics.start_stream).start()
+
 
 
 
