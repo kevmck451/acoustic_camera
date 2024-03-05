@@ -55,16 +55,18 @@ class Matrix_Mics:
 
     def ch8_viewer_figure(self):
         fig, axs = plt.subplots(self.mic_channels, 1, figsize=(2, 2), dpi=100)
-        lines = []
+        self.lines = []
         for ax in axs:
             x = np.arange(0, self.chunk_size)
             y = np.zeros(self.chunk_size)
             line, = ax.plot(x, y, color='blue')  # Set the default color to blue
-            ax.set_ylim(-8192, 8192)
+            # ax.set_ylim(-8192, 8192)
             ax.set_ylim(-3000, 3000)
             ax.set_yticklabels([])
             ax.set_xticklabels([])
-            # lines.append(line)
+            ax.set_xticks([])
+
+            self.lines.append(line)
 
         fig.tight_layout(pad=.1)
 

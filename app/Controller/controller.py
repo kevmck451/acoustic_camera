@@ -1,20 +1,26 @@
 
 
-from threading import Thread
-import time
-import threading
 
 
+from app.Model.mic_matrix import Matrix_Mics
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
+
+
+
+from threading import Thread
+import threading
+import numpy as np
+import time
+
 
 
 class Controller:
     def __init__(self):
         self.app_state = State.IDLE
         self.demo_stop = True
-
+        self.matrix_mics = Matrix_Mics()
 
 
 
@@ -48,6 +54,10 @@ class Controller:
         elif event == Event.ACOUSTIC_VIEWER:
             print('ACOUSTIC_VIEWER')
 
+
+        elif event == Event.GET_PLOT_VALUES:
+            self.get_audio_visuals()
+
         elif event == Event.CAMERA_VIEWER:
             print('CAMERA_VIEWER')
 
@@ -66,12 +76,26 @@ class Controller:
 
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
-            pass
+            self.matrix_mics.stop_stream()
 
         elif event == Event.START_CAMERA:
             pass
 
     # Action Functions ------------------------------
+
+    def get_audio_visuals(self):
+        threshold = 800
+        data = self.matrix_mics.get_audio_data()
+        for i in range(self.matrix_mics.mic_channels):
+            channel_data = data[i::self.matrix_mics.mic_channels]
+            if np.any(np.abs(channel_data) > threshold):
+                self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('red')  # Change color to red if threshold is exceeded
+            else:
+                self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('blue')  # Reset to default color otherwise
+            self.gui.Left_Frame.audio_feed_figure.lines[i].set_ydata(channel_data)
+
+
+
     def start_demo(self):
         print('start demo')
         self.demo_stop = True

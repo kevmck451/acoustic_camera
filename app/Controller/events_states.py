@@ -16,6 +16,7 @@ class Event(Enum):
     ACOUSTIC_VIEWER = auto()
     CAMERA_VIEWER = auto()
     ACOUSTIC_CAMERA_VIEWER = auto()
+    GET_PLOT_VALUES = auto()
 
 
 

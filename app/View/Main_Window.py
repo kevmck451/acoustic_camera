@@ -40,7 +40,7 @@ class Main_Window(ctk.CTk):
 
         # Audio / Visual
         self.Camera = Camera()
-        self.matrix_mics = Matrix_Mics()
+        # self.matrix_mics = Matrix_Mics()
 
 
         self.Left_Frame = Left_Frame(self, self.event_handler)
@@ -65,7 +65,7 @@ class Main_Window(ctk.CTk):
     def on_close(self):
         # Perform any cleanup or process termination steps here
         # For example, safely terminate any running threads, save state, release resources, etc.
-        self.matrix_mics.stop_stream()
+        # self.matrix_mics.stop_stream()
         self.event_handler(Event.ON_CLOSE)
         self.destroy()
 
@@ -86,6 +86,7 @@ class Left_Frame(ctk.CTkFrame):
         self.parent = parent
 
         self.demo_button_state = True
+        self.update_mic_levels_id = None
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
@@ -150,15 +151,15 @@ class Left_Frame(ctk.CTkFrame):
 
     def mic_levels_frame(self, frame):
 
-        fig = self.parent.matrix_mics.ch8_viewer_figure()
+        self.audio_feed_figure = self.parent.matrix_mics.ch8_viewer_figure()
 
         # Create a canvas and add the figure to it
-        canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
+        canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
         canvas.draw()
         widget = canvas.get_tk_widget()
         widget.pack(fill=tk.BOTH, expand=True)
 
-
+        self.update_mic_levels()
 
 
     def demo_frame(self, frame):
@@ -172,9 +173,6 @@ class Left_Frame(ctk.CTkFrame):
                                           fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
                                           image=self.start_icon, command=lambda: self.event_handler(Event.DEMO))
         self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-
-
 
     # BUTTON TOGGLE STATES ------------------------
     def toggle_demo_button(self):
@@ -191,6 +189,19 @@ class Left_Frame(ctk.CTkFrame):
                                        image=self.start_icon,
                                        command=lambda: self.event_handler(Event.DEMO))
             self.demo_button_state = True
+
+
+
+    # UPDATE METADATA FRAMES ------------------------
+    def update_mic_levels(self):
+        self.event_handler(Event.GET_PLOT_VALUES)
+        self.audio_feed_figure = self.parent.matrix_mics.ch8_viewer_figure()
+        self.update_mic_levels_id = self.after(100, self.update_mic_levels)
+
+    def stop_update_stim_number(self):
+        if self.update_mic_levels_id:
+            self.after_cancel(self.update_mic_levels_id)
+            self.update_mic_levels_id = None
 
 
 # ---------------------------------------------------
