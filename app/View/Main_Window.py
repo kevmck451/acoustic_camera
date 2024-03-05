@@ -149,51 +149,40 @@ class Left_Frame(ctk.CTkFrame):
         self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     def mic_levels_frame(self, frame):
-
-        # # Create a matplotlib figure
-        # fig = Figure(figsize=(2, 2), dpi=100)
-        # plot = fig.add_subplot(1, 1, 1)
-        # plot.plot([0.1, 0.2, 0.3, 0.4], [10, 20, 25, 30])  # Example data
-        # fig.tight_layout(pad=1)
-        #
-        # # Create a canvas and add the figure to it
-        # canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
-        # canvas.draw()
-        # widget = canvas.get_tk_widget()
-        # widget.pack(fill=tk.BOTH, expand=True)
+        # Number of channels and chunk size from the Matrix_Mics instance
+        CHANNELS = self.parent.matrix_mics.mic_channels
+        CHUNK_SIZE = self.parent.matrix_mics.chunk_size
 
         # Create a matplotlib figure
-        fig = Figure(figsize=(2, 2))
-        axs = [fig.add_subplot(self.parent.matrix_mics.mic_channels, 1, i + 1) for i in range(self.parent.matrix_mics.mic_channels)]
-        for ax in axs:
-            ax.set_ylim(-5, 5)  # Adjusted for the transformed data range
-            ax.set_yticklabels([])
-            ax.set_xticklabels([])
+        fig = Figure(figsize=(10, 5))  # Adjust size as needed
+        ax = fig.add_subplot(1, 1, 1)
+        ax.set_xlim(0, CHANNELS)  # Set x-axis limits to number of channels
+        ax.set_ylim(0, 1)  # Adjust y-axis limits based on expected max values
 
-        fig.tight_layout(pad=1)
+        # Initialize bar plots for each channel
+        bars = ax.bar(range(CHANNELS), np.zeros(CHANNELS), color='blue')
 
-        # Create lines for each channel
-        lines = [ax.plot(np.arange(0, self.parent.matrix_mics.chunk_size), np.zeros(self.parent.matrix_mics.chunk_size), color='blue')[0] for ax in axs]
-
-        def nonlinear_transform(data, scale_factor=0.01):
-            return np.sign(data) * np.log1p(np.abs(data) * scale_factor)
-
-        def update_plot(frame, self):
-            if not self.matrix_mics.audio_queue.empty():
-                data = self.matrix_mics.get_audio_data()
-                for i, line in enumerate(lines):
-                    channel_data = data[i::self.matrix_mics.mic_channels]
-                    # Apply the non-linear transformation
-                    transformed_data = nonlinear_transform(channel_data)
-                    line.set_ydata(transformed_data)
-            return lines
+        def update_plot(frame, bars, CHANNELS, self):
+            # Get the latest audio data
+            if not self.parent.matrix_mics.audio_queue.empty():
+                data = self.parent.matrix_mics.get_audio_data()
+                # Calculate max value for each channel's chunk
+                for i in range(CHANNELS):
+                    channel_data = data[i::CHANNELS]
+                    # Here you might want to apply any preprocessing to channel_data
+                    max_val = np.max(np.abs(channel_data)) / 32768.0  # Normalizing (assuming 16-bit audio)
+                    bars[i].set_height(max_val)
+            return bars
 
         canvas = FigureCanvasTkAgg(fig, master=frame)
         canvas.draw()
         widget = canvas.get_tk_widget()
         widget.pack(fill=tk.BOTH, expand=True)
 
-        ani = FuncAnimation(fig, update_plot, blit=True, interval=20, fargs=(self,))
+        ani = FuncAnimation(fig, update_plot, fargs=(bars, CHANNELS, self), interval=20, blit=False)
+
+        # Ensure the figure adjusts layout to accommodate the bar plots
+        fig.tight_layout(pad=1)
 
 
 
