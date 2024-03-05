@@ -1,15 +1,15 @@
+import pyaudio
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import numpy as np
 import queue
-import pyaudio
 
 # Configuration
 CHUNK = 16384
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
-DEVICE_INDEX = 3
+DEVICE_INDEX = 3  # Ensure the device index is set as requested
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -17,11 +17,9 @@ p = pyaudio.PyAudio()
 # Queue for transferring data from audio callback to main thread
 audio_queue = queue.Queue()
 
-
 def callback(in_data, frame_count, time_info, status):
     audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
     return (None, pyaudio.paContinue)
-
 
 stream = p.open(format=FORMAT,
                 channels=CHANNELS,
@@ -35,35 +33,27 @@ stream = p.open(format=FORMAT,
 fig, ax = plt.subplots()
 x = np.arange(1, CHANNELS + 1)  # Channel numbers as x-axis
 bars = ax.bar(x, np.zeros(CHANNELS), align='center', alpha=0.5)  # Initialize bars with zero height
-ax.set_ylim(0, 100)  # Adjusted for the new dB scale range
-
+ax.set_ylim(0, 100)  # Example range, adjust based on actual signal power
 
 def update_bars(frame):
     if not audio_queue.empty():
         data = audio_queue.get()
-        for i, bar in enumerate(bars):
-            channel_data = data[i::CHANNELS]
-            rms = np.sqrt(np.mean(np.square(channel_data)))
+        rms_values = [np.sqrt(np.mean(np.square(data[i::CHANNELS]))) for i in range(CHANNELS)]
+        max_rms = np.max(rms_values) if np.max(rms_values) != 0 else 1  # Avoid division by zero
+        normalized_rms_values = [rms / max_rms * 100 for rms in rms_values]  # Normalize to 0-100 scale
 
-            # Convert RMS to a dB scale (simulated conversion for demonstration)
-            db_value = 20 * np.log10(rms / np.max(np.abs(data))) + 100  # Adjusting formula to fit the scale
+        for bar, rms_value in zip(bars, normalized_rms_values):
+            bar.set_height(rms_value)  # Update the height of the bar
 
-            # Ensure db_value falls within the 0 to 100 range
-            db_value = np.clip(db_value, 0, 100)
-
-            # Update bar height
-            bar.set_height(db_value)
-
-            # Update bar color based on intensity
-            if db_value <= 40:
+            # Update the color based on the range
+            if rms_value < 33.33:
                 bar.set_color('green')
-            elif db_value <= 60:
+            elif rms_value < 66.66:
                 bar.set_color('yellow')
             else:
                 bar.set_color('red')
 
     return bars
-
 
 ani = FuncAnimation(fig, update_bars, blit=False, interval=20)
 
