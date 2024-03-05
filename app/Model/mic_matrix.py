@@ -160,15 +160,19 @@ class Matrix_Mics:
 
         ani = FuncAnimation(fig, update_plot, blit=True, interval=20)
 
-        # Start the stream and show the plot
+        # Start the stream and show the plot in a non-blocking manner
+        plt.show(block=False)
+
         stream.start_stream()
 
+        # Main loop to check if the window is open
         try:
-            plt.show()
+            while plt.get_fignums():
+                plt.pause(0.1)  # Pause to reduce CPU usage, adjust as necessary
         except KeyboardInterrupt:
             pass
-
-        # Stop and close the stream
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
+        finally:
+            # Cleanup
+            stream.stop_stream()
+            stream.close()
+            p.terminate()

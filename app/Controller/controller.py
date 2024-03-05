@@ -15,8 +15,6 @@ class Controller:
     def __init__(self):
         self.app_state = State.IDLE
         self.demo_stop = True
-        self.matrix_mics_object = Matrix_Mics()
-
 
     def set_gui(self, gui):
         self.gui = gui
