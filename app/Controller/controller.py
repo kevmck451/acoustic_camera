@@ -46,7 +46,7 @@ class Controller:
 
         elif event == Event.ACOUSTIC_VIEWER:
             print('CH8_MIC_TD_VIEWER')
-            # self.matrix_mics_object.channel_viewer_figure()
+            view = Matrix_Mics()
 
         elif event == Event.CAMERA_VIEWER:
             print('CAMERA_VIEWER')
