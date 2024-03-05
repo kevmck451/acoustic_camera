@@ -86,6 +86,7 @@ class Left_Frame(ctk.CTkFrame):
         self.parent = parent
 
         self.demo_button_state = True
+        self.audio_feed_figure = None
         self.update_mic_levels_id = None
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
@@ -158,9 +159,6 @@ class Left_Frame(ctk.CTkFrame):
         widget = canvas.get_tk_widget()
         widget.pack(fill=tk.BOTH, expand=True)
 
-        self.update_mic_levels()
-
-
     def demo_frame(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
@@ -194,7 +192,6 @@ class Left_Frame(ctk.CTkFrame):
     # UPDATE METADATA FRAMES ------------------------
     def update_mic_levels(self):
         self.event_handler(Event.GET_PLOT_VALUES)
-        self.audio_feed_figure = self.parent.matrix_mics.ch8_viewer_figure()
         self.update_mic_levels_id = self.after(100, self.update_mic_levels)
 
     def stop_mic_levels(self):
