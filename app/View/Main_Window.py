@@ -2,7 +2,8 @@
 
 from app.Model.camera import Camera
 
-
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import customtkinter as ctk
@@ -33,15 +34,6 @@ class Main_Window(ctk.CTk):
         # Start full screen
         self.attributes('-fullscreen', True)
 
-        # Get the screen dimension
-        # screen_width = self.winfo_screenwidth()
-        # screen_height = self.winfo_screenheight()
-        # center_x = int((screen_width / 2) - (configuration.window_width / 2))
-        # center_y = int((screen_height / 2) - (configuration.window_height / 2))
-        # self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
-        # self.minsize(configuration.min_window_width, configuration.min_window_height)
-
-
         self.Camera = Camera()
 
         self.Left_Frame = Left_Frame(self, self.event_handler)
@@ -52,7 +44,6 @@ class Main_Window(ctk.CTk):
         self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
         self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
-
 
 
         # Place the frames using grid
@@ -123,6 +114,7 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
         self.middle_frame_view(top_frame)
+        self.mic_levels_frame(middle_frame)
         self.demo_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
@@ -147,6 +139,19 @@ class Left_Frame(ctk.CTkFrame):
                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
                                          command=lambda: self.event_handler(Event.ACOUSTIC_CAMERA_VIEWER))
         self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+    def mic_levels_frame(self, frame):
+
+        # Create a matplotlib figure
+        fig = Figure(figsize=(5, 4), dpi=100)
+        plot = fig.add_subplot(1, 1, 1)
+        plot.plot([0.1, 0.2, 0.3, 0.4], [10, 20, 25, 30])  # Example data
+
+        # Create a canvas and add the figure to it
+        canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
+        canvas.draw()
+        widget = canvas.get_tk_widget()
+        widget.pack(fill=tk.BOTH, expand=True)
 
 
     def demo_frame(self, frame):

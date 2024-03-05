@@ -16,6 +16,12 @@ class Controller:
         self.app_state = State.IDLE
         self.demo_stop = True
 
+        # Audio / Visual
+        self.matrix_mics = Matrix_Mics()
+        stream_thread = threading.Thread(target=self.matrix_mics.start_stream).start()
+
+
+
     def set_gui(self, gui):
         self.gui = gui
 
@@ -43,8 +49,7 @@ class Controller:
             print('BUTTON PRESSED')
 
         elif event == Event.ACOUSTIC_VIEWER:
-            print('CH8_MIC_TD_VIEWER')
-            view = Matrix_Mics()
+            print('ACOUSTIC_VIEWER')
 
         elif event == Event.CAMERA_VIEWER:
             print('CAMERA_VIEWER')
