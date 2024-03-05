@@ -102,6 +102,30 @@ class Controller:
             # Ensure the canvas is redrawn to display the updates
             self.gui.Left_Frame.mic_canvas.draw_idle()
 
+        threshold = 800
+        data = self.matrix_mics.get_audio_data()
+        if data is not None:  # Ensure there is data to process
+            fig = self.gui.Left_Frame.audio_feed_figure  # Assuming this is where your figure is stored
+            axs = fig.axes  # Get all axes in the figure
+
+            for i, ax in enumerate(axs):
+                if i >= len(data):  # Safety check in case there are more axes than data channels
+                    break
+                channel_data = data[i::self.matrix_mics.mic_channels]
+                lines = ax.get_lines()  # Assuming there is only one line per ax, but can be adjusted if more
+
+                if lines:  # Check if there are any lines in the ax
+                    line = lines[0]  # Access the first line; adjust if your structure is different
+                    if np.any(np.abs(channel_data) > threshold):
+                        line.set_color('red')  # Change color to red if threshold is exceeded
+                    else:
+                        line.set_color('blue')  # Reset to default color otherwise
+                    line.set_ydata(channel_data)
+
+            # Ensure the canvas is redrawn to display the updates
+            self.gui.Left_Frame.audio_feed_figure = fig
+            self.gui.Left_Frame.mic_canvas.draw_idle()
+
 
 
     def start_demo(self):

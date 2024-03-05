@@ -55,17 +55,13 @@ class Matrix_Mics:
 
     def ch8_viewer_figure(self):
         fig, axs = plt.subplots(self.mic_channels, 1, figsize=(2, 2), dpi=100)
-        line_objects = []
         for ax in axs:
             x = np.arange(0, self.chunk_size)
             y = np.zeros(self.chunk_size)
-            (line,) = ax.plot(x, y, color='blue')
+            ax.plot(x, y, color='blue')  # This creates a Line2D object internally and adds it to the ax
             ax.set_ylim(-3000, 3000)
             ax.set_yticklabels([])
             ax.set_xticklabels([])
             ax.set_xticks([])
-            line_objects.append(line)
-
         fig.tight_layout(pad=.1)
-
         return fig

@@ -154,20 +154,18 @@ class Left_Frame(ctk.CTkFrame):
         self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     def mic_levels_frame(self, frame):
-        # self.event_handler(Event.NEED_ACOUSTIC_FIGURE)
+
         self.audio_feed_figure, axs = plt.subplots(8, 1, figsize=(2, 2), dpi=100)
-        line_objects = []
         for ax in axs:
             x = np.arange(0, 16384)
             y = np.zeros(16384)
-            (line,) = ax.plot(x, y, color='blue')
+            ax.plot(x, y, color='blue')  # This creates a Line2D object internally and adds it to the ax
             ax.set_ylim(-3000, 3000)
             ax.set_yticklabels([])
             ax.set_xticklabels([])
             ax.set_xticks([])
-            line_objects.append(line)
-
         self.audio_feed_figure.tight_layout(pad=.1)
+
 
         # Create a canvas and add the figure to it
         self.mic_canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
