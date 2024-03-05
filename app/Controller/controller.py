@@ -44,9 +44,15 @@ class Controller:
         elif event == Event.DUMMY_BUTTON:
             print('BUTTON PRESSED')
 
-        elif event == Event.CH8_MIC_TD_VIEWER:
+        elif event == Event.ACOUSTIC_VIEWER:
             print('CH8_MIC_TD_VIEWER')
-            self.matrix_mics_object.channel_viewer_figure()
+            # self.matrix_mics_object.channel_viewer_figure()
+
+        elif event == Event.CAMERA_VIEWER:
+            print('CAMERA_VIEWER')
+
+        elif event == Event.ACOUSTIC_CAMERA_VIEWER:
+            print('ACOUSTIC_CAMERA_VIEWER')
 
         elif event == Event.DEMO:
             if self.app_state == State.IDLE:

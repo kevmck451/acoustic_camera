@@ -122,34 +122,31 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        self.mic_viewer_frame(top_frame)
+        self.middle_frame_view(top_frame)
         self.demo_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
-    def mic_viewer_frame(self, frame):
+    def middle_frame_view(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_rowconfigure(1, weight=1)
-        # frame.grid_rowconfigure(2, weight=1)
+        frame.grid_rowconfigure(2, weight=1)
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.ch8_time_domain_viewer = ctk.CTkButton(frame, text='View Mic Audio', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                          command=lambda: self.event_handler(Event.CH8_MIC_TD_VIEWER))
-        self.ch8_time_domain_viewer.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-
-
-        self.audio_feature_button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
+        self.camera_button = ctk.CTkButton(frame, text='Camera', font=(configuration.main_font_style, configuration.main_font_size),
                                         fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                        command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.audio_feature_button_1.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+                                        command=lambda: self.event_handler(Event.CAMERA_VIEWER))
+        self.camera_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.audio_feature_button_2 = ctk.CTkButton(frame, text='Button 2',
-                                         font=(configuration.main_font_style, configuration.main_font_size),
+        self.acoustic_viewer = ctk.CTkButton(frame, text='Acoustic', font=(configuration.main_font_style, configuration.main_font_size),
+                                                    fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+                                                    command=lambda: self.event_handler(Event.ACOUSTIC_VIEWER))
+        self.acoustic_viewer.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.acoustic_camera_button = ctk.CTkButton(frame, text='Acoustic+Camera', font=(configuration.main_font_style, configuration.main_font_size),
                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                         command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.audio_feature_button_2.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+                                         command=lambda: self.event_handler(Event.ACOUSTIC_CAMERA_VIEWER))
+        self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
     def demo_frame(self, frame):

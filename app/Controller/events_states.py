@@ -13,7 +13,9 @@ class Event(Enum):
     RECORD_VIDEO = auto()
     DEMO = auto()
     DUMMY_BUTTON = auto()
-    CH8_MIC_TD_VIEWER = auto()
+    ACOUSTIC_VIEWER = auto()
+    CAMERA_VIEWER = auto()
+    ACOUSTIC_CAMERA_VIEWER = auto()
 
 
 
