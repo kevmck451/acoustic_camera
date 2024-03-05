@@ -6,6 +6,7 @@ import threading
 
 
 from app.View.settings import Settings_Window
+from app.Model.mic_matrix import Matrix_Mics
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
 
@@ -14,6 +15,8 @@ class Controller:
     def __init__(self):
         self.app_state = State.IDLE
         self.demo_stop = True
+        self.matrix_mics_object = Matrix_Mics()
+
 
     def set_gui(self, gui):
         self.gui = gui
@@ -40,6 +43,10 @@ class Controller:
 
         elif event == Event.DUMMY_BUTTON:
             print('BUTTON PRESSED')
+
+        elif event == Event.CH8_MIC_TD_VIEWER:
+            print('CH8_MIC_TD_VIEWER')
+            self.matrix_mics_object.channel_viewer_figure()
 
         elif event == Event.DEMO:
             if self.app_state == State.IDLE:

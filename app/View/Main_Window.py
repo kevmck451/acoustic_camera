@@ -122,32 +122,35 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        self.target_detection_frame(top_frame)
+        self.mic_viewer_frame(top_frame)
         self.demo_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
-    def target_detection_frame(self, frame):
+    def mic_viewer_frame(self, frame):
 
-        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
-        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
-        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=1)
+        # frame.grid_rowconfigure(2, weight=1)
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.button_1 = ctk.CTkButton(frame, text='Detect Sounds', font=(configuration.main_font_style, configuration.main_font_size),
+        self.ch8_time_domain_viewer = ctk.CTkButton(frame, text='View Mic Audio', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+                                          command=lambda: self.event_handler(Event.CH8_MIC_TD_VIEWER))
+        self.ch8_time_domain_viewer.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.button_2 = ctk.CTkButton(frame, text='Detect Drones',
-                                          font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.button_3 = ctk.CTkButton(frame, text='Detect Vehicles', font=(configuration.main_font_style, configuration.main_font_size),
+
+        self.audio_feature_button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
                                         fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
                                         command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.button_3.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+        self.audio_feature_button_1.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.audio_feature_button_2 = ctk.CTkButton(frame, text='Button 2',
+                                         font=(configuration.main_font_style, configuration.main_font_size),
+                                         fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+                                         command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.audio_feature_button_2.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
 
     def demo_frame(self, frame):
 
@@ -160,6 +163,9 @@ class Left_Frame(ctk.CTkFrame):
                                           fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
                                           image=self.start_icon, command=lambda: self.event_handler(Event.DEMO))
         self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+
+
 
     # BUTTON TOGGLE STATES ------------------------
     def toggle_demo_button(self):
@@ -250,35 +256,10 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
         self.camera_settings_frame(top_frame)
+        self.target_detection_frame(middle_frame)
         self.settings_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
-    def settings_frame(self, frame):
-
-        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
-        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
-        # frame.grid_rowconfigure(2, weight=1)  # Row for the load button
-        frame.grid_columnconfigure(0, weight=1)  # Single column
-
-        self.settings_button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
-                                          command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
-        self.settings_button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-
-
-        self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
-                                        command=lambda: self.event_handler(Event.SETTINGS))
-        self.settings_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-        self.exit_button = ctk.CTkButton(frame, text='EXIT',
-                                         font=(configuration.main_font_style, configuration.main_font_size),
-                                         fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
-                                         command=self.parent.close_application)
-        self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-
     def camera_settings_frame(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
@@ -304,3 +285,50 @@ class Right_Frame(ctk.CTkFrame):
         self.total_time_display.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
                                      sticky='nsew')
 
+    def target_detection_frame(self, frame):
+
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.button_1 = ctk.CTkButton(frame, text='Detect Sounds', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.button_2 = ctk.CTkButton(frame, text='Detect Drones',
+                                          font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.button_3 = ctk.CTkButton(frame, text='Detect Vehicles', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+                                        command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.button_3.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+    def settings_frame(self, frame):
+
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        # frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.settings_button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                          command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
+        self.settings_button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+
+
+        self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                        command=lambda: self.event_handler(Event.SETTINGS))
+        self.settings_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.exit_button = ctk.CTkButton(frame, text='EXIT',
+                                         font=(configuration.main_font_style, configuration.main_font_size),
+                                         fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
+                                         command=self.parent.close_application)
+        self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
