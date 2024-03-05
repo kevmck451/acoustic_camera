@@ -163,7 +163,7 @@ class Left_Frame(ctk.CTkFrame):
         # widget.pack(fill=tk.BOTH, expand=True)
 
         # Create a matplotlib figure
-        fig = Figure(figsize=(10, 5))
+        fig = Figure(figsize=(2, 2))
         axs = [fig.add_subplot(self.parent.matrix_mics.mic_channels, 1, i + 1) for i in range(self.parent.matrix_mics.mic_channels)]
         for ax in axs:
             ax.set_ylim(-5, 5)  # Adjusted for the transformed data range
