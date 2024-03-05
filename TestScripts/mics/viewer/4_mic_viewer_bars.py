@@ -5,11 +5,11 @@ import pyaudio
 import queue
 
 # Configuration
-CHUNK = 16384
+CHUNK = 1024  # Smaller chunk size to increase responsiveness
 FORMAT = pyaudio.paInt16
 CHANNELS = 8
 RATE = 48000
-DEVICE_INDEX = 3
+DEVICE_INDEX = 3  # Ensure this is the correct device index
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -19,7 +19,6 @@ audio_queue = queue.Queue()
 
 
 def callback(in_data, frame_count, time_info, status):
-    # Put the incoming data into the queue
     audio_queue.put(np.frombuffer(in_data, dtype=np.int16))
     return (None, pyaudio.paContinue)
 
@@ -33,28 +32,31 @@ stream = p.open(format=FORMAT,
                 input_device_index=DEVICE_INDEX,
                 stream_callback=callback)
 
-# Prepare the plot for displaying the audio signal power
+# Initialize the plot for displaying the audio signal power
 fig, ax = plt.subplots()
 x = np.arange(1, CHANNELS + 1)
-bars = ax.bar(x, np.zeros(CHANNELS))
-ax.set_ylim(0, 100)  # Example range, adjust based on actual signal power
+bars = ax.bar(x, np.zeros(CHANNELS), color='green')
+ax.set_ylim(0, 100)  # Example range
 
 
 def update_bars(frame):
     if not audio_queue.empty():
         data = audio_queue.get()
-        # Calculate the RMS values, handling cases where data might lead to invalid operations
-        rms_values = [np.sqrt(np.mean(np.square(data[i::CHANNELS]))) if np.any(data[i::CHANNELS]) else 0 for i in
+        # Calculate the RMS values
+        rms_values = [10 * np.log10(np.mean(np.square(data[i::CHANNELS]))) if np.any(data[i::CHANNELS]) else 0 for i in
                       range(CHANNELS)]
-        # Normalize or scale RMS values here if necessary
 
-        # Determine the color based on the intensity (lower 1/3 green, middle 1/3 yellow, top 1/3 red)
-        for bar, rms in zip(bars, rms_values):
-            bar_height = rms  # This should be scaled appropriately
-            bar.set_height(bar_height)
-            if bar_height < 33.33:
+        # Normalize RMS values to fit the 0-100 scale (assuming dB scale for demonstration)
+        max_possible_db = 120.0  # Adjust based on your audio system's maximum dB
+        scaled_rms_values = [(value + max_possible_db) / max_possible_db * 100 for value in rms_values]
+
+        # Update bars
+        for bar, value in zip(bars, scaled_rms_values):
+            bar.set_height(value)
+            # Update color based on value
+            if value <= 33.33:
                 bar.set_color('green')
-            elif bar_height < 66.67:
+            elif value <= 66.67:
                 bar.set_color('yellow')
             else:
                 bar.set_color('red')
@@ -64,7 +66,7 @@ def update_bars(frame):
 
 ani = FuncAnimation(fig, update_bars, blit=False, interval=50)
 
-# Start the audio stream and display the plot
+# Start the audio stream and show the plot
 stream.start_stream()
 
 try:
@@ -72,7 +74,7 @@ try:
 except KeyboardInterrupt:
     print("Stream stopped by user.")
 
-# Cleanup on exit
+# Cleanup
 stream.stop_stream()
 stream.close()
 p.terminate()
