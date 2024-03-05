@@ -154,6 +154,11 @@ class Left_Frame(ctk.CTkFrame):
         fig = Figure(figsize=(2, 2), dpi=100)
         plot = fig.add_subplot(1, 1, 1)
         # plot.plot([0.1, 0.2, 0.3, 0.4], [10, 20, 25, 30])  # Example data
+        plot.set_xticklabels([])
+        plot.set_yticklabels([])
+        plot.set_xticks([])
+        plot.set_yticks([])
+
         fig.tight_layout(pad=1)
 
         # Create a canvas and add the figure to it
