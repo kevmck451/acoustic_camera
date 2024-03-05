@@ -53,13 +53,11 @@ class Controller:
 
         elif event == Event.ACOUSTIC_VIEWER:
             print('ACOUSTIC_VIEWER')
+            self.gui.Left_Frame.audio_feed_figure = self.matrix_mics.ch8_viewer_figure()
             self.gui.Left_Frame.update_mic_levels()
 
         elif event == Event.GET_PLOT_VALUES:
             self.get_audio_visuals()
-
-        elif event == Event.NEED_ACOUSTIC_FIGURE:
-            self.gui.Left_Frame.audio_feed_figure = self.matrix_mics.ch8_viewer_figure()
 
         elif event == Event.CAMERA_VIEWER:
             print('CAMERA_VIEWER')
