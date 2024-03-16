@@ -253,4 +253,5 @@ ssh pi@acousticpi
 ```zsh
 ip route
 ip route show default
+sudo ip route del default via 192.168.80.1 dev usb0
 ```
