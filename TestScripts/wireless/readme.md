@@ -219,7 +219,34 @@ ping 192.168.80.1
 ping google.com
 ```
 
-## Need to connect usb to wlan1
-- currently not letting me interact with both interfaces at the same time
+```zsh
+ip route
+```
 
+### Add local host names
+```zsh
+sudo nano /etc/hosts
+```
+~~~
+192.168.80.1    fpga
+~~~
 
+- make pi ip static
+```zsh
+sudo nano /etc/dhcpcd.conf 
+```
+~~~
+interface eth0
+static ip_address=10.0.0.13/24
+static routers=10.0.0.1
+static domain_name_servers=10.0.0.1
+~~~
+
+```zsh
+# from macbook
+ssh pi@papapi.local
+
+# how to ssh into other devices
+ssh nixos@fpga
+ssh pi@acousticpi
+```
