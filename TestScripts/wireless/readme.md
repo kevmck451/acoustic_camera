@@ -219,10 +219,6 @@ ping 192.168.80.1
 ping google.com
 ```
 
-```zsh
-ip route
-```
-
 ### Add local host names
 ```zsh
 sudo nano /etc/hosts
@@ -249,4 +245,12 @@ ssh pi@papapi.local
 # how to ssh into other devices
 ssh nixos@fpga
 ssh pi@acousticpi
+```
+
+
+
+### Random Commands for Troubleshooting
+```zsh
+ip route
+ip route show default
 ```
