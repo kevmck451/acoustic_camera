@@ -219,5 +219,7 @@ ping 192.168.80.1
 ping google.com
 ```
 
+## Need to connect usb to wlan1
+- currently not letting me interact with both interfaces at the same time
 
 
