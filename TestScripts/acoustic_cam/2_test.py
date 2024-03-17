@@ -49,7 +49,8 @@ if __name__ == '__main__':
     max_cubes = 10  # example limit for received cubes
 
     cube_count = 0
-    while cube_count < max_cubes:
+    # while cube_count < max_cubes:
+    while True:
         try:
             cube = receive_data_cube(host, port, map_row, map_col, sample_rate, sample_length)
             print(f"Cube Shape: {cube.shape}")
