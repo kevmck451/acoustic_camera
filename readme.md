@@ -38,6 +38,11 @@
 - Gets acoustic overlaid video from PapaPi for display
 
 
+### Libraries
+- OpenCV (cv2)
+- Numpy
+- UDP Socket
+- CustomTKinter
 
 
 ## Hardware
