@@ -184,7 +184,7 @@ static ip_address=10.0.0.1/24
 nohook wpa_supplicant
 
 interface usb0
-static ip_address=192.168.80.1/24
+static ip_address=192.168.80.2/24
 
 # Prefer wlan0 for default route
 interface wlan0
