@@ -43,7 +43,7 @@ def receive_data_cube(host, port, map_row, map_col, sample_rate, sample_length):
 if __name__ == '__main__':
     map_row, map_col = 5, 5
     sample_rate = 48000
-    sample_length = 2  # In seconds
+    sample_length = 0.5  # In seconds
     host = '192.168.80.1'  # USB
     port = 2048
     max_cubes = 10  # example limit for received cubes
