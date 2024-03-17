@@ -34,7 +34,7 @@ nano /etc/asound.conf
 arecord recording.wav -f S16_LE -r 16000 -d 5
 aplay recording.wav
 
-scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/recording.wav /Users/KevMcK/Desktop
+scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics_matrix/recording.wav /Users/KevMcK/Desktop
 ```
 - Recording file didnt have any data, all 0's
 ```zsh
@@ -127,10 +127,10 @@ bindings {
 ~~~
 ```zsh
 arecord -D plughw:3,0 -f S16_LE -r 48000 -c 8 -d 10 -t wav test_8ch_16bit.wav
-scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/test_8ch_16bit.wav /Users/KevMcK/Desktop
+scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics_matrix/test_8ch_16bit.wav /Users/KevMcK/Desktop
 # IT WORKED!!!
 python3 recording.py
-scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics/output4.wav /Users/KevMcK/Desktop
+scp pi@acousticpi.local:/home/pi/Desktop/acoustic_camera/TestScripts/mics_matrix/output4.wav /Users/KevMcK/Desktop
 ```
 - ran 'check_sound_settings.py' to see which devices were available
 - Device 3: MATRIXIO-SOUND: - (hw:3,0) (Input Channels: 8)
