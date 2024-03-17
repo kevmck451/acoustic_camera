@@ -28,9 +28,21 @@ class FPGASocket:
         self.sock.close()
 
 
+# def receive_data_cube(host, port, map_row, map_col, sample_rate, sample_length):
+#     N = sample_rate * sample_length
+#     buffer_size = 2 * map_row * map_col * N
+#     sock = FPGASocket(buffer_size)
+#     sock.connect(host, port)
+#     data = sock.myreceive()
+#     sock.close()
+#
+#     cube = np.frombuffer(data, dtype=np.int16).reshape(-1, map_row, map_col)
+#     return cube
+
+
 def receive_data_cube(host, port, map_row, map_col, sample_rate, sample_length):
-    N = sample_rate * sample_length
-    buffer_size = 2 * map_row * map_col * N
+    N = int(sample_rate * sample_length)  # Ensure this is an integer
+    buffer_size = 2 * map_row * map_col * N  # buffer_size should also be an integer
     sock = FPGASocket(buffer_size)
     sock.connect(host, port)
     data = sock.myreceive()
@@ -38,6 +50,7 @@ def receive_data_cube(host, port, map_row, map_col, sample_rate, sample_length):
 
     cube = np.frombuffer(data, dtype=np.int16).reshape(-1, map_row, map_col)
     return cube
+
 
 
 if __name__ == '__main__':
