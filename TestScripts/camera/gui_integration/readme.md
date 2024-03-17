@@ -7,6 +7,7 @@ export DISPLAY=:0
 
 ```zsh
 sudo apt-get install python3-pil.imagetk
+pip install customtkinter
 ```
 
 
