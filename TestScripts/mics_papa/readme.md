@@ -1,6 +1,24 @@
 
 # Mics from Papa
 
+- start session: open two terminals
+- ssh into papapi in both
+- ssh into fpga on one
+```zsh
+# Terminal 1
+ssh pi@papapi.local
+ssh nixos@fpga
+sudo server
+
+# Terminal 2
+ssh -X pi@papapi.local
+cd Desktop/acoustic_camera
+source venv_acoustic_camera/bin/activate
+cd TestScripts/mics_papa
+python3 5_test.py
+```
+
+
 
 
 ## Test Scripts
