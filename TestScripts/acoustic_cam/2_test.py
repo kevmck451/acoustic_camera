@@ -53,8 +53,11 @@ if __name__ == '__main__':
         try:
             cube = receive_data_cube(host, port, map_row, map_col, sample_rate, sample_length)
             print(f"Cube Shape: {cube.shape}")
+            print()
             print(f"Cube Min: {cube.min()}, Max: {cube.max()}, Mean: {cube.mean():.2f}, Std Dev: {cube.std():.2f}")
-
+            print()
+            print(cube)
+            print('-'*50)
             cube_count += 1
         except KeyboardInterrupt:
             print("Stopping cube reception.")
