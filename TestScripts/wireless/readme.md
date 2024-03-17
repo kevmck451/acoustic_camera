@@ -178,9 +178,28 @@ sudo nano /etc/dhcpcd.conf
 ```
 - add this to the bottom of file
 ~~~
+# Configuration for wlan1
 interface wlan1
 static ip_address=10.0.0.1/24
 nohook wpa_supplicant
+
+interface usb0
+static ip_address=192.168.80.1/24
+
+# Prefer wlan0 for default route
+interface wlan0
+static routers=192.168.0.1
+
+# Add configuration to ignore routes for usb0
+interface usb0
+nogateway
+
+# Set a lower metric for wlan0
+interface wlan0
+static ip_address=192.168.0.142/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+metric 200
 ~~~
 
 ### Enable IP Forwarding and NAT Automatically
