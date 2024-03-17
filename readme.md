@@ -1,6 +1,45 @@
-# Acoustic Camera
+# Acoustic Camera System
 - Real Time Passive Acoustic Phase Array with Visual Display
-- Senior Design Project for the University of Memphis
+
+## Overview
+
+### FPGA
+- 4x4 microphone array driven synchronously by an Altera Cyclone V FPGA
+- SoC running linux with PhaseArray command line interface (CLI)
+- The array has 4x2 PCBs with two microphones per PCB operating as a stereo pair
+- 2D delay and sum beamforming algorithm implemented on the same FPGA fabric
+- Beamforms for 22.5° DoA steps over a 90° FoV per-direction in real-time (5x5 output)
+
+### PapaPi
+- Raspberry Pi running busterOS
+- RaspPi Cam attached
+- Device might be changed for better processing power: camera, acoustic overlay, DL implementation
+
+### AcousticPi
+- Raspberry Pi running busterOS
+- Runs AcousticCam App
+
+
+
+### Network Info
+- PapaPi - Access Point for Network | IP: 10.0.0.1
+- AcousticPi - IP: 10.0.0.13
+- FPGA - Ethernet over USB | IP: 192.168.80.1
+
+
+
+### Acoustic Camera
+- How the info from the mics are combined with the camera feed
+
+
+
+### Acoustic Camera Application
+- The app that gives user ways to interact with the possible functionality
+- Gets acoustic overlaid video from PapaPi for display
+
+
+
+
 ## Hardware
 #### Links:
 - [Raspberry Pi 4 Purchase Page](https://www.amazon.com/dp/B07TC2BK1X?ref=ppx_yo2ov_dt_b_product_details&th=1)
