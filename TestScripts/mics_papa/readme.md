@@ -11,10 +11,12 @@ ssh nixos@fpga
 sudo server
 
 # Terminal 2
+# on macbook
 ssh -X pi@papapi.local
 cd Desktop/acoustic_camera
 source venv_acoustic_camera/bin/activate
 cd TestScripts/mics_papa
+export DISPLAY=:0
 python3 5_test.py
 ```
 
@@ -27,3 +29,10 @@ python3 5_test.py
 3. Calculates RMS of cube every 0.5 secs
 4. Stops unconnecting from server for each chunks - works well
 5. Heatmap of RMS values using matplotlib
+   - Works on mac, but had issues running on screen pi
+
+
+## random commands needed
+```zsh
+export DISPLAY=:0
+```
