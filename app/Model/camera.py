@@ -2,7 +2,7 @@
 from PIL import Image, ImageTk
 import threading
 import queue
-import cv2
+import cv2 # pip install opencv-python
 
 
 
@@ -37,6 +37,7 @@ class Camera:
             cv2.addWeighted(overlay, square['transparency'], frame, 1 - square['transparency'], 0, frame)
 
     def capture_frames(self):
+
         cap = cv2.VideoCapture(0)
         while True:
             ret, frame = cap.read()

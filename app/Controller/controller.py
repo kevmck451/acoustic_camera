@@ -2,11 +2,9 @@
 
 
 
-from app.Model.mic_matrix import Matrix_Mics
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
-
 
 
 from threading import Thread
@@ -20,8 +18,6 @@ class Controller:
     def __init__(self):
         self.app_state = State.IDLE
         self.demo_stop = True
-        self.matrix_mics = Matrix_Mics()
-
 
 
 
@@ -53,11 +49,6 @@ class Controller:
 
         elif event == Event.ACOUSTIC_VIEWER:
             print('ACOUSTIC_VIEWER')
-            self.gui.Left_Frame.audio_feed_figure = self.matrix_mics.ch8_viewer_figure()
-            self.gui.Left_Frame.update_mic_levels()
-
-        elif event == Event.GET_PLOT_VALUES:
-            self.get_audio_visuals()
 
         elif event == Event.CAMERA_VIEWER:
             print('CAMERA_VIEWER')
@@ -77,56 +68,12 @@ class Controller:
 
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
-            self.matrix_mics.stop_stream()
+            pass
 
         elif event == Event.START_CAMERA:
             pass
 
     # Action Functions ------------------------------
-
-    def get_audio_visuals(self):
-        # threshold = 800
-        # data = self.matrix_mics.get_audio_data()
-        # if data is not None:  # Ensure there is data to process
-        #     for i in range(self.matrix_mics.mic_channels):
-        #         channel_data = data[i::self.matrix_mics.mic_channels]
-        #
-        #         if np.any(np.abs(channel_data) > threshold):
-        #             self.gui.Left_Frame.audio_feed_figure.lines[i].set_color(
-        #                 'red')  # Change color to red if threshold is exceeded
-        #         else:
-        #             self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('blue')  # Reset to default color otherwise
-        #
-        #         self.gui.Left_Frame.audio_feed_figure.lines[i].set_ydata(channel_data)
-        #
-        #     # Ensure the canvas is redrawn to display the updates
-        #     self.gui.Left_Frame.mic_canvas.draw_idle()
-
-        threshold = 800
-        data = self.matrix_mics.get_audio_data()
-        if data is not None:  # Ensure there is data to process
-            fig = self.gui.Left_Frame.audio_feed_figure  # Assuming this is where your figure is stored
-            axs = fig.axes  # Get all axes in the figure
-
-            for i, ax in enumerate(axs):
-                if i >= len(data):  # Safety check in case there are more axes than data channels
-                    break
-                channel_data = data[i::self.matrix_mics.mic_channels]
-                lines = ax.get_lines()  # Assuming there is only one line per ax, but can be adjusted if more
-
-                if lines:  # Check if there are any lines in the ax
-                    line = lines[0]  # Access the first line; adjust if your structure is different
-                    if np.any(np.abs(channel_data) > threshold):
-                        line.set_color('red')  # Change color to red if threshold is exceeded
-                    else:
-                        line.set_color('blue')  # Reset to default color otherwise
-                    line.set_ydata(channel_data)
-
-            # Ensure the canvas is redrawn to display the updates
-            self.gui.Left_Frame.audio_feed_figure = fig
-            self.gui.Left_Frame.mic_canvas.draw_idle()
-
-
 
     def start_demo(self):
         print('start demo')

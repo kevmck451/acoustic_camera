@@ -1,6 +1,5 @@
 
 
-from app.Model.mic_matrix import Matrix_Mics
 from app.Model.camera import Camera
 
 
@@ -39,11 +38,17 @@ class Main_Window(ctk.CTk):
         self.title(configuration.window_title)
 
         # Start full screen
-        self.attributes('-fullscreen', True)
+        # self.attributes('-fullscreen', True)
+        # Get the screen dimension
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        center_x = int((screen_width / 2) - (configuration.window_width / 2))
+        center_y = int((screen_height / 2) - (configuration.window_height / 2))
+        self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
+        self.minsize(configuration.min_window_width, configuration.min_window_height)
 
         # Audio / Visual
         self.Camera = Camera()
-        # self.matrix_mics = Matrix_Mics()
 
 
         self.Left_Frame = Left_Frame(self, self.event_handler)
@@ -51,9 +56,9 @@ class Main_Window(ctk.CTk):
         self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
-        self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
-        self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
+        self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
+        self.columnconfigure(1, weight=5)  # Right column with x/3 of the space
+        self.columnconfigure(2, weight=1)  # Right column with x/3 of the space
 
 
         # Place the frames using grid
@@ -127,7 +132,7 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
         self.middle_frame_view(top_frame)
-        self.mic_levels_frame(middle_frame)
+        self.a_frame(middle_frame)
         self.demo_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
@@ -153,25 +158,17 @@ class Left_Frame(ctk.CTkFrame):
                                          command=lambda: self.event_handler(Event.ACOUSTIC_CAMERA_VIEWER))
         self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-    def mic_levels_frame(self, frame):
+    def a_frame(self, frame):
 
-        self.audio_feed_figure, axs = plt.subplots(8, 1, figsize=(2, 2), dpi=100)
-        for ax in axs:
-            x = np.arange(0, 16384)
-            y = np.zeros(16384)
-            ax.plot(x, y, color='blue')  # This creates a Line2D object internally and adds it to the ax
-            ax.set_ylim(-3000, 3000)
-            ax.set_yticklabels([])
-            ax.set_xticklabels([])
-            ax.set_xticks([])
-        self.audio_feed_figure.tight_layout(pad=.1)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_columnconfigure(0, weight=1)  # Single column
 
-
-        # Create a canvas and add the figure to it
-        self.mic_canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
-        self.mic_canvas.draw()
-        widget = self.mic_canvas.get_tk_widget()
-        widget.pack(fill=tk.BOTH, expand=True)
+        self.frame_button = ctk.CTkButton(frame, text='Button',
+                                           font=(configuration.main_font_style, configuration.main_font_size),
+                                           fg_color=configuration.dropdown_fg_color,
+                                           hover_color=configuration.dropdown_hover_color,
+                                           command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.frame_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     def demo_frame(self, frame):
 
@@ -204,14 +201,7 @@ class Left_Frame(ctk.CTkFrame):
 
 
     # UPDATE METADATA FRAMES ------------------------
-    def update_mic_levels(self):
-        self.event_handler(Event.GET_PLOT_VALUES)
-        self.update_mic_levels_id = self.after(100, self.update_mic_levels)
 
-    def stop_mic_levels(self):
-        if self.update_mic_levels_id:
-            self.after_cancel(self.update_mic_levels_id)
-            self.update_mic_levels_id = None
 
 
 # ---------------------------------------------------
@@ -226,9 +216,9 @@ class Video_Frame(ctk.CTkFrame):
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
-        self.update_gui()
+        # self.update_camera_feed()
 
-    def update_gui(self):
+    def update_camera_feed(self):
         try:
             frame = self.camera.frame_queue.get_nowait()
             self.label.configure(image=frame)
@@ -236,7 +226,7 @@ class Video_Frame(ctk.CTkFrame):
         except queue.Empty:
             pass
 
-        self.after(5, self.update_gui)
+        self.after(5, self.update_camera_feed)
 
 
 
