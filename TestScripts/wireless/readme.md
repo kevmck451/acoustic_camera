@@ -178,9 +178,28 @@ sudo nano /etc/dhcpcd.conf
 ```
 - add this to the bottom of file
 ~~~
+# Configuration for wlan1
 interface wlan1
 static ip_address=10.0.0.1/24
 nohook wpa_supplicant
+
+interface usb0
+static ip_address=192.168.80.2/24
+
+# Prefer wlan0 for default route
+interface wlan0
+static routers=192.168.0.1
+
+# Add configuration to ignore routes for usb0
+interface usb0
+nogateway
+
+# Set a lower metric for wlan0
+interface wlan0
+static ip_address=192.168.0.142/24
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
+metric 200
 ~~~
 
 ### Enable IP Forwarding and NAT Automatically
@@ -219,5 +238,61 @@ ping 192.168.80.1
 ping google.com
 ```
 
+### Add local host names
+```zsh
+sudo nano /etc/hosts
+```
+~~~
+192.168.80.1    fpga
+~~~
+
+- make pi ip static
+```zsh
+sudo nano /etc/dhcpcd.conf 
+```
+~~~
+interface eth0
+static ip_address=10.0.0.13/24
+static routers=10.0.0.1
+static domain_name_servers=10.0.0.1
+~~~
+
+```zsh
+# from macbook
+ssh pi@papapi.local
+
+# how to ssh into other devices
+ssh nixos@fpga
+ssh pi@acousticpi
+```
 
 
+
+### Random Commands for Troubleshooting
+```zsh
+ip route
+ip route show default
+sudo ip route del default via 192.168.80.1 dev usb0
+```
+
+
+
+### Connecting to Wifi without screen
+```zsh
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+```
+- add to the end of file
+~~~
+country=US
+network={
+    ssid="Kevin's iPhone"
+    psk="drpepper"
+}
+~~~
+```zsh
+sudo wpa_cli -i wlan0 reconfigure
+```
+- check connection
+```zsh
+ip a show wlan0
+```

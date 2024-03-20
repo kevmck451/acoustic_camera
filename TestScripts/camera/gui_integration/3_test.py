@@ -29,7 +29,7 @@ label.pack(expand=True, fill=tk.BOTH)
 
 # Initialize the camera
 camera = PiCamera()
-camera.rotation = 90
+# camera.rotation = 90
 camera.resolution = (1280, 720)  # Set a default resolution
 camera.framerate = 24
 

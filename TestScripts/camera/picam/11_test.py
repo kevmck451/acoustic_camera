@@ -25,7 +25,7 @@ screen_width_size = 1920
 screen_height_size = 1080
 
 with picamera.PiCamera() as camera:
-    camera.rotation = 90
+    # camera.rotation = 90
     camera.resolution = (screen_width_size, screen_height_size)
     camera.zoom = (x, y, zoom_width, zoom_height)
     camera.start_preview()
