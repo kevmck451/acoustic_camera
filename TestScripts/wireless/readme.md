@@ -274,3 +274,25 @@ ip route
 ip route show default
 sudo ip route del default via 192.168.80.1 dev usb0
 ```
+
+
+
+### Connecting to Wifi without screen
+```zsh
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+```
+- add to the end of file
+~~~
+country=US
+network={
+    ssid="Kevin's iPhone"
+    psk="drpepper"
+}
+~~~
+```zsh
+sudo wpa_cli -i wlan0 reconfigure
+```
+- check connection
+```zsh
+ip a show wlan0
+```
