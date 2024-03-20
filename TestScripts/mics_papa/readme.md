@@ -16,7 +16,7 @@ ssh -X pi@papapi.local
 cd Desktop/acoustic_camera
 source venv_acoustic_camera/bin/activate
 cd TestScripts/mics_papa
-export DISPLAY=:0
+# export DISPLAY=:0 # if not using X11 forwarding 
 python3 5_test.py
 ```
 

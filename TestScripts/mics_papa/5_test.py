@@ -6,6 +6,7 @@ matplotlib.use('TkAgg')  # Set the backend to TkAgg
 # matplotlib.use('Agg')  # Set the backend to TkAgg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+print(matplotlib.get_backend())
 
 class FPGASocket:
     def __init__(self, host, port, MSGLEN, sock=None):
