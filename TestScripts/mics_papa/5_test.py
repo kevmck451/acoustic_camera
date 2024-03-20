@@ -2,8 +2,8 @@ import numpy as np
 import socket
 
 import matplotlib
-# matplotlib.use('TkAgg')  # Set the backend to TkAgg
-matplotlib.use('Agg')  # Set the backend to TkAgg
+matplotlib.use('TkAgg')  # Set the backend to TkAgg
+# matplotlib.use('Agg')  # Set the backend to TkAgg
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
