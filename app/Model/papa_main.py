@@ -5,6 +5,7 @@ from .microphones import MicArray
 from .camera import Camera
 from .overlay import Overlay
 from .video_stream_sender import Video_Overlay_Sending
+from .socket_events import Event_Listener_Socket
 
 
 import threading
@@ -12,6 +13,8 @@ import time
 
 
 if __name__ == "__main__":
+
+    event_listener_server = Event_Listener_Socket()
 
     camera_hardware = Camera().start_camera()
 
