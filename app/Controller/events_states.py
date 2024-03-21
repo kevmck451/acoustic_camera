@@ -17,6 +17,11 @@ class Event(Enum):
     CAMERA_VIEWER = auto()
     ACOUSTIC_CAMERA_VIEWER = auto()
     GET_PLOT_VALUES = auto()
+    DETECT_SOUND_POWER = auto()
+    DETECT_DRONES = auto()
+    CLASSIFY_DRONES = auto()
+    DETECT_VEHICLES = auto()
+    CLASSIFY_VEHICLES = auto()
 
 
 

@@ -20,6 +20,7 @@ class MicArray:
         self.buffer_size = 2 * self.map_row * self.map_col * int(self.sample_rate * self.sample_length)
         self.sock = None
         self.RMS_values = np.zeros((self.map_row, self.map_col))
+        self.running = True
 
     def start_client_connection(self):
         self.sock = FPGASocket(self.host, self.port, self.buffer_size)
@@ -36,7 +37,7 @@ class MicArray:
 
     def get_RMS(self):
 
-        while True:
+        while self.running:
             cube = self.receive_data_cube()
 
             for i in range(self.map_row):
@@ -49,4 +50,5 @@ class MicArray:
             print(self.RMS_values)
             print('-' * 69)
 
-
+    def stop(self):
+        self.running = False

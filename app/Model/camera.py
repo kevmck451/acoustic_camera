@@ -3,54 +3,32 @@ from PIL import Image, ImageTk
 import threading
 import queue
 import cv2 # pip install opencv-python
+import numpy as np
 
 
+
+from threading import Thread
+import cv2
+import queue
 
 class Camera:
     def __init__(self, frame_width=580, frame_height=580):
         self.frame_queue = queue.Queue(maxsize=10)
         self.frame_width = frame_width
         self.frame_height = frame_height
-        self.squares = []  # Initialize an empty list for squares
-        threading.Thread(target=self.capture_frames, daemon=True).start()
+        self.running = True
 
-    def add_square(self, position, size, color, transparency):
-        self.squares.append({
-            'position': position,
-            'size': size,
-            'color': color,
-            'transparency': transparency
-        })
-
-    def clear_squares(self):
-        self.squares.clear()  # Clears the list of squares
-
-    def overlay_squares(self, frame):
-        for square in self.squares:
-            overlay = frame.copy()
-            # Ensure top_left_corner and bottom_right_corner are tuples of integers
-            top_left_corner = (int(square['position'][0]), int(square['position'][1]))
-            bottom_right_corner = (int(top_left_corner[0] + square['size']), int(top_left_corner[1] + square['size']))
-
-            # Use the corrected points to draw the rectangle
-            cv2.rectangle(overlay, top_left_corner, bottom_right_corner, square['color'], -1)
-            cv2.addWeighted(overlay, square['transparency'], frame, 1 - square['transparency'], 0, frame)
+    def start_camera(self):
+        Thread(target=self.capture_frames, daemon=True).start()
 
     def capture_frames(self):
-
         cap = cv2.VideoCapture(0)
-        while True:
+        while self.running:
             ret, frame = cap.read()
             if ret:
                 frame = cv2.resize(frame, (self.frame_width, self.frame_height))
+                # Assume you still want to rotate the frame
                 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-
-                # Overlay squares on the frame
-                self.overlay_squares(frame)
-
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame = Image.fromarray(frame)
-                frame = ImageTk.PhotoImage(image=frame)
 
                 if not self.frame_queue.full():
                     self.frame_queue.put(frame)
@@ -58,6 +36,104 @@ class Camera:
                 break
 
         cap.release()
+
+    def capture_frames_fake(self):
+        counter = 0  # Initialize a counter to simulate changes in the frame
+
+        while self.running:
+            # Generate a synthetic frame. For example, create a gradient that changes with the counter
+            # This is just an example. You can generate any pattern or image.
+            frame = np.zeros((self.frame_height, self.frame_width, 3), dtype=np.uint8)
+            gradient = np.linspace(0, 255, self.frame_width, dtype=np.uint8)
+            frame[:, :] = gradient + (counter % 255)  # Example pattern that changes with time
+
+            # Simulate rotation or any other transformation if necessary
+            frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+
+            if not self.frame_queue.full():
+                self.frame_queue.put(frame)
+
+            counter += 1  # Increment the counter to change the frame in the next iteration
+
+    def get_frame(self):
+        if not self.frame_queue.empty():
+            return self.frame_queue.get()
+        return None
+
+    def stop(self):
+        self.running = False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class Camera:
+#     def __init__(self, frame_width=580, frame_height=580):
+#         self.frame_queue = queue.Queue(maxsize=10)
+#         self.frame_width = frame_width
+#         self.frame_height = frame_height
+#         self.squares = []  # Initialize an empty list for squares
+#         threading.Thread(target=self.capture_frames, daemon=True).start()
+#
+#     def add_square(self, position, size, color, transparency):
+#         self.squares.append({
+#             'position': position,
+#             'size': size,
+#             'color': color,
+#             'transparency': transparency
+#         })
+#
+#     def clear_squares(self):
+#         self.squares.clear()  # Clears the list of squares
+#
+#     def overlay_squares(self, frame):
+#         for square in self.squares:
+#             overlay = frame.copy()
+#             # Ensure top_left_corner and bottom_right_corner are tuples of integers
+#             top_left_corner = (int(square['position'][0]), int(square['position'][1]))
+#             bottom_right_corner = (int(top_left_corner[0] + square['size']), int(top_left_corner[1] + square['size']))
+#
+#             # Use the corrected points to draw the rectangle
+#             cv2.rectangle(overlay, top_left_corner, bottom_right_corner, square['color'], -1)
+#             cv2.addWeighted(overlay, square['transparency'], frame, 1 - square['transparency'], 0, frame)
+#
+#     def capture_frames(self):
+#
+#         cap = cv2.VideoCapture(0)
+#         while True:
+#             ret, frame = cap.read()
+#             if ret:
+#                 frame = cv2.resize(frame, (self.frame_width, self.frame_height))
+#                 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+#
+#                 # Overlay squares on the frame
+#                 self.overlay_squares(frame)
+#
+#                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#                 frame = Image.fromarray(frame)
+#                 frame = ImageTk.PhotoImage(image=frame)
+#
+#                 if not self.frame_queue.full():
+#                     self.frame_queue.put(frame)
+#             else:
+#                 break
+#
+#         cap.release()
 
 
 
