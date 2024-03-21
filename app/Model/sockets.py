@@ -11,10 +11,13 @@ import socket
 
 class EventListenerSocket:
     def __init__(self):
-        pass
+        self.host = None
+        self.port = None
+        self.sock = None
 
+    def start_EL_connection(self):
 
-
+        self.sock.connect()
 
 class VideoFeedSocket:
     def __init__(self):
