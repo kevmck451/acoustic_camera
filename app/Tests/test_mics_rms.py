@@ -1,5 +1,5 @@
-from .Model.microphones import MicArray
-from .Model.socket_events import Event_Listener_Socket
+from app.Model.microphones import MicArray
+from app.Model.socket_events import Event_Listener_Socket
 
 import threading
 import time

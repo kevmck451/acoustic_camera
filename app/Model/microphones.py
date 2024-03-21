@@ -14,7 +14,7 @@ class MicArray:
         # this is all specific to the FPGA design
         self.map_row, self.map_col = 5, 5
         self.sample_rate = 48000
-        self.sample_length = 0.05  # Half a second
+        self.sample_length = 0.05  # 0.05 to 0.5
         self.host = '192.168.80.1'
         self.port = 2048
         self.buffer_size = 2 * self.map_row * self.map_col * int(self.sample_rate * self.sample_length)
