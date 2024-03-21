@@ -34,7 +34,9 @@ class MicArray:
         return cube
 
     def get_RMS(self):
+        print('Starting RMS Calcuation'+'-'*20)
         while True:
+            'Running'
             cube = self.receive_data_cube()
             rms_values = np.zeros((self.map_row, self.map_col))
 
