@@ -3,29 +3,9 @@
 
 import socket
 
-# Functions to setup things to use the sockets
-# like bash scripts for ssh
-# ssh key-based authentication needs to be set up
-# if start_fpga_server.sh doesnt exist, create it
 
 
-class EventListenerSocket:
-    def __init__(self):
-        self.host = None
-        self.port = None
-        self.sock = None
-
-    def start_EL_connection(self):
-
-        self.sock.connect()
-
-class VideoFeedSocket:
-    def __init__(self):
-        pass
-
-
-
-# Socket used for communicating to mics
+# TCP Socket used for communicating to mics
 class FPGASocket:
     def __init__(self, host, port, MSGLEN, sock=None):
         self.host = host
