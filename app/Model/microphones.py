@@ -19,6 +19,7 @@ class MicArray:
         self.port = 2048
         self.buffer_size = 2 * self.map_row * self.map_col * int(self.sample_rate * self.sample_length)
         self.sock = None
+        self.RMS_values = np.zeros((self.map_row, self.map_col))
 
     def start_client_connection(self):
         self.sock = FPGASocket(self.host, self.port, self.buffer_size)
@@ -34,22 +35,18 @@ class MicArray:
         return cube
 
     def get_RMS(self):
-        print('Starting RMS Calcuation'+'-'*20)
+
         while True:
-            print('Running')
             cube = self.receive_data_cube()
-            rms_values = np.zeros((self.map_row, self.map_col))
 
             for i in range(self.map_row):
                 for j in range(self.map_col):
                     square_data = cube[:, i, j]
                     rms = np.sqrt(np.mean(square_data ** 2))
-                    rms_values[i, j] = rms
+                    self.RMS_values[i, j] = rms
 
-            print("RMS values for each square in the cube:")
-            print(rms_values)
+            print('RMS values for each square in the cube:')
+            print(self.RMS_values)
             print('-' * 50)
-
-            return rms_values
 
 
