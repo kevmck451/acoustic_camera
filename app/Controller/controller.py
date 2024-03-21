@@ -18,11 +18,11 @@ class Controller:
     def __init__(self):
         self.app_state = State.IDLE
         self.demo_stop = True
-        self.camera_hardware_connection = False
-        self.microphone_hardware_connection = False
 
-        self.connect_to_mic_array()
-        self.connect_to_camera()
+        # Start Hardware Scripts
+        # Attempt to start camera and mic streams
+
+
 
     def set_gui(self, gui):
         self.gui = gui
@@ -70,12 +70,5 @@ class Controller:
 
     # Action Functions ------------------------------
 
-    def connect_to_mic_array(self):
-        pass
-
-
-
-    def connect_to_camera(self):
-        pass
 
 

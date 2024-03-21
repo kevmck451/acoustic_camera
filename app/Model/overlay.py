@@ -19,24 +19,32 @@ class Overlay:
         self.classify_drones = False
         self.detect_vehicles = False
         self.classify_vehicles = False
+        self.running = True
+
+    def scale_audio_matrix(self, original_matrix):
+        scaling_factor = self.height // self.mic_hardware.map_row
+        scaled_matrix = []
+
+        for row in original_matrix:
+            new_row = []
+            for element in row:
+                # Create a block of size scaling_factor x scaling_factor
+                # where all elements are 'element' from the original matrix
+                block = [[element] * scaling_factor for _ in range(scaling_factor)]
+                new_row.extend(block)
+            scaled_matrix.extend(new_row)
+
+        return scaled_matrix
+
+    def generate_overlay(self):
+
+        RMS_calculations_thread = threading.Thread(target=self.mic_hardware.get_RMS).start()
+        audio_overlay = self.scale_audio_matrix(self.mic_hardware.RMS_values)
+        # self.overlay =
 
 
 
-    def add_overlay(self):
-
-
-        if self.detect_sound_power:
-            RMS_calculations_thread = threading.Thread(target=self.mic_hardware.get_RMS).start()
-            self.mic_hardware.RMS_values
-
-        elif self.detect_drones:
-            pass
-        elif self.classify_drones:
-            pass
-        elif self.detect_vehicles:
-            pass
-        elif self.classify_vehicles:
-            pass
-
+    def stop_overlay(self):
+        self.running = False
 
 
