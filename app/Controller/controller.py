@@ -5,7 +5,7 @@
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
-from video_stream_server import Video_Overlay_Server
+from server_video_stream import Video_Overlay_Server
 
 
 from threading import Thread
