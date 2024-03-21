@@ -21,6 +21,8 @@ class Overlay:
         self.classify_vehicles = False
         self.running = True
 
+
+
     def scale_audio_matrix(self, original_matrix):
         scaling_factor = self.height // self.mic_hardware.map_row
         scaled_matrix = []

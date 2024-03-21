@@ -5,6 +5,7 @@
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
+from video_stream_server import Video_Overlay_Server
 
 
 from threading import Thread
@@ -19,6 +20,7 @@ class Controller:
         self.app_state = State.IDLE
         self.demo_stop = True
 
+        self.video_stream_server = Video_Overlay_Server().start_server()
         # Start Hardware Scripts
         # Attempt to start camera and mic streams
 
