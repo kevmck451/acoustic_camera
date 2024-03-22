@@ -9,9 +9,8 @@
 
 
 from server_events import Event_Server
+from microphones import MicArray
 
-
-# from microphones import MicArray
 from camera import Camera
 from overlay import Overlay
 from video_stream_sender import Video_Overlay_Sending
@@ -31,28 +30,18 @@ def run_pi_hardware():
     event_thread = threading.Thread(target=event_server.run, daemon=True)
     event_thread.start()
 
-    # print('CAMERA HARDWARE CONNECTION------------------')
-    # camera_hardware = Camera()
-    # camera_hardware.start_camera(fake=True)
-    # print(camera_hardware.get_frame())
-    # camera_feed_thread = threading.Thread(target=camera_hardware.get_frame, daemon=True)
-    # camera_feed_thread.start()
-
-    # print('MICROPHONE HARDWARE CONNECTION--------------')
+    print('MICROPHONE HARDWARE CONNECTION--------------')
 
     # server on FPGA will need to be running
-    # mic_hardware = MicArray().start_client_connection()
+    mic_hardware = MicArray().start_client_connection()
+    mic_hardware.get_RMS()
+    print(mic_hardware.RMS_valules)
 
-    # video_feed = Overlay(mic_hardware, camera_hardware)
 
-    # Generate way to constantly update overlays
-    # video_thread = threading.Thread(target=video_feed.generate_overlay, daemon=True).start()
 
-    # When event to start transmission
-    # Send overlay through video stream socket to gui
 
-    # overlay_stream = Video_Overlay_Sending()
-    # overlay_stream.send_data(video_feed.overlay)
+
+
 
 
 if __name__ == "__main__":
