@@ -49,7 +49,7 @@ def update_heatmap(ax, data, vmin=30, vmax=110):
 if __name__ == '__main__':
     map_row, map_col = 5, 5
     sample_rate = 48000
-    sample_length = 0.2  # Half a second
+    sample_length = 0.25  # Half a second
     host = '192.168.80.1'
     port = 2048
     rms_threshold = 20 #20
@@ -78,7 +78,8 @@ if __name__ == '__main__':
             update_heatmap(ax, rms_values, rms_threshold, rms_max)
             plt.pause(0.01)
             print("RMS values for each square in the cube:")
-            print(rms_values)
+            # print(rms_values)
+            print(f'Max: {np.max(rms_values)} | min: {np.min(rms_values)}')
             print('-' * 50)
 
     except KeyboardInterrupt:
