@@ -11,6 +11,7 @@
 from server_events import Event_Server
 from microphones import MicArray
 from camera import Camera
+from overlay import Overlay
 
 # from overlay import Overlay
 # from video_stream_sender import Video_Overlay_Sending
@@ -44,8 +45,14 @@ class PiHardware:
         self.camera_hardware = Camera()
         self.camera_hardware.start_camera(fake=False)
 
+        # self.overlay = Overlay(self.camera_hardware, self.mic_hardware)
 
-
+    # def start(self):
+    #     # Start event, mic, and camera threads
+    #
+    #     print('OVERLAY PROCESS-----------------')
+    #     overlay_thread = threading.Thread(target=self.overlay.update, daemon=True)
+    #     overlay_thread.start()
 
 
 def view_camera(camera_instance):
