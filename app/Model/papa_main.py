@@ -61,7 +61,7 @@ def view_camera(camera_instance):
         print(frame)
         if frame is not None:
             cv2.imshow('Camera Feed', frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if cv2.waitKey(0) & 0xFF == ord('q'):
                 break
 
     cv2.destroyAllWindows()
