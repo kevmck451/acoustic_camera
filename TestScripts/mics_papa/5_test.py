@@ -49,11 +49,11 @@ def update_heatmap(ax, data, vmin=30, vmax=110):
 if __name__ == '__main__':
     map_row, map_col = 5, 5
     sample_rate = 48000
-    sample_length = 0.4  # Half a second
+    sample_length = 0.3  # Half a second
     host = '192.168.80.1'
     port = 2048
-    rms_threshold = 20
-    rms_max = 85
+    rms_threshold = 20 #20
+    rms_max = 90    #85
 
     buffer_size = 2 * map_row * map_col * int(sample_rate * sample_length)
     sock = FPGASocket(host, port, buffer_size)
