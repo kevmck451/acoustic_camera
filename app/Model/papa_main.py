@@ -34,8 +34,9 @@ def run_pi_hardware():
 
     # server on FPGA will need to be running
     mic_hardware = MicArray().start_client_connection()
-    mic_thread = threading.Thread(target=mic_hardware.get_RMS, daemon=True)
-    mic_thread.start()
+    print(mic_hardware)
+    # mic_thread = threading.Thread(target=mic_hardware.get_RMS, daemon=True)
+    # mic_thread.start()
 
 
 
