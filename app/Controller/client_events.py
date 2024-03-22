@@ -63,4 +63,5 @@ if __name__ == '__main__':
     print("Client connected, can send data now.")
     while True:
         command = input('Enter Command: ')
+        if command.lower() == 'exit': break
         client.send_data(command)

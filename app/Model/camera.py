@@ -1,15 +1,10 @@
 
 from PIL import Image, ImageTk
+import numpy as np
 import threading
 import queue
 import cv2 # pip install opencv-python
-import numpy as np
 
-
-
-from threading import Thread
-import cv2
-import queue
 
 class Camera:
     def __init__(self, frame_width=580, frame_height=580):
@@ -21,9 +16,9 @@ class Camera:
     def start_camera(self, fake=False):
         self.running = True
         if fake:
-            Thread(target=self.capture_frames_fake, daemon=True).start()
+            threading.Thread(target=self.capture_frames_fake, daemon=True).start()
         else:
-            Thread(target=self.capture_frames, daemon=True).start()
+            threading.Thread(target=self.capture_frames, daemon=True).start()
 
     def capture_frames(self):
         cap = cv2.VideoCapture(0)
@@ -59,7 +54,7 @@ class Camera:
 
             counter += 1  # Increment the counter to change the frame in the next iteration
 
-    def get_frame(self):
+    def get_latest_frame(self):
         if not self.frame_queue.empty():
             return self.frame_queue.get()
         return None
