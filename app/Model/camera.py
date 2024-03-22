@@ -16,10 +16,14 @@ class Camera:
         self.frame_queue = queue.Queue(maxsize=10)
         self.frame_width = frame_width
         self.frame_height = frame_height
-        self.running = True
+        self.running = False
 
-    def start_camera(self):
-        Thread(target=self.capture_frames, daemon=True).start()
+    def start_camera(self, fake=False):
+        self.running = True
+        if fake:
+            Thread(target=self.capture_frames_fake, daemon=True).start()
+        else:
+            Thread(target=self.capture_frames, daemon=True).start()
 
     def capture_frames(self):
         cap = cv2.VideoCapture(0)

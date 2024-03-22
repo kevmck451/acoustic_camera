@@ -30,7 +30,7 @@ class MicArray:
         self.sock.close()
 
     def receive_data_cube(self):
-        N = int(self.sample_rate * self.sample_length)
+        # N = int(self.sample_rate * self.sample_length)
         data = self.sock.myreceive()
         cube = np.frombuffer(data, dtype=np.int16).reshape(-1, self.map_row, self.map_col)
         return cube
