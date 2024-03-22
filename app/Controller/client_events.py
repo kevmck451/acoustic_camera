@@ -61,4 +61,6 @@ if __name__ == '__main__':
         time.sleep(1)
 
     print("Client connected, can send data now.")
-    client.send_data('COMMAND or EVENT will be sent')
+    while True:
+        command = input('Enter Command: ')
+        client.send_data(command)
