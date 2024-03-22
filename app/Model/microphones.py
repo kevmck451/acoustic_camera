@@ -5,7 +5,7 @@ import numpy as np
 
 
 # Local Imports
-from .socket_fpga import FPGASocket
+from socket_fpga import FPGASocket
 
 
 

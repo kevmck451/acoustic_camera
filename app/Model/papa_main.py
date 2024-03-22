@@ -11,9 +11,9 @@
 from server_events import Event_Server
 from microphones import MicArray
 
-from camera import Camera
-from overlay import Overlay
-from video_stream_sender import Video_Overlay_Sending
+# from camera import Camera
+# from overlay import Overlay
+# from video_stream_sender import Video_Overlay_Sending
 
 
 
