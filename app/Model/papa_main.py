@@ -58,7 +58,8 @@ class PiHardware:
 def view_camera(camera_instance):
     while True:
         frame = camera_instance.get_latest_frame()
-        print(frame.shape)
+        print(frame.dtype)
+        # print(frame.shape)
         if frame is not None:
             cv2.imshow('Camera Feed', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
