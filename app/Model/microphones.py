@@ -49,10 +49,10 @@ class MicArray:
                     rms = np.sqrt(np.mean(square_data ** 2))
                     self.RMS_values[i, j] = rms
 
-            print('RMS values for each square in the cube:')
+            # print('RMS values for each square in the cube:')
             # print(self.RMS_values)
-            print(f'Max: {int(np.round(np.max(self.RMS_values)))} | min: {int(np.round(np.min(self.RMS_values)))}')
-            print('-' * 69)
+            # print(f'Max: {int(np.round(np.max(self.RMS_values)))} | min: {int(np.round(np.min(self.RMS_values)))}')
+            # print('-' * 69)
 
     def stop(self):
         self.running = False
