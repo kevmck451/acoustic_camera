@@ -23,7 +23,7 @@ class MicArray:
         self.running = True
 
     def __str__(self):
-        print(f'Passive Acoustic Phase Array')
+        return f'Passive Acoustic Phase Array'
 
     def start_client_connection(self):
         self.sock = FPGASocket(self.host, self.port, self.buffer_size)
