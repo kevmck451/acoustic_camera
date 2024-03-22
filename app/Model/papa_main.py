@@ -25,8 +25,8 @@ def run_pi_hardware():
 
     print('EVENT LISTENER SERVER-----------------------')
     # set for simulation connection with 0.0.0.0 if testing
-    event_server = Event_Server('0.0.0.0')
-    # event_server = Event_Server()
+    # event_server = Event_Server('0.0.0.0')
+    event_server = Event_Server()
     event_thread = threading.Thread(target=event_server.run, daemon=True)
     event_thread.start()
 
