@@ -27,7 +27,7 @@ class Camera:
             if ret:
                 frame = cv2.resize(frame, (self.frame_width, self.frame_height))
                 # Assume you still want to rotate the frame
-                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+                # frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 
                 if not self.frame_queue.full():
                     self.frame_queue.put(frame)
