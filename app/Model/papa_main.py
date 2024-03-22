@@ -19,7 +19,7 @@ from overlay import Overlay
 
 import threading
 import time
-import cv2 # pip install opencv-python
+import cv2 # pip install opencv-python # This will take really long time
 
 class PiHardware:
 
@@ -58,6 +58,7 @@ class PiHardware:
 def view_camera(camera_instance):
     while True:
         frame = camera_instance.get_latest_frame()
+        print(frame)
         if frame is not None:
             cv2.imshow('Camera Feed', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):

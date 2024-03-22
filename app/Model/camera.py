@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 import numpy as np
 import threading
 import queue
-import cv2 # pip install opencv-python
+import cv2 # pip install opencv-python # This will take really long time
 
 
 class Camera:

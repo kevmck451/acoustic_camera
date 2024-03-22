@@ -76,7 +76,11 @@ nano .gitignore # add camera_venv/
 # install libraries
 pip install -r requirement.txt
 ```
-
+```zsh
+sudo apt install -y python3-opencv
+sudo apt install -y opencv-data
+sudo apt install -y ffmpeg
+```
 
 #### Run Application
 ```zsh
