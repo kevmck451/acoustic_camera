@@ -30,14 +30,14 @@ def run_pi_hardware():
     event_thread = threading.Thread(target=event_server.run, daemon=True)
     event_thread.start()
 
-    # print('MICROPHONE HARDWARE CONNECTION--------------')
+    print('MICROPHONE HARDWARE CONNECTION--------------')
 
     # server on FPGA will need to be running
     mic_hardware = MicArray()
-    # mic_hardware.start_client_connection()
-    # print(mic_hardware)
-    # mic_thread = threading.Thread(target=mic_hardware.get_RMS, daemon=True)
-    # mic_thread.start()
+    mic_hardware.start_client_connection()
+    print(mic_hardware)
+    mic_thread = threading.Thread(target=mic_hardware.get_RMS, daemon=True)
+    mic_thread.start()
 
 
 
