@@ -16,20 +16,16 @@ class Event_Sender_Client:
         while not self.connected:
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.socket.settimeout(5)
                 self.socket.connect((self.host, self.port))
                 handshake_message = f'{self.name}'
                 self.socket.sendall(handshake_message.encode())
 
-                try:
-                    # Attempt to receive a response within the timeout period
-                    response = self.socket.recv(1024)
-                    if not response.decode('utf-8') == 'ack': continue
-                    self.connected = True
-                    print(f"Connected to {self.host}:{self.port}")
-                except socket.timeout:
-                    # Handle the timeout case
-                    print("Timed out waiting for a response")
+                # Attempt to receive a response within the timeout period
+                response = self.socket.recv(1024)
+                if not response.decode('utf-8') == 'ack': continue
+                self.connected = True
+                print(f"Connected to {self.host}:{self.port}")
+
 
             except Exception as e:
                 print(f"Error connecting to the server: {e}")
