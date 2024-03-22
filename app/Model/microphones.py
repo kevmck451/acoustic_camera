@@ -51,6 +51,7 @@ class MicArray:
 
             print('RMS values for each square in the cube:')
             print(self.RMS_values)
+            print(f'Max: {np.max(self.RMS_values)} | min: {np.min(self.RMS_values)}')
             print('-' * 69)
 
     def stop(self):
