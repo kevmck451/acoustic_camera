@@ -58,7 +58,7 @@ if __name__ == '__main__':
     # for running mac to mac
     # client = Event_Sender_Client('127.0.0.1', name='MacBook')
     # for running papapi to mac
-    client = Event_Sender_Client('papapi.localhost', name='MacBook')
+    client = Event_Sender_Client(name='MacBook')
 
     while not client.connected:
         print("Waiting for connection...")
