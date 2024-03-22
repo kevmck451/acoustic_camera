@@ -55,7 +55,10 @@ class Event_Sender_Client:
 
 # Usage example
 if __name__ == '__main__':
-    client = Event_Sender_Client('127.0.0.1', name='MacBook')
+    # for running mac to mac
+    # client = Event_Sender_Client('127.0.0.1', name='MacBook')
+    # for running papapi to mac
+    client = Event_Sender_Client('papapi.localhost', name='MacBook')
 
     while not client.connected:
         print("Waiting for connection...")
