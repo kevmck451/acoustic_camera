@@ -41,7 +41,7 @@ def receive_data_cube(sock, map_row, map_col, sample_rate, sample_length):
     cube = np.frombuffer(data, dtype=np.int16).reshape(-1, map_row, map_col)
     return cube
 
-def update_heatmap(ax, data, vmin=30, vmax=100):
+def update_heatmap(ax, data, vmin=30, vmax=110):
     ax.clear()
     ax.imshow(data, cmap='Reds', alpha=0.3, vmin=vmin, vmax=vmax)
     plt.draw()
@@ -49,11 +49,11 @@ def update_heatmap(ax, data, vmin=30, vmax=100):
 if __name__ == '__main__':
     map_row, map_col = 5, 5
     sample_rate = 48000
-    sample_length = 0.5  # Half a second
+    sample_length = 0.4  # Half a second
     host = '192.168.80.1'
     port = 2048
     rms_threshold = 20
-    rms_max = 80
+    rms_max = 85
 
     buffer_size = 2 * map_row * map_col * int(sample_rate * sample_length)
     sock = FPGASocket(host, port, buffer_size)
@@ -76,7 +76,7 @@ if __name__ == '__main__':
                     rms_values[i, j] = rms
 
             update_heatmap(ax, rms_values, rms_threshold, rms_max)
-            plt.pause(0.05)
+            plt.pause(0.01)
             print("RMS values for each square in the cube:")
             print(rms_values)
             print('-' * 50)
