@@ -58,7 +58,7 @@ class PiHardware:
 def view_camera(camera_instance):
     while True:
         frame = camera_instance.get_latest_frame()
-        # print(frame.shape)
+        print(frame.shape)
         if frame is not None:
             cv2.imshow('Camera Feed', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -70,10 +70,10 @@ if __name__ == "__main__":
     print('Papa Pi Hardware')
     pi_hardware = PiHardware()
 
-    # try:
-    #     view_camera(pi_hardware.camera_hardware)
-    # except KeyboardInterrupt:
-    #     pi_hardware.camera_hardware.stop()
+    try:
+        view_camera(pi_hardware.camera_hardware)
+    except KeyboardInterrupt:
+        pi_hardware.camera_hardware.stop()
 
     while True:
         try:
