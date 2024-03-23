@@ -35,10 +35,7 @@ class Event_Server:
                 value = message[1]
                 print(f"Received: {command} = {value}")
 
-                if command == 'camera_color':
-                    if value == 'True': self.hardware.camera_hardware.set_color(True)
-                    else: self.hardware.camera_hardware.set_color(False)
-                elif command == 'mic_rms_threshold':
+                if command == 'mic_rms_threshold':
                     self.overlay.rms_threshold = value
                 elif command == 'mic_rms_max':
                     self.overlay.rms_max = value
@@ -50,6 +47,14 @@ class Event_Server:
                         self.overlay.audio_overlay_color = 1
                     elif value == 'blue':
                         self.overlay.audio_overlay_color = 0
+                elif command == 'transmit_video':
+                    if value == 'True':
+                        # tell video client to start transmitting
+                        pass
+                    else:
+                        # tell video client to stop transmitting
+                        pass
+
 
     def run(self):
         while self.running:

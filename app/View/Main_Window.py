@@ -1,7 +1,5 @@
 
 
-from app.Model.pi_hardware.camera import Camera
-
 import matplotlib
 matplotlib.use('TkAgg')  # Specify the backend
 from tkinter import PhotoImage
@@ -41,12 +39,9 @@ class Main_Window(ctk.CTk):
         self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
         self.minsize(configuration.min_window_width, configuration.min_window_height)
 
-        # Audio / Visual
-        self.Camera = Camera()
-
 
         self.Left_Frame = Left_Frame(self, self.event_handler)
-        self.Video_Frame = Video_Frame(self, self.event_handler, self.Camera)
+        self.Video_Frame = Video_Frame(self, self.event_handler)
         self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
@@ -188,10 +183,10 @@ class Left_Frame(ctk.CTkFrame):
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------
 class Video_Frame(ctk.CTkFrame):
-    def __init__(self, parent, event_handler, camera):
+    def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.event_handler = event_handler
-        self.camera = camera
+        # self.camera = camera
 
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()

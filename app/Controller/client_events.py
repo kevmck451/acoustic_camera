@@ -12,6 +12,7 @@ class Event_Sender_Client:
         self.connect_thread = threading.Thread(target=self.ensure_connection, daemon=True)
         self.connect_thread.start()
 
+
     def ensure_connection(self):
         while not self.connected:
             try:

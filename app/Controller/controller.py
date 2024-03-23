@@ -18,16 +18,22 @@ import time
 class Controller:
     def __init__(self):
         self.app_state = State.IDLE
-        self.demo_stop = True
+        self.gui = None
+        self.event_sender = None
 
-        self.video_stream_server = Video_Overlay_Server().start_server()
+
+
+        # self.video_stream_server = Video_Overlay_Server().start_server()
         # Start Hardware Scripts
         # Attempt to start camera and mic streams
 
-
+        self.demo_stop = True
 
     def set_gui(self, gui):
         self.gui = gui
+
+    def set_event_sender(self, event_sender):
+        self.event_sender = event_sender
 
     # These are the gate keepers for whether or not to perform the action
     def handle_event(self, event):
@@ -39,9 +45,13 @@ class Controller:
 
         elif event == Event.SETTINGS_BUTTON_1:
             print('SETTINGS BUTTON 1 PRESSED')
+            command = 'mic_overlay_color=red'
+            self.event_sender.send_data(command)
 
         elif event == Event.SETTINGS_BUTTON_2:
             print('SETTINGS BUTTON 2 PRESSED')
+            command = 'mic_overlay_color=blue'
+            self.event_sender.send_data(command)
 
         elif event == Event.TAKE_PICTURE:
             print('TAKE PICTURE')
