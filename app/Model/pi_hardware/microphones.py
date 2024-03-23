@@ -44,8 +44,17 @@ class MicArray:
             for i in range(self.map_row):
                 for j in range(self.map_col):
                     square_data = cube[:, i, j]
-                    rms = np.sqrt(np.mean(square_data ** 2))
+                    mean_square = np.mean(square_data ** 2)
+                    # Check if mean_square is non-zero (or has changed)
+                    if mean_square > 0: rms = np.sqrt(mean_square)
+                    else: rms = 0
                     self.RMS_values[i, j] = rms
+
+            # for i in range(self.map_row):
+            #     for j in range(self.map_col):
+            #         square_data = cube[:, i, j]
+            #         rms = np.sqrt(np.mean(square_data ** 2))
+            #         self.RMS_values[i, j] = rms
 
             # print('RMS values for each square in the cube:')
             # print(self.RMS_values)

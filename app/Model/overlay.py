@@ -68,6 +68,8 @@ class Overlay:
             self.audio_overlay = np.zeros((norm_audio_overlay.shape[0], norm_audio_overlay.shape[1], 3), dtype=np.uint8)
             self.audio_overlay[:, :, 2] = norm_audio_overlay  # Set the red channel in BGR order
 
+            print(self.audio_overlay)
+
             # For Test Viewing Red Channel Intensity Map
             cv2.imshow('Audio Intensity Map', self.audio_overlay)
             if cv2.waitKey(1) & 0xFF == ord('q'):
