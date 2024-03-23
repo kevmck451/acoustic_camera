@@ -96,8 +96,8 @@ if __name__ == "__main__":
     camera = BufferlessVideoCapture(
         camera_index=0,
         resolution=(640, 480),
-        frame_rate=20,
+        frame_rate=30,
         color=True,  # Change to True for color
-        skip_frames=0  # Increase to skip more frames
+        skip_frames=5  # Increase to skip more frames
     )
     view_camera(camera)
