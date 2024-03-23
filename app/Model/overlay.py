@@ -112,13 +112,18 @@ class Overlay:
                 else:
                     audio_overlay_8bit = self.audio_overlay
 
-                # Convert to grayscale for thresholding
-                heatmap_gray = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_BGR2GRAY)
+                # Ensure we have a 3-channel image before converting to grayscale for thresholding
+                if len(audio_overlay_8bit.shape) == 2 or audio_overlay_8bit.shape[2] == 1:
+                    audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
+                else:
+                    audio_overlay_bgr = audio_overlay_8bit
+
+                heatmap_gray = cv2.cvtColor(audio_overlay_bgr, cv2.COLOR_BGR2GRAY)
                 _, mask = cv2.threshold(heatmap_gray, self.rms_threshold, 255, cv2.THRESH_BINARY)
                 alpha_channel = np.uint8(mask)  # Use the mask for alpha channel
 
                 # Convert the BGR heatmap to BGRA by adding the alpha channel
-                audio_overlay_bgra = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_BGR2BGRA)
+                audio_overlay_bgra = cv2.cvtColor(audio_overlay_bgr, cv2.COLOR_BGR2BGRA)
                 audio_overlay_bgra[:, :, 3] = alpha_channel
 
                 # Ensure the camera feed is in BGRA for alpha blending
