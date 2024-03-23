@@ -95,7 +95,7 @@ def view_camera(camera_instance):
 if __name__ == "__main__":
     camera = BufferlessVideoCapture(
         camera_index=0,
-        resolution=(580, 580),
+        resolution=(640, 480),
         frame_rate=30,
         color=True,  # Change to True for color
         skip_frames=2  # Increase to skip more frames
