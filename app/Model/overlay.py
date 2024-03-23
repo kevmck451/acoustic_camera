@@ -60,11 +60,13 @@ class Overlay:
 
             # Normalize the scaled audio values within the specified range
             clipped_audio_overlay = np.clip(scaled_audio_values, self.rms_threshold, self.rms_max)
-            norm_audio_overlay = np.uint8(255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
+            norm_audio_overlay = np.uint8(
+                255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
 
             # Create an RGB image where the red channel intensity is based on audio level
+            # In OpenCV, the channel order is BGR, so the red channel is the last one
             self.audio_overlay = np.zeros((norm_audio_overlay.shape[0], norm_audio_overlay.shape[1], 3), dtype=np.uint8)
-            self.audio_overlay[:, :, 0] = norm_audio_overlay  # Set the red channel
+            self.audio_overlay[:, :, 2] = norm_audio_overlay  # Set the red channel in BGR order
 
             # For Test Viewing Red Channel Intensity Map
             cv2.imshow('Audio Intensity Map', self.audio_overlay)
@@ -72,7 +74,6 @@ class Overlay:
                 break
 
         cv2.destroyAllWindows()
-
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
