@@ -22,6 +22,8 @@ class Overlay:
         self.classify_vehicles = False
         self.audio_visual_running = True
         self.running = True
+        self.rms_threshold = 20  # 20
+        self.rms_max = 90  # 85
 
 
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
@@ -42,20 +44,24 @@ class Overlay:
 
     def _generate_audio_view(self):
         while self.audio_visual_running:
-            print(self.mic_hardware.RMS_values)
-            print(self.mic_hardware.RMS_values.shape)
-            self.audio_overlay = self.scale_audio_matrix(self.mic_hardware.RMS_values)
+            rms_values = self.mic_hardware.RMS_values
+            print(rms_values)
+            print(rms_values.shape)
+            self.audio_overlay = self.scale_audio_matrix(rms_values)
 
-            # Normalize the audio_overlay for display purposes
-            norm_audio_overlay = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX)
-            norm_audio_overlay = norm_audio_overlay.astype(np.uint8)
+            # Normalize the audio_overlay within the specified range
+            # Ensure values below threshold are set to the minimum value
+            clipped_audio_overlay = np.clip(self.audio_overlay, self.rms_threshold, self.rms_max)
+            norm_audio_overlay = np.uint8(
+                255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
 
-            # Apply a colormap to create a heatmap effect similar to matplotlib
-            heatmap = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_JET)
+            # Apply a colormap to create a heatmap effect
+            # Using COLORMAP_HOT to mimic 'Reds' from matplotlib
+            heatmap = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_HOT)
 
             print(self.audio_overlay)
             print(self.audio_overlay.shape)
-            cv2.imshow('Frame Display', heatmap)
+            cv2.imshow('Audio Heatmap', heatmap)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         cv2.destroyAllWindows()
