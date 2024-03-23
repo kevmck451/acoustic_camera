@@ -18,6 +18,8 @@ sudo server
 
 
 ## Event Client
+- how to control pi hardware from external controller
+- otherwise this functionality is incorporated into app
 ```zsh
 ssh pi@papapi.local #123456
 cd Desktop/acoustic_camera
@@ -28,7 +30,6 @@ python3 client_events.py
 
 
 ## Papa Main Script
-
 ```zsh
 ssh -X pi@papapi.local #123456
 cd Desktop/acoustic_camera
@@ -37,11 +38,14 @@ python3 -m app.Model.papa_main
 ```
 
 
-
-
-
-
-
+## App Main Script
+- should run on any computer since it doesnt directly control any hardware
+```zsh
+cd Desktop/acoustic_camera
+source venv_app/bin/activate
+```
+- need to get requirements from current venv on screen
+- change name with new venv and install requirements
 
 
 

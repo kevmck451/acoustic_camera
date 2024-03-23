@@ -31,10 +31,7 @@ load_icon_filepath = base_path('docs/load icon s.png')
 settings_icon_filepath = base_path('docs/settings icon s.png')
 reset_icon_filepath = base_path('docs/reset icon s.png')
 
-button_fg_color = '#578CD5' # blue
-button_hover_color = '#496FA3' # blue
-dropdown_hover_color = '#0F5BB6'
-dropdown_fg_color = '#0952AA'
+
 
 # Console Settings
 console_x_pad = 5
@@ -43,39 +40,32 @@ console_font_style = ("default_font", 12)
 
 # Main Frame Settings
 
-# Hardware Frame Settings
-connection_status_TDT = 'TDT Hardware: Not Connected'
-connection_status_VR = 'VR Headset: Not Connected'
-connection_status_TDT_C = 'TDT Hardware: Connected'
-connection_status_VR_C = 'VR Headset: Connected'
+
+
+# Color Options
+
+# Overlay Colors
+green_fg_color="#2B881A"
+green_hover_color='#389327'
+red_fg_color="#BD2E2E"
+red_hover_color='#C74343'
+bluelight_fg_color = '#578CD5'
+bluelight_hover_color = '#496FA3'
+
+
+
+# Other Colors
+gray_fg_color = '#8F8F8F'
+gray_hover_color = '#9E9E9E'
+darkgray_fg_color = '#4a4949'
+darkgray_hover_color = '#5c5b5b'
+purple_fg_color = '#8270E7'
+purple_hover_color = '#8F7FE9'
+blue_hover_color = '#0F5BB6'
+blue_fg_color = '#0952AA'
 not_connected_color = '#BD2E2E'
 connected_color = '#2B881A'
 
-# Select Experiment Settings
-
-# Warm Up
-warmup_test_color = 'gray'
-warmup_neutral_bg_color = '#DBDBDB'
-warmup_playing_bg_color = '#B8B9B8'
-
-
-# Start / Stop
-start_fg_color="#2B881A"
-start_hover_color='#389327'
-stop_fg_color="#BD2E2E"
-stop_hover_color='#C74343'
-
-# Pause Frame
-pause_fg_color = '#8F8F8F'
-pause_hover_color = '#9E9E9E'
-
-# Settings Button
-settings_fg_color = '#4a4949'
-settings_hover_color = '#5c5b5b'
-
-# Reset Button
-reset_fg_color = '#8270E7'
-reset_hover_color = '#8F7FE9'
 
 # Settings Window
 settings_window_title = 'Experiment Settings'
@@ -88,6 +78,8 @@ x_pad_setting = 5
 y_pad_setting = 5
 
 
+# Overlay Threshold Window
+overlay_threshold_window_title = 'Overlay Threshold Adjustments'
 
 
 

@@ -1,17 +1,12 @@
 
 
 
-
+from app.View.overlay_threshold import Overlay_Threshold_Window
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
-# from server_video_stream import Video_Overlay_Server
 
 
-from threading import Thread
-import threading
-import numpy as np
-import time
 
 
 
@@ -45,12 +40,10 @@ class Controller:
 
         elif event == Event.SETTINGS_BUTTON_1:
             print('SETTINGS BUTTON 1 PRESSED')
-            command = 'mic_overlay_color=red'
-            self.event_sender.send_data(command)
+
 
         elif event == Event.SETTINGS_BUTTON_2:
             print('SETTINGS BUTTON 2 PRESSED')
-
 
         elif event == Event.TAKE_PICTURE:
             print('TAKE PICTURE')
@@ -63,15 +56,46 @@ class Controller:
         elif event == Event.DUMMY_BUTTON:
             print('BUTTON PRESSED')
 
-        elif event == Event.ACOUSTIC_VIEWER:
-            print('ACOUSTIC_VIEWER')
+        elif event == Event.OVERLAY_COLOR_RED:
+            # Check if Connected to Hardware
+            if self.event_sender.connected:
+                command = 'mic_overlay_color=red'
+                self.event_sender.send_data(command)
 
-        elif event == Event.CAMERA_VIEWER:
-            print('CAMERA_VIEWER')
-            # start camera hardware if not connected already
+                print('OVERLAY_COLOR_RED')
+                self.gui.Left_Frame.toggle_overlay_color_button()
 
-        elif event == Event.ACOUSTIC_CAMERA_VIEWER:
-            print('ACOUSTIC_CAMERA_VIEWER')
+            else: print('Not Connected to Hardware')
+
+        elif event == Event.OVERLAY_COLOR_BLUE:
+            # Check if Connected to Hardware
+            if self.event_sender.connected:
+                command = 'mic_overlay_color=blue'
+                self.event_sender.send_data(command)
+
+                print('OVERLAY_COLOR_BLUE')
+                self.gui.Left_Frame.toggle_overlay_color_button()
+
+            else: print('Not Connected to Hardware')
+
+        elif event == Event.OVERLAY_COLOR_GREEN:
+            # Check if Connected to Hardware
+            if self.event_sender.connected:
+                command = 'mic_overlay_color=green'
+                self.event_sender.send_data(command)
+
+                print('OVERLAY_COLOR_GREEN')
+                self.gui.Left_Frame.toggle_overlay_color_button()
+
+            else: print('Not Connected to Hardware')
+
+        elif event == Event.OVERLAY_THRESHOLD_WINDOW:
+            if self.event_sender.connected:
+                self.overlay_threshold_window = Overlay_Threshold_Window(self.handle_event)
+                self.overlay_threshold_window.mainloop()
+
+
+
 
 
         # Window Closing Actions
@@ -82,6 +106,5 @@ class Controller:
             pass
 
     # Action Functions ------------------------------
-
 
 

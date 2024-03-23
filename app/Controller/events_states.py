@@ -11,17 +11,16 @@ class Event(Enum):
     SETTINGS_BUTTON_2 = auto()
     TAKE_PICTURE = auto()
     RECORD_VIDEO = auto()
-    DEMO = auto()
     DUMMY_BUTTON = auto()
-    ACOUSTIC_VIEWER = auto()
-    CAMERA_VIEWER = auto()
-    ACOUSTIC_CAMERA_VIEWER = auto()
-    GET_PLOT_VALUES = auto()
-    DETECT_SOUND_POWER = auto()
+    DETECT_SOUNDS = auto()
     DETECT_DRONES = auto()
     CLASSIFY_DRONES = auto()
     DETECT_VEHICLES = auto()
     CLASSIFY_VEHICLES = auto()
+    OVERLAY_COLOR_RED = auto()
+    OVERLAY_COLOR_BLUE = auto()
+    OVERLAY_COLOR_GREEN = auto()
+    OVERLAY_THRESHOLD_WINDOW = auto()
 
 
 
