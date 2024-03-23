@@ -150,9 +150,10 @@
 # ATTEMPT FOUR ------------------------------------------
 import cv2
 import threading
+import time
 
 class BufferlessVideoCapture:
-    def __init__(self, camera_index=0, width=580, height=580, fps=30, color=True, skip_frames=0):
+    def __init__(self, camera_index=0, width=640, height=480, fps=30, color=True, skip_frames=0):
         self.cap = cv2.VideoCapture(camera_index)
         self.width = width
         self.height = height
@@ -215,6 +216,7 @@ def view_camera(camera_instance):
 if __name__ == "__main__":
     camera = BufferlessVideoCapture(color=True, skip_frames=1)
     # Example of changing settings in real-time
+    time.sleep(5)
     camera.set_color(False)  # Change to grayscale
     camera.set_skip_frames(2)  # Change frame skips
 
