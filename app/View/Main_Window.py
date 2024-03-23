@@ -1,7 +1,7 @@
 
 
 import matplotlib
-matplotlib.use('TkAgg')  # Specify the backend
+# matplotlib.use('TkAgg')  # Specify the backend
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import customtkinter as ctk
