@@ -55,15 +55,31 @@ class PiHardware:
     #     overlay_thread.start()
 
 
+# def view_camera(camera_instance):
+#     while True:
+#         frame = camera_instance.get_latest_frame()
+#         print(type(frame))
+#         # print(frame.shape)
+#         if frame is not None:
+#             cv2.imshow('Camera Feed', frame)
+#             if cv2.waitKey(1) & 0xFF == ord('q'):
+#                 break
+#
+#     cv2.destroyAllWindows()
+
 def view_camera(camera_instance):
+    cv2.namedWindow('Camera Feed', cv2.WINDOW_AUTOSIZE)  # Create a window for display.
     while True:
         frame = camera_instance.get_latest_frame()
-        print(type(frame))
-        # print(frame.shape)
         if frame is not None:
+            print('<class \'numpy.ndarray\'>')
             cv2.imshow('Camera Feed', frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        else:
+            print('<class \'NoneType\'>')
+            time.sleep(0.1)  # Small delay to wait for the next frame
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):  # Break the loop if 'q' is pressed.
+            break
 
     cv2.destroyAllWindows()
 
