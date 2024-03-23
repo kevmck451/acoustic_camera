@@ -26,9 +26,6 @@ class Overlay:
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
         # audio_scale_thread.start()
-
-        # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
-        # audio_scale_thread.start()
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
         audio_scale_thread.start()
 
@@ -36,21 +33,23 @@ class Overlay:
     def view_audio_heatmap(self):
         while self.audio_visual_running:
             rms_values = self.mic_hardware.RMS_values
-            self.audio_overlay = self.scale_audio_matrix(rms_values)
+            scaled_audio_values = self.scale_audio_matrix(rms_values)  # Process the RMS values
 
-            # Normalize the audio_overlay within the specified range
-            # Ensure values below threshold are set to the minimum value
-            clipped_audio_overlay = np.clip(self.audio_overlay, self.rms_threshold, self.rms_max)
-            norm_audio_overlay = np.uint8(255*(clipped_audio_overlay-self.rms_threshold)/(self.rms_max-self.rms_threshold))
+            # Normalize the scaled audio values within the specified range
+            clipped_audio_overlay = np.clip(scaled_audio_values, self.rms_threshold, self.rms_max)
+            norm_audio_overlay = np.uint8(
+                255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
 
-            # Apply a colormap to create a heatmap effect
-            # Using COLORMAP_HOT to mimic 'Reds' from matplotlib
-            self.audio_overlay = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_HOT)
+            # Create an RGB image where the red channel intensity is based on audio level
+            # In OpenCV, the channel order is BGR, so the red channel is the last one
+            self.audio_overlay = np.zeros((norm_audio_overlay.shape[0], norm_audio_overlay.shape[1], 3), dtype=np.uint8)
+            self.audio_overlay[:, :, 2] = norm_audio_overlay  # Set the red channel in BGR order
 
-        # For Test Viewing Raw Heat Map
-            cv2.imshow('Audio Heatmap', self.audio_overlay)
+            # For Test Viewing Red Channel Intensity Map
+            cv2.imshow('Audio Intensity Map', self.audio_overlay)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+
         cv2.destroyAllWindows()
 
     def _generate_audio_view(self):
@@ -67,8 +66,6 @@ class Overlay:
             # In OpenCV, the channel order is BGR, so the red channel is the last one
             self.audio_overlay = np.zeros((norm_audio_overlay.shape[0], norm_audio_overlay.shape[1], 3), dtype=np.uint8)
             self.audio_overlay[:, :, 2] = norm_audio_overlay  # Set the red channel in BGR order
-
-            print(self.audio_overlay)
 
             # For Test Viewing Red Channel Intensity Map
             cv2.imshow('Audio Intensity Map', self.audio_overlay)
@@ -103,21 +100,9 @@ class Overlay:
         while self.running:
             frame = self.camera_hardware.read()
             if frame is not None:
-                frame_resized = cv2.resize(frame, (self.width, self.height))
-
-                # Ensure the audio overlay is in the correct format
-                if len(self.audio_overlay.shape) == 2 or (len(self.audio_overlay.shape) == 3 and self.audio_overlay.shape[2] == 1):
-                    # If the audio overlay is indeed single-channel, convert it to BGR
-                    audio_overlay_8bit = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-                    audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
-                elif len(self.audio_overlay.shape) == 3 and self.audio_overlay.shape[2] == 3:
-                    # If the overlay is already in BGR format, use it directly
-                    audio_overlay_bgr = self.audio_overlay
-                else:
-                    raise ValueError("Unexpected number of channels in audio_overlay")
 
                 # Blend the audio overlay with the video frame
-                combined_overlay = cv2.addWeighted(frame_resized, 1, audio_overlay_bgr, 0.5, 0)
+                combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
                 self.total_overlay = combined_overlay
 
                 # Display the result
