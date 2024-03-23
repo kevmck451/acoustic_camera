@@ -46,6 +46,18 @@ class Overlay:
         Displays the overlay on top of the current camera frame.
         """
         background_image = self.pi_hardware.camera_hardware.read()
+        if background_image is None:
+            print("No background image captured")
+            return
+
+        # Ensure background image has the same number of channels as the overlay
+        if len(background_image.shape) == 2 or background_image.shape[2] != 3:
+            background_image = cv2.cvtColor(background_image, cv2.COLOR_GRAY2BGR)
+
+        # Ensure the overlay image is the same size as the background image
+        if self.overlay_image.shape[:2] != background_image.shape[:2]:
+            self.overlay_image = np.zeros_like(background_image)
+
         combined_image = cv2.addWeighted(background_image, 0.8, self.overlay_image, 0.2, 0)
         cv2.imshow("Overlay", combined_image)
         cv2.waitKey(1)  # Display the frame for a short moment
