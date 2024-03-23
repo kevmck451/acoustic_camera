@@ -51,22 +51,17 @@ class Overlay:
     def _generate_audio_view(self):
         while self.audio_visual_running:
             rms_values = self.mic_hardware.RMS_values
-            scaled_rms = self.scale_audio_matrix(rms_values)
+            self.audio_overlay = self.scale_audio_matrix(rms_values)
 
-            # Normalize the scaled RMS values to the range of 0 to 255
-            normalized_rms = cv2.normalize(scaled_rms, None, 0, 255, cv2.NORM_MINMAX)
-            audio_overlay_8bit = np.uint8(normalized_rms)
+            # Normalize and convert the audio_overlay to an 8-bit format within the specified range
+            norm_audio_overlay = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX)
+            self.audio_overlay = np.uint8(norm_audio_overlay)
 
             # Apply a colormap to create a heatmap effect
-            heatmap = cv2.applyColorMap(audio_overlay_8bit, cv2.COLORMAP_HOT)
+            self.audio_overlay = cv2.applyColorMap(self.audio_overlay, cv2.COLORMAP_HOT)
 
-            # Create an alpha channel based on the threshold
-            alpha_channel = np.where(audio_overlay_8bit > self.rms_threshold, 128,
-                                     0)  # semi-transparent for values above threshold
-            audio_overlay_rgba = cv2.merge((*cv2.split(heatmap), alpha_channel.astype(np.uint8)))
-
-            # Store the RGBA heatmap in self.audio_overlay for use in start_overlay
-            self.audio_overlay = audio_overlay_rgba
+            # If additional processing like adding an alpha channel for transparency is needed, it should be done here
+            # For example, converting to BGRA and adding an alpha channel can be considered
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
