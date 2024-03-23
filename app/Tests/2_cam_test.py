@@ -226,7 +226,7 @@ import cv2
 import threading
 
 class BufferlessVideoCapture:
-    def __init__(self, camera_index=0, width=640, height=480, fps=30, color=True, skip_frames=0):
+    def __init__(self, camera_index=0, width=580, height=580, fps=30, color=True, skip_frames=0):
         self.cap = cv2.VideoCapture(camera_index)
         self.width = width
         self.height = height
@@ -238,11 +238,11 @@ class BufferlessVideoCapture:
         self.running = True
 
         # Set camera resolution and frame rate
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.cap.set(cv2.CAP_PROP_FPS, self.fps)
 
-        self.latest_frame = None
+        self.latest_frame = None # (640, 480, 3) uint8
         threading.Thread(target=self._update_frame, daemon=True).start()
 
     def _update_frame(self):
@@ -254,6 +254,7 @@ class BufferlessVideoCapture:
                         self.frame_count += 1
                         continue
 
+                    frame = cv2.resize(frame, (self.width, self.height))
                     if not self.color:
                         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
