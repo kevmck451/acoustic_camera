@@ -36,7 +36,7 @@ class Event_Server:
                 print(f"Received: {command} = {value}")
 
                 if command == 'camera_color':
-                    if value: self.hardware.camera_hardware.set_color(True)
+                    if value == 'True': self.hardware.camera_hardware.set_color(True)
                     else: self.hardware.camera_hardware.set_color(False)
                 elif command == 'mic_rms_threshold':
                     self.overlay.rms_threshold = value
