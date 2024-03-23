@@ -36,7 +36,7 @@ class Camera:
 
                     self.frame_count += 1
                     self.latest_frame = frame
-                    print(self.latest_frame)
+                    # print(self.latest_frame)
 
     def read(self):
         with self.lock:

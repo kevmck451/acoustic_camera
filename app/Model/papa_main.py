@@ -43,7 +43,7 @@ class PiHardware:
 
         print('CAMERA HARDWARE CONNECTION-----------------')
         self.camera_hardware = Camera(fps=25, color=False)
-        # self.camera_hardware.start_viewing()
+        self.camera_hardware.start_viewing()
 
         # self.overlay = Overlay(self.camera_hardware, self.mic_hardware)
 
