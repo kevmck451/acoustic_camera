@@ -292,6 +292,7 @@ if __name__ == "__main__":
     camera = BufferlessVideoCapture(color=True, skip_frames=1)
     while True:
         print(type(camera.latest_frame))
-        print(camera.latest_frame.shape)
+        if type(camera.latest_frame) is not None:
+            print(camera.latest_frame.shape)
         print(camera.latest_frame)
     # camera.start_viewing()
