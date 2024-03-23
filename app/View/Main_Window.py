@@ -1,6 +1,6 @@
 
 
-import matplotlib
+# import matplotlib
 # matplotlib.use('TkAgg')  # Specify the backend
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
