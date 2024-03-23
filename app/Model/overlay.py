@@ -31,11 +31,14 @@ class Overlay:
     def _generate_audio_view(self):
         while self.audio_visual_running:
             print(self.mic_hardware.RMS_values)
-            print(self.audio_overlay.shape)
+            print(self.mic_hardware.RMS_values.shape)
             self.audio_overlay = self.scale_audio_matrix(self.mic_hardware.RMS_values)
             print(self.audio_overlay)
             print(self.audio_overlay.shape)
-
+            cv2.imshow('Frame Display', self.audio_overlay)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        cv2.destroyAllWindows()
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
