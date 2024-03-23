@@ -30,12 +30,13 @@ class Camera:
                         self.frame_count += 1
                         continue
 
-                    frame = cv2.resize(frame, (self.width, self.height))
+                    # frame = cv2.resize(frame, (self.width, self.height))
                     if not self.color:
                         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
                     self.frame_count += 1
                     self.latest_frame = frame
+                    print(self.latest_frame)
 
     def read(self):
         with self.lock:
