@@ -1,11 +1,13 @@
 
+from app.Model.pi_hardware.pi_hardware import PiHardware
+from app.Model.overlay import Overlay
+
 
 
 import time
 
 
-from app.Model.pi_hardware.pi_hardware import PiHardware
-from app.Model.overlay import Overlay
+
 
 if __name__ == "__main__":
     print('Papa Pi Hardware')

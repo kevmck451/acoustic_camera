@@ -1,11 +1,9 @@
 
+# Local Imports
+from app.Model.pi_hardware.socket_fpga import FPGASocket
 
 
 import numpy as np
-
-
-# Local Imports
-from socket_fpga import FPGASocket
 
 
 
