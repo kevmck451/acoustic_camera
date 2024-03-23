@@ -50,14 +50,15 @@ class Controller:
 
         elif event == Event.SETTINGS_BUTTON_2:
             print('SETTINGS BUTTON 2 PRESSED')
-            command = 'mic_overlay_color=blue'
-            self.event_sender.send_data(command)
+
 
         elif event == Event.TAKE_PICTURE:
             print('TAKE PICTURE')
 
         elif event == Event.RECORD_VIDEO:
             print('RECORD VIDEO')
+            command = 'mic_overlay_color=blue'
+            self.event_sender.send_data(command)
 
         elif event == Event.DUMMY_BUTTON:
             print('BUTTON PRESSED')
