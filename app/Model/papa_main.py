@@ -10,10 +10,11 @@ import time
 
 
 if __name__ == "__main__":
-    print('Papa Pi Hardware')
-
+    print('Stating Papa Pi Hardware')
     pi_hardware = PiHardware()
+    print('Starting Overlay')
     overlay = Overlay(pi_hardware)
+    overlay.display_overlay()
 
     while True:
         try:
