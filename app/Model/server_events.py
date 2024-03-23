@@ -61,6 +61,12 @@ class Event_Server:
             client_socket, addr = self.socket.accept()
             time.sleep(0.1)
             name = client_socket.recv(1024).decode()
+
+            # check if client name already exists and remove them
+            for client_x in self.client_list:
+                if client_x.name == name:
+                    self.client_list.remove(client_x)
+
             client = Client(name=name, socket=client_socket, ip_addr=addr[0], port=addr[1])
             self.client_list.append(client)
             print(f"Connection from {client.name} with address: {addr}")
