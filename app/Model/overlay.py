@@ -21,7 +21,7 @@ class Overlay:
         self.audio_visual_running = True
         self.running = True
         self.rms_threshold = 20  # 20
-        self.rms_max = 100  # 85
+        self.rms_max = 85  # 85
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
