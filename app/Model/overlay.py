@@ -12,7 +12,7 @@ class Overlay:
     def __init__(self, pi_hardware):
         self.mic_hardware = pi_hardware.mic_hardware
         self.camera_hardware = pi_hardware.camera_hardware
-        self.height, self.width = self.camera_hardware.frame_height, self.camera_hardware.frame_width
+        self.height, self.width = self.camera_hardware.height, self.camera_hardware.width
         self.audio_overlay = np.zeros((self.height, self.width))
         self.total_overlay = np.zeros((self.height, self.width))
         self.detect_sound_power = False
