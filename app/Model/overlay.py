@@ -20,8 +20,8 @@ class Overlay:
         self.classify_vehicles = False
         self.audio_visual_running = True
         self.running = True
-        self.rms_threshold = 20  # 20
-        self.rms_max = 85  # 85
+        self.rms_threshold = np.log(20)  # 20
+        self.rms_max = np.log(85)  # 85
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
@@ -79,7 +79,7 @@ class Overlay:
             scaled_audio_values = self.scale_audio_matrix(rms_values)  # Process the RMS values
 
             # Normalize the scaled audio values within the specified range
-            clipped_audio_overlay = np.clip(scaled_audio_values, self.rms_threshold, self.rms_max)
+            clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
             norm_audio_overlay = np.uint8(
                 255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
 
