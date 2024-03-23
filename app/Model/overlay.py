@@ -28,25 +28,45 @@ class Overlay:
         audio_scale_thread.start()
 
 
+    # def _generate_audio_view(self):
+    #     while self.audio_visual_running:
+    #         rms_values = self.mic_hardware.RMS_values
+    #         self.audio_overlay = self.scale_audio_matrix(rms_values)
+    #
+    #         # Normalize the audio_overlay within the specified range
+    #         # Ensure values below threshold are set to the minimum value
+    #         clipped_audio_overlay = np.clip(self.audio_overlay, self.rms_threshold, self.rms_max)
+    #         norm_audio_overlay = np.uint8(255*(clipped_audio_overlay-self.rms_threshold)/(self.rms_max-self.rms_threshold))
+    #
+    #         # Apply a colormap to create a heatmap effect
+    #         # Using COLORMAP_HOT to mimic 'Reds' from matplotlib
+    #         self.audio_overlay = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_HOT)
+    #
+    #     # For Test Viewing Raw Heat Map
+    #     #     cv2.imshow('Audio Heatmap', heatmap)
+    #     #     if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     #         break
+    #     # cv2.destroyAllWindows()
+
     def _generate_audio_view(self):
         while self.audio_visual_running:
             rms_values = self.mic_hardware.RMS_values
-            self.audio_overlay = self.scale_audio_matrix(rms_values)
+            scaled_rms = self.scale_audio_matrix(rms_values)
 
-            # Normalize the audio_overlay within the specified range
-            # Ensure values below threshold are set to the minimum value
-            clipped_audio_overlay = np.clip(self.audio_overlay, self.rms_threshold, self.rms_max)
-            norm_audio_overlay = np.uint8(255*(clipped_audio_overlay-self.rms_threshold)/(self.rms_max-self.rms_threshold))
+            # Normalize the scaled RMS values to the range of 0 to 255
+            normalized_rms = cv2.normalize(scaled_rms, None, 0, 255, cv2.NORM_MINMAX)
+            audio_overlay_8bit = np.uint8(normalized_rms)
 
             # Apply a colormap to create a heatmap effect
-            # Using COLORMAP_HOT to mimic 'Reds' from matplotlib
-            self.audio_overlay = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_HOT)
+            heatmap = cv2.applyColorMap(audio_overlay_8bit, cv2.COLORMAP_HOT)
 
-        # For Test Viewing Raw Heat Map
-        #     cv2.imshow('Audio Heatmap', heatmap)
-        #     if cv2.waitKey(1) & 0xFF == ord('q'):
-        #         break
-        # cv2.destroyAllWindows()
+            # Create an alpha channel based on the threshold
+            alpha_channel = np.where(audio_overlay_8bit > self.rms_threshold, 128,
+                                     0)  # semi-transparent for values above threshold
+            audio_overlay_rgba = cv2.merge((*cv2.split(heatmap), alpha_channel.astype(np.uint8)))
+
+            # Store the RGBA heatmap in self.audio_overlay for use in start_overlay
+            self.audio_overlay = audio_overlay_rgba
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
