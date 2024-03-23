@@ -83,15 +83,21 @@ class Overlay:
 
     def start_overlay(self):
         while self.running:
-            # Current Camera Frame
             frame = self.camera_hardware.read()
 
             if frame is not None:
-                # Ensure frame and audio_overlay have the same dimensions
                 frame_resized = cv2.resize(frame, (self.width, self.height))
 
-                # Normalize and convert the audio_overlay to 8-bit unsigned integer
+                # Normalize the audio overlay to 8-bit unsigned integer
                 audio_overlay_8bit = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+                # Check if audio_overlay_8bit is already a 3-channel image
+                if len(audio_overlay_8bit.shape) == 2 or audio_overlay_8bit.shape[2] == 1:
+                    # Convert the single-channel grayscale image to a 3-channel BGR image
+                    audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
+                else:
+                    # If already 3-channel, no need for conversion
+                    audio_overlay_bgr = audio_overlay_8bit
 
                 # Convert the single-channel grayscale image to a 3-channel BGR image
                 audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
