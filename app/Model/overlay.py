@@ -71,25 +71,56 @@ class Overlay:
 
 
     # THIS FUNCTION WORKS
+    # def start_overlay(self):
+    #     while self.running:
+    #         frame = self.camera_hardware.read()
+    #         if frame is not None:
+    #             frame_resized = cv2.resize(frame, (self.width, self.height))
+    #
+    #             # Ensure the audio overlay is in the correct format
+    #             if len(self.audio_overlay.shape) == 2 or (len(self.audio_overlay.shape) == 3 and self.audio_overlay.shape[2] == 1):
+    #                 # If the audio overlay is indeed single-channel, convert it to BGR
+    #                 audio_overlay_8bit = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    #                 audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
+    #             elif len(self.audio_overlay.shape) == 3 and self.audio_overlay.shape[2] == 3:
+    #                 # If the overlay is already in BGR format, use it directly
+    #                 audio_overlay_bgr = self.audio_overlay
+    #             else:
+    #                 raise ValueError("Unexpected number of channels in audio_overlay")
+    #
+    #             # Blend the audio overlay with the video frame
+    #             combined_overlay = cv2.addWeighted(frame_resized, 1, audio_overlay_bgr, 0.5, 0)
+    #             self.total_overlay = combined_overlay
+    #
+    #             # Display the result
+    #             cv2.imshow('Total Overlay', self.total_overlay)
+    #             if cv2.waitKey(1) & 0xFF == ord('q'):
+    #                 break
+    #
+    #     cv2.destroyAllWindows()
+
     def start_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
             if frame is not None:
                 frame_resized = cv2.resize(frame, (self.width, self.height))
 
-                # Ensure the audio overlay is in the correct format
-                if len(self.audio_overlay.shape) == 2 or (len(self.audio_overlay.shape) == 3 and self.audio_overlay.shape[2] == 1):
-                    # If the audio overlay is indeed single-channel, convert it to BGR
-                    audio_overlay_8bit = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-                    audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
-                elif len(self.audio_overlay.shape) == 3 and self.audio_overlay.shape[2] == 3:
-                    # If the overlay is already in BGR format, use it directly
-                    audio_overlay_bgr = self.audio_overlay
-                else:
-                    raise ValueError("Unexpected number of channels in audio_overlay")
+                # Assuming self.audio_overlay is already in BGR format from _generate_audio_view
+                # First, convert BGR heatmap to grayscale to determine the transparency mask
+                heatmap_gray = cv2.cvtColor(self.audio_overlay, cv2.COLOR_BGR2GRAY)
+                _, mask = cv2.threshold(heatmap_gray, self.rms_threshold, 255, cv2.THRESH_BINARY)
+                alpha_channel = np.uint8(mask)  # Use the mask for alpha channel
 
-                # Blend the audio overlay with the video frame
-                combined_overlay = cv2.addWeighted(frame_resized, 1, audio_overlay_bgr, 0.5, 0)
+                # Convert the BGR heatmap to BGRA by adding the alpha channel
+                audio_overlay_bgra = cv2.cvtColor(self.audio_overlay, cv2.COLOR_BGR2BGRA)
+                audio_overlay_bgra[:, :, 3] = alpha_channel
+
+                # Ensure the camera feed is in BGRA for alpha blending
+                if frame_resized.shape[2] == 3:
+                    frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2BGRA)
+
+                # Blend the audio overlay with the video frame using the alpha channel
+                combined_overlay = cv2.add(frame_resized, audio_overlay_bgra)
                 self.total_overlay = combined_overlay
 
                 # Display the result
@@ -98,8 +129,6 @@ class Overlay:
                     break
 
         cv2.destroyAllWindows()
-
-
 
 
 
