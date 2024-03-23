@@ -21,14 +21,19 @@ class Overlay:
         self.audio_visual_running = True
         self.running = True
         self.rms_threshold = 20  # 20
-        self.rms_max = 90  # 85
+        self.rms_max = 100  # 85
 
 
+        # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
+        # audio_scale_thread.start()
+
+        # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
+        # audio_scale_thread.start()
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
         audio_scale_thread.start()
 
     # THIS FUNCTION WORKS
-    def _generate_audio_view(self):
+    def view_audio_heatmap(self):
         while self.audio_visual_running:
             rms_values = self.mic_hardware.RMS_values
             self.audio_overlay = self.scale_audio_matrix(rms_values)
@@ -46,6 +51,26 @@ class Overlay:
             cv2.imshow('Audio Heatmap', self.audio_overlay)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+        cv2.destroyAllWindows()
+
+    def _generate_audio_view(self):
+        while self.audio_visual_running:
+            rms_values = self.mic_hardware.RMS_values
+            scaled_audio_values = self.scale_audio_matrix(rms_values)  # Process the RMS values
+
+            # Normalize the scaled audio values within the specified range
+            clipped_audio_overlay = np.clip(scaled_audio_values, self.rms_threshold, self.rms_max)
+            norm_audio_overlay = np.uint8(255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
+
+            # Create an RGB image where the red channel intensity is based on audio level
+            self.audio_overlay = np.zeros((norm_audio_overlay.shape[0], norm_audio_overlay.shape[1], 3), dtype=np.uint8)
+            self.audio_overlay[:, :, 0] = norm_audio_overlay  # Set the red channel
+
+            # For Test Viewing Red Channel Intensity Map
+            cv2.imshow('Audio Intensity Map', self.audio_overlay)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
         cv2.destroyAllWindows()
 
 
