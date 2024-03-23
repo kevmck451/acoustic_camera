@@ -14,7 +14,7 @@ if __name__ == "__main__":
     pi_hardware = PiHardware()
     print('Starting Overlay')
     overlay = Overlay(pi_hardware)
-    overlay.display_overlay()
+    # overlay.start_overlay()
 
     while True:
         try:

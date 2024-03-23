@@ -73,7 +73,6 @@ class Camera:
 
 
 
-
 if __name__ == "__main__":
     camera = Camera(color=True, skip_frames=1)
     camera.start_viewing()
