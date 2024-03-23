@@ -28,14 +28,34 @@ class Overlay:
         audio_scale_thread.start()
 
 
+    # def _generate_audio_view(self):
+    #     while self.audio_visual_running:
+    #         print(self.mic_hardware.RMS_values)
+    #         print(self.mic_hardware.RMS_values.shape)
+    #         self.audio_overlay = self.scale_audio_matrix(self.mic_hardware.RMS_values)
+    #         print(self.audio_overlay)
+    #         print(self.audio_overlay.shape)
+    #         cv2.imshow('Frame Display', self.audio_overlay)
+    #         if cv2.waitKey(1) & 0xFF == ord('q'):
+    #             break
+    #     cv2.destroyAllWindows()
+
     def _generate_audio_view(self):
         while self.audio_visual_running:
             print(self.mic_hardware.RMS_values)
             print(self.mic_hardware.RMS_values.shape)
             self.audio_overlay = self.scale_audio_matrix(self.mic_hardware.RMS_values)
+
+            # Normalize the audio_overlay for display purposes
+            norm_audio_overlay = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX)
+            norm_audio_overlay = norm_audio_overlay.astype(np.uint8)
+
+            # Apply a colormap to create a heatmap effect similar to matplotlib
+            heatmap = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_JET)
+
             print(self.audio_overlay)
             print(self.audio_overlay.shape)
-            cv2.imshow('Frame Display', self.audio_overlay)
+            cv2.imshow('Frame Display', heatmap)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         cv2.destroyAllWindows()
