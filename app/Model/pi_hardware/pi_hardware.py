@@ -32,3 +32,11 @@ class PiHardware:
         print('CAMERA HARDWARE CONNECTION-----------------')
         self.camera_hardware = Camera(fps=30, color=True) # width=580, height=580,
         # self.camera_hardware.start_viewing()
+
+
+
+
+
+if __name__ == "__main__":
+    print('Stating Papa Pi Hardware')
+    pi_hardware = PiHardware()
