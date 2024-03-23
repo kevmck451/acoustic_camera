@@ -2,7 +2,7 @@ import cv2
 import threading
 
 class Camera:
-    def __init__(self, camera_index=0, width=580, height=580, fps=30, color=True, skip_frames=0):
+    def __init__(self, camera_index=0, width=640, height=480, fps=30, color=True, skip_frames=0):
         self.cap = cv2.VideoCapture(camera_index)
         self.width = width
         self.height = height
@@ -31,6 +31,7 @@ class Camera:
                         continue
 
                     # frame = cv2.resize(frame, (self.width, self.height))
+
                     if not self.color:
                         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 

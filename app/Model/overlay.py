@@ -1,17 +1,86 @@
-
-
-
-import cv2 # pip install opencv-python
-import threading
+import cv2
 import numpy as np
-import cv2 # pip install opencv-python # This will take really long time
+
+
+class Overlay:
+    def __init__(self, pi_hardware, color_map='jet'):
+        """
+        Initializes the overlay with the Raspberry Pi hardware components.
+
+        :param pi_hardware: An instance of PiHardware which contains the microphone array and camera
+        :param color_map: String representing the color map to use for visualizing sound intensities
+        """
+        self.pi_hardware = pi_hardware
+        self.color_map = color_map
+        self.image_size = (self.pi_hardware.camera_hardware.width, self.pi_hardware.camera_hardware.height)
+        self.overlay_image = np.zeros((self.image_size[1], self.image_size[0], 3), dtype=np.uint8)
+
+    def create_intensity_map(self):
+        """
+        Creates an intensity map based on the RMS values from the microphone array.
+        """
+        # Get RMS values from the microphone array
+        rms_values = self.pi_hardware.mic_hardware.RMS_values
+        intensity_map = np.zeros(self.image_size, dtype=np.uint8)
+
+        # Normalize and map the RMS values to the intensity map
+        norm_rms_values = np.interp(rms_values, (rms_values.min(), rms_values.max()), (0, 255))
+        for i in range(norm_rms_values.shape[0]):
+            for j in range(norm_rms_values.shape[1]):
+                intensity = norm_rms_values[i, j]
+                cv2.circle(intensity_map, (j * 40, i * 40), 20, int(intensity), -1)
+
+        intensity_map_colored = cv2.applyColorMap(intensity_map, getattr(cv2, self.color_map.upper()))
+        return intensity_map_colored
+
+    def update_overlay(self, intensity_map):
+        """
+        Updates the overlay image based on the provided intensity map.
+
+        :param intensity_map: An intensity map as a NumPy array
+        """
+        self.overlay_image = cv2.addWeighted(self.overlay_image, 0.5, intensity_map, 0.5, 0)
+
+    def display_overlay(self):
+        """
+        Displays the overlay on top of the current camera frame.
+        """
+        background_image = self.pi_hardware.camera_hardware.read()
+        combined_image = cv2.addWeighted(background_image, 0.8, self.overlay_image, 0.2, 0)
+        cv2.imshow("Overlay", combined_image)
+        cv2.waitKey(1)  # Display the frame for a short moment
+
+    def run(self):
+        """
+        Main method to run the overlay process.
+        """
+        while True:
+            intensity_map = self.create_intensity_map()
+            self.update_overlay(intensity_map)
+            self.display_overlay()
 
 
 
+
+
+
+
+
+
+
+
+# ORIGINAL ROUGH DRAFT
+
+# import cv2 # pip install opencv-python
+# import threading
+# import numpy as np
+# import cv2 # pip install opencv-python # This will take really long time
+#
+#
 # class Overlay:
-#     def __init__(self, mics, camera):
-#         self.mic_hardware = mics
-#         self.camera_hardware = camera
+#     def __init__(self, pi_hardware):
+#         self.mic_hardware = pi_hardware.mic_hardware
+#         self.camera_hardware = pi_hardware.camera_hardware
 #         self.height, self.width = self.camera_hardware.frame_height, self.camera_hardware.frame_width
 #         self.overlay = np.zeros((self.height, self.width))
 #         self.detect_sound_power = False
@@ -40,54 +109,9 @@ import cv2 # pip install opencv-python # This will take really long time
 #
 #     def generate_overlay(self):
 #
-#         RMS_calculations_thread = threading.Thread(target=self.mic_hardware.get_RMS).start()
-#         audio_overlay = self.scale_audio_matrix(self.mic_hardware.RMS_values)
-#         # self.overlay =
+#         pass
 #
 #
 #
 #     def stop_overlay(self):
 #         self.running = False
-
-
-
-
-
-
-
-
-class Overlay:
-    def __init__(self, camera, mic_array):
-        self.camera = camera
-        self.mic_array = mic_array
-        self.audio_visualizer = AudioVisualizer()
-
-    def update(self):
-        while True:
-            video_frame = self.camera.get_latest_frame()
-            audio_data = self.mic_array.get_latest_audio_data()
-
-            if video_frame is not None and audio_data is not None:
-                # Generate the audio visualization
-                audio_overlay = self.audio_visualizer.visualize(audio_data)
-
-                # Combine the video frame with the audio visualization
-                # Assuming the sizes are compatible or resized accordingly
-                combined_frame = self.combine_frames(video_frame, audio_overlay)
-
-                # Display the combined frame
-                cv2.imshow('Overlay', combined_frame)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
-
-    @staticmethod
-    def combine_frames(video_frame, audio_overlay):
-        # This is a simplified example; actual combination depends on how you want to overlay
-        # For instance, you might want to overlay the audio visualization at the bottom of the video frame
-        height, width, _ = video_frame.shape
-        overlay_height, overlay_width, _ = audio_overlay.shape
-
-        combined_frame = video_frame.copy()
-        combined_frame[height - overlay_height:, :overlay_width, :] = audio_overlay
-        return combined_frame
-

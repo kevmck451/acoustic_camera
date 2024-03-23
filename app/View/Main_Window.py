@@ -1,19 +1,13 @@
 
 
-from app.Model.camera import Camera
+from app.Model.pi_hardware.camera import Camera
 
-
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.animation import FuncAnimation
 import matplotlib
 matplotlib.use('TkAgg')  # Specify the backend
-import matplotlib.pyplot as plt
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import customtkinter as ctk
 import tkinter as tk
-import numpy as np
 import warnings
 import queue
 
