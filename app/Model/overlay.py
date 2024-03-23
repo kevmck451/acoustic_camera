@@ -105,14 +105,20 @@ class Overlay:
             if frame is not None:
                 frame_resized = cv2.resize(frame, (self.width, self.height))
 
-                # Assuming self.audio_overlay is already in BGR format from _generate_audio_view
-                # First, convert BGR heatmap to grayscale to determine the transparency mask
-                heatmap_gray = cv2.cvtColor(self.audio_overlay, cv2.COLOR_BGR2GRAY)
+                # Normalize self.audio_overlay to 8-bit if it's not already
+                if self.audio_overlay.dtype != np.uint8:
+                    audio_overlay_8bit = cv2.normalize(self.audio_overlay, None, 0, 255, cv2.NORM_MINMAX).astype(
+                        np.uint8)
+                else:
+                    audio_overlay_8bit = self.audio_overlay
+
+                # Convert to grayscale for thresholding
+                heatmap_gray = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_BGR2GRAY)
                 _, mask = cv2.threshold(heatmap_gray, self.rms_threshold, 255, cv2.THRESH_BINARY)
                 alpha_channel = np.uint8(mask)  # Use the mask for alpha channel
 
                 # Convert the BGR heatmap to BGRA by adding the alpha channel
-                audio_overlay_bgra = cv2.cvtColor(self.audio_overlay, cv2.COLOR_BGR2BGRA)
+                audio_overlay_bgra = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_BGR2BGRA)
                 audio_overlay_bgra[:, :, 3] = alpha_channel
 
                 # Ensure the camera feed is in BGRA for alpha blending
@@ -123,7 +129,6 @@ class Overlay:
                 combined_overlay = cv2.add(frame_resized, audio_overlay_bgra)
                 self.total_overlay = combined_overlay
 
-                # Display the result
                 cv2.imshow('Total Overlay', self.total_overlay)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
