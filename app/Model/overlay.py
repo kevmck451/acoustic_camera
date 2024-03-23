@@ -83,11 +83,11 @@ class Overlay:
 
     def start_overlay(self):
         while self.running:
-            # Capture the current camera frame
+            # Current Camera Frame
             frame = self.camera_hardware.read()
 
             if frame is not None:
-                # Ensure the frame has the same dimensions as the overlay
+                # Ensure frame and audio_overlay have the same dimensions
                 frame_resized = cv2.resize(frame, (self.width, self.height))
 
                 # Normalize and convert the audio_overlay to 8-bit unsigned integer
@@ -96,12 +96,13 @@ class Overlay:
                 # Convert the single-channel grayscale image to a 3-channel BGR image
                 audio_overlay_bgr = cv2.cvtColor(audio_overlay_8bit, cv2.COLOR_GRAY2BGR)
 
-                # Then convert the BGR image to a BGRA image by adding an alpha channel
-                audio_overlay_rgba = cv2.cvtColor(audio_overlay_bgr, cv2.COLOR_BGR2BGRA)
+                # Convert the BGR image to a BGRA image by adding an alpha channel
+                alpha_channel = np.clip(audio_overlay_8bit / 255.0, 0, 1) * 255
+                audio_overlay_rgba = cv2.merge([audio_overlay_bgr, alpha_channel.astype(np.uint8)])
 
-                # Create an alpha channel based on intensity for blending
-                alpha_channel = np.clip(audio_overlay_8bit / 255.0, 0, 1)
-                audio_overlay_rgba[:, :, 3] = (alpha_channel * 255).astype(np.uint8)
+                # Ensure both images have 4 channels before blending
+                if frame_resized.shape[2] != 4:
+                    frame_resized = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2BGRA)
 
                 # Blend the audio overlay with the video frame
                 combined_overlay = cv2.addWeighted(frame_resized, 1, audio_overlay_rgba, 0.5, 0)
@@ -115,8 +116,6 @@ class Overlay:
                     break
 
         cv2.destroyAllWindows()
-
-
 
     def stop_overlay(self):
         self.running = False
