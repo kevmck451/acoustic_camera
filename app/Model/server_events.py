@@ -14,19 +14,42 @@ class Event_Server:
         self.socket.listen()
         self.running = True
         self.client_list = []
+        self.hardware = None
+        self.overlay = None
 
         print(f"Server listening on {self.host}:{self.port}")
         self.run_thread = threading.Thread(target=self.run, daemon=True).start()
 
-    @staticmethod
-    def handle_client(client_socket):
+    def set_hardware(self, hardware, overlay):
+        self.hardware = hardware
+        self.overlay = overlay
+
+    def handle_client(self, client_socket):
         with client_socket:
             while True:
                 data = client_socket.recv(1024)
                 if not data:
                     break
-                print(f"Received: {data.decode()}")
-                # Process the data here
+                message = data.decode().split('=')
+                command = message[0]
+                value = message[1]
+                print(f"Received: {command} = {value}")
+
+                if command == 'camera_color':
+                    if value: self.hardware.camera_hardware.set_color(True)
+                    else: self.hardware.camera_hardware.set_color(False)
+                elif command == 'mic_rms_threshold':
+                    self.overlay.rms_threshold = value
+                elif command == 'mic_rms_max':
+                    self.overlay.rms_max = value
+                elif command == 'mic_overlay_color':
+                    # BGR 0, 1, 2
+                    if value == 'red':
+                        self.overlay.audio_overlay_color = 2
+                    elif value == 'green':
+                        self.overlay.audio_overlay_color = 1
+                    elif value == 'blue':
+                        self.overlay.audio_overlay_color = 0
 
     def run(self):
         while self.running:

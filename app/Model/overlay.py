@@ -22,12 +22,15 @@ class Overlay:
         self.running = True
         self.rms_threshold = np.log(20)  # 20
         self.rms_max = np.log(85)  # 85
+        self.audio_overlay_color = 2
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
         # audio_scale_thread.start()
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
         audio_scale_thread.start()
+        overlay_thread = threading.Thread(target=self.start_overlay, daemon=True)
+        overlay_thread.start()
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
@@ -86,7 +89,7 @@ class Overlay:
             # Create an RGB image where the red channel intensity is based on audio level
             # In OpenCV, the channel order is BGR, so the red channel is the last one
             self.audio_overlay = np.zeros((norm_audio_overlay.shape[0], norm_audio_overlay.shape[1], 3), dtype=np.uint8)
-            self.audio_overlay[:, :, 2] = norm_audio_overlay  # Set the red channel in BGR order
+            self.audio_overlay[:, :, self.audio_overlay_color] = norm_audio_overlay  # Set the red channel in BGR order
 
             # For Test Viewing Red Channel Intensity Map
         #     cv2.imshow('Audio Intensity Map', self.audio_overlay)
@@ -95,9 +98,7 @@ class Overlay:
         #
         # cv2.destroyAllWindows()
 
-
-    # THIS FUNCTION WORKS
-    def start_overlay(self):
+    def view_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
             if frame is not None:
@@ -112,6 +113,17 @@ class Overlay:
                     break
 
         cv2.destroyAllWindows()
+
+
+    def start_overlay(self):
+        while self.running:
+            frame = self.camera_hardware.read()
+            if frame is not None:
+
+                # Blend the audio overlay with the video frame
+                combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
+                self.total_overlay = combined_overlay
+
 
 
 

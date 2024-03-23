@@ -1,6 +1,6 @@
 
 
-from app.Model.pi_hardware.server_events import Event_Server
+
 from app.Model.pi_hardware.microphones import MicArray
 from app.Model.pi_hardware.camera import Camera
 
@@ -11,14 +11,6 @@ class PiHardware:
 
     def __init__(self):
         print('Initializing Hardware')
-
-        # EVENT LISTENER SERVER-----------------------
-        print('EVENT LISTENER SERVER-----------------------')
-        # set for simulation connection with 0.0.0.0 if testing
-        # event_server = Event_Server('0.0.0.0')
-        self.event_server = Event_Server()
-        self.event_thread = threading.Thread(target=self.event_server.run, daemon=True)
-        self.event_thread.start()
 
         # MICROPHONE HARDWARE CONNECTION--------------
         # server on FPGA will need to be running
