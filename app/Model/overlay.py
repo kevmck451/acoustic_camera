@@ -27,26 +27,26 @@ class Overlay:
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
         audio_scale_thread.start()
 
+    # THIS FUNCTION WORKS
+    def _generate_audio_view(self):
+        while self.audio_visual_running:
+            rms_values = self.mic_hardware.RMS_values
+            self.audio_overlay = self.scale_audio_matrix(rms_values)
 
-    # def _generate_audio_view(self):
-    #     while self.audio_visual_running:
-    #         rms_values = self.mic_hardware.RMS_values
-    #         self.audio_overlay = self.scale_audio_matrix(rms_values)
-    #
-    #         # Normalize the audio_overlay within the specified range
-    #         # Ensure values below threshold are set to the minimum value
-    #         clipped_audio_overlay = np.clip(self.audio_overlay, self.rms_threshold, self.rms_max)
-    #         norm_audio_overlay = np.uint8(255*(clipped_audio_overlay-self.rms_threshold)/(self.rms_max-self.rms_threshold))
-    #
-    #         # Apply a colormap to create a heatmap effect
-    #         # Using COLORMAP_HOT to mimic 'Reds' from matplotlib
-    #         self.audio_overlay = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_HOT)
-    #
-    #     # For Test Viewing Raw Heat Map
-    #     #     cv2.imshow('Audio Heatmap', heatmap)
-    #     #     if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     #         break
-    #     # cv2.destroyAllWindows()
+            # Normalize the audio_overlay within the specified range
+            # Ensure values below threshold are set to the minimum value
+            clipped_audio_overlay = np.clip(self.audio_overlay, self.rms_threshold, self.rms_max)
+            norm_audio_overlay = np.uint8(255*(clipped_audio_overlay-self.rms_threshold)/(self.rms_max-self.rms_threshold))
+
+            # Apply a colormap to create a heatmap effect
+            # Using COLORMAP_HOT to mimic 'Reds' from matplotlib
+            self.audio_overlay = cv2.applyColorMap(norm_audio_overlay, cv2.COLORMAP_HOT)
+
+        # For Test Viewing Raw Heat Map
+        #     cv2.imshow('Audio Heatmap', heatmap)
+        #     if cv2.waitKey(1) & 0xFF == ord('q'):
+        #         break
+        # cv2.destroyAllWindows()
 
 
     def scale_audio_matrix(self, original_matrix):
@@ -70,6 +70,7 @@ class Overlay:
         return scaled_matrix
 
 
+    # THIS FUNCTION WORKS
     def start_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
