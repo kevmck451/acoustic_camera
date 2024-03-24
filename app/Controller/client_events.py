@@ -3,7 +3,7 @@ import threading
 import time
 
 class Event_Sender_Client:
-    def __init__(self, host='10.0.0.1', port=42069, name='Papa Pi'):
+    def __init__(self, host='10.0.0.1', port=42069, name='Pi App'):
         self.host = host
         self.port = port
         self.name = name
@@ -14,8 +14,6 @@ class Event_Sender_Client:
         self.heartbeat_thread = None
         self.connected = False
         self.heartbeat_attempt = 0
-
-
 
     def ensure_connection(self):
         print('Attempting to Connect with Pi Hardware')
