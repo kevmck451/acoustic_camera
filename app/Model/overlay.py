@@ -151,7 +151,7 @@ class Overlay:
             if result:
                 self.video_client.send_data(self.total_overlay_compressed)
                 print('Frame sent')
-            # time.sleep(0.1)
+            time.sleep(0.05)
 
 
     def stop_overlay(self):
