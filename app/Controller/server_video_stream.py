@@ -26,7 +26,7 @@ class Video_Overlay_Server:
             data, addr = self.sock.recvfrom(65507)  # Use the maximum safe UDP packet size
             if not data:
                 continue
-            print(type(data))
+            print(f'TX Data Type: {type(data)}')
             # Attempt to decode the received bytes as an image
             image_data = np.frombuffer(data, dtype=np.uint8)
             self.decompressed_image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
