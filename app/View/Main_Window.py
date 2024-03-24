@@ -63,7 +63,7 @@ class Main_Window(ctk.CTk):
         self.bind("<Escape>", self.close_application)
 
     def set_video_sender(self, video_server):
-        self.video_stream = video_server
+        self.video_sender = video_server
 
     def on_close(self):
         # Perform any cleanup or process termination steps here
@@ -255,7 +255,7 @@ class Video_Frame(ctk.CTkFrame):
     def update_camera_feed(self):
         # print('updating_camera_feed')
         try:
-            frame = self.parent.video_stream.frame_queue.get_nowait()
+            frame = self.parent.video_sender.frame_queue.get_nowait()
             self.label.configure(image=frame)
             self.label.image = frame
         except queue.Empty:
