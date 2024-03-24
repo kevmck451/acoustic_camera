@@ -139,10 +139,10 @@ class Overlay:
                 # print(num_bytes)
 
                 # Compress the combined overlay to a JPEG format in memory
-                # compression_rate = 90  # Max 100
-                # result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
-                #                                                      [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
-
+                compression_rate = 90  # Max 100
+                result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
+                                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+                print(f'result: {result}')
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
 
