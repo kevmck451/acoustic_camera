@@ -50,8 +50,6 @@ source venv_app/bin/activate
 
 
 
-
-
 # Acoustic Camera Demo
 - inside overlay function:
   - to view the audio heat map, uncomment in init method the audio_scale_thread with view audio heatmap
