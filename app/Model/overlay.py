@@ -130,15 +130,15 @@ class Overlay:
                 # Blend the audio overlay with the video frame
                 combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
                 self.total_overlay = combined_overlay
-                print(self.total_overlay.shape)
+                # print(self.total_overlay.shape)
                 # Calculate the number of bytes: 921600 bytes
                 # num_bytes = self.total_overlay.nbytes
                 # print(num_bytes)
 
                 # Compress the combined overlay to a JPEG format in memory
-                # compression_rate = 90  # Max 100
-                # result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
-                #                                                      [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+                compression_rate = 90  # Max 100
+                result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
+                                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
 
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
