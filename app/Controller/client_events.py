@@ -11,10 +11,16 @@ class Event_Sender_Client:
         self.socket = None
         self.connect_thread = threading.Thread(target=self.ensure_connection, daemon=True)
         self.connect_thread.start()
+        self.heartbeat_thread = None
+        self.connected = False
+        self.heartbeat_attempt = 0
+
 
 
     def ensure_connection(self):
+        print('Attempting to Connect with Pi Hardware')
         while not self.connected:
+            print("Waiting for connection...")
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.socket.connect((self.host, self.port))
@@ -24,13 +30,36 @@ class Event_Sender_Client:
                 # Attempt to receive a response within the timeout period
                 response = self.socket.recv(1024)
                 if not response.decode('utf-8') == 'ack': continue
-                self.connected = True
                 print(f"Connected to {self.host}:{self.port}")
-
+                self.heartbeat_thread.start()
+                self.connected = True
 
             except Exception as e:
                 print(f"Error connecting to the server: {e}")
                 time.sleep(1)  # Retry after a delay
+
+    def heartbeat(self):
+        wait_time = 1
+        burst_time = 0.1
+
+        while self.connected == True:
+
+            try:
+                self.socket.sendall('heartbeat'.encode())
+                time.sleep(burst_time)
+                self.socket.sendall('heartbeat'.encode())
+                time.sleep(burst_time)
+                self.socket.sendall('heartbeat'.encode())
+                self.heartbeat_attempt = 0
+            except socket.error as e:
+                self.heartbeat_attempt += 1
+
+            if self.heartbeat_attempt == 5:
+                self.connected = False
+                self.connect_thread = threading.Thread(target=self.ensure_connection, daemon=True)
+                self.connect_thread.start()
+
+            time.sleep(wait_time)
 
     def send_data(self, data):
         if self.connected:
@@ -58,7 +87,7 @@ if __name__ == '__main__':
     client = Event_Sender_Client(name='MacBook')
 
     while not client.connected:
-        print("Waiting for connection...")
+        # print("Waiting for connection...")
         time.sleep(1)
 
     print("Client connected, can send data now.")
