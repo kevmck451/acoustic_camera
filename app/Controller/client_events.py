@@ -36,14 +36,13 @@ class Event_Sender_Client:
                 time.sleep(1)  # Retry after a delay
 
     def heartbeat(self):
-        # print('heartbeat')
+        print('heartbeat')
         wait_time = 1
         burst_time = 0.1
 
         while self.connected == True:
 
             try:
-                print('HEARTBEAT')
                 self.socket.sendall('heartbeat'.encode())
                 time.sleep(burst_time)
                 self.socket.sendall('heartbeat'.encode())
