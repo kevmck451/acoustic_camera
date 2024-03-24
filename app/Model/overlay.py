@@ -144,8 +144,8 @@ class Overlay:
                 # which can be sent over a network or saved to disk
 
                 # Calculate the number of bytes: 921600 bytes
-                # num_bytes = self.total_overlay_compressed.nbytes
-                # print(num_bytes)
+                num_bytes = self.total_overlay_compressed.nbytes
+                print(num_bytes)
 
                 # Optional: If you want to display the compressed image for debugging
                 # decompressed_image = cv2.imdecode(self.total_overlay_compressed, cv2.IMREAD_COLOR)
