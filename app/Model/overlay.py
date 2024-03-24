@@ -28,7 +28,7 @@ class Overlay:
         self.rms_threshold = np.log(20)  # 20
         self.rms_max = np.log(85)  # 85
         self.audio_overlay_color = 2
-        self.video_client = Video_Client(host='127.0.0.1')
+        self.video_client = Video_Client(host='0.0.0.0')
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
@@ -136,7 +136,6 @@ class Overlay:
                 # Calculate the number of bytes: 921600 bytes
                 # num_bytes = self.total_overlay.nbytes
                 # print(num_bytes)
-
 
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
