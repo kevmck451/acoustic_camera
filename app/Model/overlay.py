@@ -149,8 +149,9 @@ class Overlay:
             result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
 
-            num_bytes = self.total_overlay_compressed.nbytes
-            print(num_bytes)
+            # num_bytes = self.total_overlay_compressed.nbytes
+            # print(num_bytes)
+            print(self.total_overlay_compressed)
 
             if result:
                 self.video_client.send_data(self.total_overlay_compressed)
