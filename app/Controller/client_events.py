@@ -53,6 +53,7 @@ class Event_Sender_Client:
                 self.heartbeat_attempt += 1
 
             if self.heartbeat_attempt == 5:
+                print('PI HARDWARE DISCONNECTED')
                 self.connected = False
                 self.connect_thread = threading.Thread(target=self.ensure_connection, daemon=True)
                 self.connect_thread.start()
