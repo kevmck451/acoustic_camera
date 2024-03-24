@@ -1,6 +1,6 @@
 
 
-# Running Things
+# Running Things & Demos
 
 - Need to create bash scripts that do all this with commands
 ```zsh
@@ -52,7 +52,10 @@ source venv_app/bin/activate
 
 
 
-
+# Acoustic Camera Demo
+- inside overlay function:
+  - to view the audio heat map, uncomment in init method the audio_scale_thread with view audio heatmap
+  - to view camera + acoustic heat map uncomment the overlay thread with view_overlay
 
 
 
