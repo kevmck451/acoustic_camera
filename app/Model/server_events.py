@@ -18,7 +18,7 @@ class Event_Server:
         self.overlay = None
 
         print(f"Server listening on {self.host}:{self.port}")
-        self.run_thread = threading.Thread(target=self.run, daemon=True).start()
+        # self.run_thread = threading.Thread(target=self.run, daemon=True).start()
 
     def set_hardware(self, hardware, overlay):
         self.hardware = hardware
@@ -62,9 +62,9 @@ class Event_Server:
             name = client_socket.recv(1024).decode()
 
             # check if client name already exists and remove them
-            # for client_x in self.client_list:
-            #     if client_x.name == name:
-            #         self.client_list.remove(client_x)
+            for client_x in self.client_list:
+                if client_x.name == name:
+                    self.client_list.remove(client_x)
 
             client = Client(name=name, socket=client_socket, ip_addr=addr[0], port=addr[1])
             self.client_list.append(client)
