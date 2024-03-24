@@ -5,8 +5,8 @@ from app.Controller.server_video_stream import Video_Overlay_Server
 
 if __name__ == "__main__":
 
-    event_sender = Event_Sender_Client(name='Pi App')
-    # event_sender = Event_Sender_Client(host='papapi.local', name='MacBook')
+    # event_sender = Event_Sender_Client(name='Pi App')
+    event_sender = Event_Sender_Client(host='192.168.0.142', name='MacBook')
 
     controller = Controller()
     gui = Main_Window(controller.handle_event)

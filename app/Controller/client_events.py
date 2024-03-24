@@ -24,12 +24,11 @@ class Event_Sender_Client:
                 self.socket.connect((self.host, self.port))
                 handshake_message = f'{self.name}'
                 self.socket.sendall(handshake_message.encode())
-
-                # Attempt to receive a response within the timeout period
                 response = self.socket.recv(1024)
                 if not response.decode('utf-8') == 'ack': continue
                 print(f"Connected to {self.host}:{self.port}")
-                self.heartbeat_thread.start()
+                # self.heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
+                # self.heartbeat_thread.start()
                 self.connected = True
 
             except Exception as e:
@@ -37,6 +36,7 @@ class Event_Sender_Client:
                 time.sleep(1)  # Retry after a delay
 
     def heartbeat(self):
+        print('heartbeat')
         wait_time = 1
         burst_time = 0.1
 
