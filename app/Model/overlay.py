@@ -143,12 +143,12 @@ class Overlay:
                 # which can be sent over a network or saved to disk
 
                 # Calculate the number of bytes: 921600 bytes
-                # num_bytes = self.total_overlay_compressed.nbytes
-                # print(num_bytes)
 
                 if self.stream_video:
                     # print('sending frame')
                     self.video_client.send_data(self.total_overlay_compressed)
+                    num_bytes = self.total_overlay_compressed.nbytes
+                    print(num_bytes)
                     print('frame sent')
 
     def stop_overlay(self):
