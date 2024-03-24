@@ -37,6 +37,7 @@ if __name__ == '__main__':
     # for running papapi to mac
     server = Video_Overlay_Server('0.0.0.0')
     server_thread = threading.Thread(target=server.start_server(), daemon=True)
+    server_thread.start()
 
     while True:
         time.sleep(1)

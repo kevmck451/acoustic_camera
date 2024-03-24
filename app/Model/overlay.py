@@ -148,7 +148,7 @@ class Overlay:
 
                 print(self.stream_video)
                 if self.stream_video:
-                    print('sending frame')
+                    # print('sending frame')
                     self.video_client.send_data(self.total_overlay_compressed)
                     print('frame sent')
 
