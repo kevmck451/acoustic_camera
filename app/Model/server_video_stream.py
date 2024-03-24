@@ -41,13 +41,13 @@ class Video_Server:
                     break
                 message = data.decode()
                 print(message)
-                if 'start' in message:
+                if message == 'start':
                     # start stream thread
                     self.sending_video = True
                     video_stream_thread = threading.Thread(target=self.send_video_stream, args=(client_socket,), daemon=True)
                     video_stream_thread.start()
 
-                elif 'stop' in message:
+                elif message == 'stop':
                     # stop stream thread
                     self.sending_video = False
 
