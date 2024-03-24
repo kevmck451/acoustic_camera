@@ -11,6 +11,7 @@ if __name__ == "__main__":
     controller = Controller()
     gui = Main_Window(controller.handle_event)
     video_server = Video_Overlay_Server()
+    gui.set_server(video_server)
 
     controller.set_gui(gui)
     controller.set_event_sender(event_sender)

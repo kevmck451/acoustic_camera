@@ -16,14 +16,6 @@ class Controller:
         self.gui = None
         self.event_sender = None
 
-
-
-        # self.video_stream_server = Video_Overlay_Server().start_server()
-        # Start Hardware Scripts
-        # Attempt to start camera and mic streams
-
-        self.demo_stop = True
-
     def set_gui(self, gui):
         self.gui = gui
 
@@ -40,7 +32,6 @@ class Controller:
 
         elif event == Event.SETTINGS_BUTTON_1:
             print('SETTINGS BUTTON 1 PRESSED')
-
 
         elif event == Event.SETTINGS_BUTTON_2:
             print('SETTINGS BUTTON 2 PRESSED')
@@ -95,7 +86,8 @@ class Controller:
                 self.overlay_threshold_window.mainloop()
 
 
-
+        elif event == Event.START_CAMERA:
+            self.gui.Video_Frame.update_camera_feed()
 
 
         # Window Closing Actions

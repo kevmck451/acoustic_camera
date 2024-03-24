@@ -61,6 +61,9 @@ class Main_Window(ctk.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind("<Escape>", self.close_application)
 
+    def set_server(self, video_server):
+        self.video_stream = video_server
+
     def on_close(self):
         # Perform any cleanup or process termination steps here
         # For example, safely terminate any running threads, save state, release resources, etc.
@@ -187,11 +190,11 @@ class Left_Frame(ctk.CTkFrame):
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.button_dummy_4 = ctk.CTkButton(frame, text='Button',
+        self.button_dummy_4 = ctk.CTkButton(frame, text='Start Video Feed',
                                       font=(configuration.main_font_style, configuration.main_font_size),
-                                      fg_color=configuration.gray_fg_color,
-                                      hover_color=configuration.gray_hover_color,
-                                      command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+                                      fg_color=configuration.green_fg_color,
+                                      hover_color=configuration.green_hover_color,
+                                      command=lambda: self.event_handler(Event.START_CAMERA))
         self.button_dummy_4.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_dummy_5 = ctk.CTkButton(frame, text='Button',
@@ -241,9 +244,8 @@ class Left_Frame(ctk.CTkFrame):
 class Video_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
+        self.parent = parent
         self.event_handler = event_handler
-        # self.camera = camera
-
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
@@ -251,11 +253,11 @@ class Video_Frame(ctk.CTkFrame):
 
     def update_camera_feed(self):
         try:
-            frame = self.camera.frame_queue.get_nowait()
+            frame = self.parent.video_stream.decompressed_image
             self.label.configure(image=frame)
             self.label.image = frame
-        except queue.Empty:
-            pass
+        except Exception as e:
+            print(e)
 
         self.after(5, self.update_camera_feed)
 
