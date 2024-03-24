@@ -1,5 +1,5 @@
 
-from client_video import Video_Client
+from app.Model.client_video import Video_Client
 
 
 from dataclasses import dataclass
