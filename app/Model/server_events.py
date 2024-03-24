@@ -34,9 +34,9 @@ class Event_Server:
                 message = data.decode()
 
                 if '=' in message:
-                    message.split('=')
-                    command = message[0]
-                    value = message[1]
+                    command_message = message.split('=')
+                    command = command_message[0]
+                    value = command_message[1]
                     print(f"Received: {command} = {value}")
                     self.event_commands(command, value)
 
@@ -63,7 +63,6 @@ class Event_Server:
 
     def stop(self):
         self.running = False
-
 
     def event_commands(self, command, value):
         if command == 'mic_rms_threshold':

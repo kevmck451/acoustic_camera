@@ -43,6 +43,7 @@ class Event_Sender_Client:
         while self.connected == True:
 
             try:
+                print('HEARTBEAT')
                 self.socket.sendall('heartbeat'.encode())
                 time.sleep(burst_time)
                 self.socket.sendall('heartbeat'.encode())
