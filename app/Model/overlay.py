@@ -28,7 +28,7 @@ class Overlay:
         self.rms_threshold = np.log(20)  # 20
         self.rms_max = np.log(85)  # 85
         self.audio_overlay_color = 2
-        self.video_client = Video_Client(host='0.0.0.0')
+        self.video_client = Video_Client()
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)

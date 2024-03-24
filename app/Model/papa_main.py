@@ -32,6 +32,7 @@ if __name__ == "__main__":
     overlay_thread = threading.Thread(target=overlay.start_overlay, daemon=True)
     overlay_thread.start()
 
+
     while True:
         try:
             time.sleep(0.1)
