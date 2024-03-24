@@ -36,7 +36,6 @@ class Overlay:
         # audio_scale_thread.start()
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
         audio_scale_thread.start()
-        time.sleep(1)
 
         # if wanting to view overlay uncomment this and comment out above
         overlay_thread = threading.Thread(target=self.view_overlay, daemon=True)
@@ -112,16 +111,17 @@ class Overlay:
     def view_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
-            if frame is not None:
+            if frame is not None and self.audio_overlay is not None:
+                if frame.shape == self.audio_overlay.shape:
 
-                # Blend the audio overlay with the video frame
-                combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
-                self.total_overlay = combined_overlay
+                    # Blend the audio overlay with the video frame
+                    combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
+                    self.total_overlay = combined_overlay
 
-                # Display the result
-                cv2.imshow('Total Overlay', self.total_overlay)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
+                    # Display the result
+                    cv2.imshow('Total Overlay', self.total_overlay)
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        break
 
         cv2.destroyAllWindows()
 
@@ -129,29 +129,30 @@ class Overlay:
     def start_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
-            if frame is not None:
+            if frame is not None and self.audio_overlay is not None:
+                if frame.shape == self.audio_overlay.shape:
 
-                # Blend the audio overlay with the video frame
-                combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
-                self.total_overlay = combined_overlay
-                # print(self.total_overlay.shape)
-                # Calculate the number of bytes: 921600 bytes
-                # num_bytes = self.total_overlay.nbytes
-                # print(num_bytes)
+                    # Blend the audio overlay with the video frame
+                    combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
+                    self.total_overlay = combined_overlay
+                    # print(self.total_overlay.shape)
+                    # Calculate the number of bytes: 921600 bytes
+                    # num_bytes = self.total_overlay.nbytes
+                    # print(num_bytes)
 
-                # Now, self.total_overlay_compressed contains the compressed image data
-                # which can be sent over a network or saved to disk
+                    # Now, self.total_overlay_compressed contains the compressed image data
+                    # which can be sent over a network or saved to disk
 
-                # Calculate the number of bytes: 921600 bytes
+                    # Calculate the number of bytes: 921600 bytes
 
-                # Compress the combined overlay to a JPEG format in memory
-                compression_rate = 20  # Max 100
-                result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+                    # Compress the combined overlay to a JPEG format in memory
+                    compression_rate = 20  # Max 100
+                    result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
+                                                                         [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
 
-                # num_bytes = self.total_overlay_compressed.nbytes
-                # print(num_bytes)
-                # print(self.total_overlay_compressed)
+                    # num_bytes = self.total_overlay_compressed.nbytes
+                    # print(num_bytes)
+                    # print(self.total_overlay_compressed)
 
 
 
