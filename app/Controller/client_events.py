@@ -14,7 +14,6 @@ class Event_Sender_Client:
         self.heartbeat_thread = None
         self.connected = False
         self.heartbeat_attempt = 0
-        self.heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
 
     def ensure_connection(self):
         print('Attempting to Connect with Pi Hardware')
@@ -29,6 +28,7 @@ class Event_Sender_Client:
                 if not response.decode('utf-8') == 'ack': continue
                 print(f"Connected to {self.host}:{self.port}")
                 self.connected = True
+                self.heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
                 self.heartbeat_thread.start()
 
             except Exception as e:
@@ -55,6 +55,7 @@ class Event_Sender_Client:
 
             if self.heartbeat_attempt == 5:
                 self.connected = False
+                self.connect_thread = threading.Thread(target=self.ensure_connection, daemon=True)
                 self.connect_thread.start()
 
             time.sleep(wait_time)
