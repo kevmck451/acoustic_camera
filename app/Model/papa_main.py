@@ -2,6 +2,7 @@
 from app.Model.server_events import Event_Server
 from app.Model.pi_hardware.pi_hardware import PiHardware
 from app.Model.overlay import Overlay
+from app.Model.server_video_stream import Video_Server
 
 
 import threading
@@ -26,13 +27,18 @@ if __name__ == "__main__":
     print('Starting Overlay-----------------------')
     overlay = Overlay(pi_hardware)
 
-    print('Ready for Commands-----------------------')
     event_server.set_hardware(pi_hardware, overlay)
 
     overlay_thread = threading.Thread(target=overlay.start_overlay, daemon=True)
     overlay_thread.start()
 
+    video_server = Video_Server()
+    video_thread = threading.Thread(target=video_server.run, daemon=True)
+    video_thread.start()
 
+    event_server.set_video_server(video_server)
+
+    print('Ready for Commands-----------------------')
     while True:
         try:
             time.sleep(0.1)

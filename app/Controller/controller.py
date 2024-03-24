@@ -15,6 +15,7 @@ class Controller:
         self.app_state = State.IDLE
         self.gui = None
         self.event_sender = None
+        self.video_sender = None
 
     def set_gui(self, gui):
         self.gui = gui

@@ -1,15 +1,16 @@
 
-
 from dataclasses import dataclass
 import threading
 import socket
 import time
 
-class Event_Server:
-    def __init__(self, host='10.0.0.1', port=42069):
+class Video_Server:
+    def __init__(self, host='10.0.0.1', port=55555):
         self.host = host
         self.port = port
+        self.BUFFER_SIZE = 65536
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, self.BUFFER_SIZE)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((self.host, self.port))
         self.socket.listen()
@@ -18,6 +19,8 @@ class Event_Server:
         self.hardware = None
         self.overlay = None
         self.video_server = None
+        self.sending_video = False
+        self.transmission_rate = 0.5
 
 
         print(f"Server listening on {self.host}:{self.port}")
@@ -36,20 +39,18 @@ class Event_Server:
                 data = client_socket.recv(1024)
                 if not data:
                     break
-
                 message = data.decode()
-                if 'heartbeat' in message:
-                    pass
+                if 'start' in message:
+                    # start stream thread
+                    self.sending_video = True
+                    video_stream_thread = threading.Thread(target=self.send_video_stream, args=(client_socket,), daemon=True)
+                    video_stream_thread.start()
 
-                elif '=' in message:
-                    command_message = message.split('=')
-                    command = command_message[0]
-                    value = command_message[1]
-                    print(f"Received: {command} = {value}")
-                    self.event_commands(command, value)
+                elif 'stop' in message:
+                    # stop stream thread
+                    self.sending_video = False
 
                 else: print(message)
-
 
     def run(self):
         while self.running:
@@ -72,27 +73,11 @@ class Event_Server:
     def stop(self):
         self.running = False
 
-    def event_commands(self, command, value):
-        if command == 'mic_rms_threshold':
-            self.overlay.rms_threshold = value
-        elif command == 'mic_rms_max':
-            self.overlay.rms_max = value
-        elif command == 'mic_overlay_color':
-            # BGR 0, 1, 2
-            if value == 'red':
-                self.overlay.audio_overlay_color = 2
-            elif value == 'green':
-                self.overlay.audio_overlay_color = 1
-            elif value == 'blue':
-                self.overlay.audio_overlay_color = 0
-        elif command == 'send_video':
-            if value == 'True':
-                self.overlay.stream_video = True
-                overlay_thread = threading.Thread(target=self.overlay.stream_video_data)
-                overlay_thread.start()
-            else:
-                self.overlay.stream_video = False
 
+    def send_video_stream(self, client_socket):
+        while self.sending_video:
+            client_socket.sendall(self.overlay.total_overlay_compressed)
+            time.sleep(self.transmission_rate)
 
 
 
@@ -108,5 +93,8 @@ class Client:
 
 # To run the server
 if __name__ == '__main__':
-    server = Event_Server('0.0.0.0')
-    server.run()
+    server = Video_Server('0.0.0.0')
+    run_thread = threading.Thread(target=server.run, daemon=True).start()
+
+    while True:
+        time.sleep(0.1)
