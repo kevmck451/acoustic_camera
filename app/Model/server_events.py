@@ -32,7 +32,7 @@ class Event_Server:
                     break
 
                 message = data.decode()
-                if message == 'heartbeat':
+                if 'heartbeat' in message:
                     pass
 
                 elif '=' in message:

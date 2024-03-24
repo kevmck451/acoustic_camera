@@ -36,7 +36,7 @@ class Event_Sender_Client:
                 time.sleep(1)  # Retry after a delay
 
     def heartbeat(self):
-        print('heartbeat')
+        # print('heartbeat')
         wait_time = 1
         burst_time = 0.1
 
