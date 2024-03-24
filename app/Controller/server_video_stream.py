@@ -36,7 +36,7 @@ if __name__ == '__main__':
     # client = Event_Sender_Client('127.0.0.1', name='MacBook')
     # for running papapi to mac
     server = Video_Overlay_Server('0.0.0.0')
-    server_thread = threading.Thread(target=server.start_server(), daemon=True)
+    server_thread = threading.Thread(target=server.start_server, daemon=True)
     server_thread.start()
 
     while True:
