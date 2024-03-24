@@ -81,12 +81,11 @@ class Event_Server:
                 self.overlay.audio_overlay_color = 1
             elif value == 'blue':
                 self.overlay.audio_overlay_color = 0
-        elif command == 'transmit_video':
+        elif command == 'send_video':
             if value == 'True':
-                self.video_client
+                self.overlay.stream_video = True
             else:
-                # tell video client to stop transmitting
-                pass
+                self.overlay.stream_video = False
 
 
 
