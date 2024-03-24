@@ -76,7 +76,8 @@ class Video_Server:
 
     def send_video_stream(self, client_socket):
         while self.sending_video:
-            client_socket.sendall(self.overlay.total_overlay_compressed)
+            # client_socket.sendall(self.overlay.total_overlay_compressed)
+            client_socket.sendall('Testing'.encode())
             time.sleep(self.transmission_rate)
 
 

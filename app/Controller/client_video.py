@@ -19,9 +19,9 @@ class Video_Sender_Client:
 
 
     def ensure_connection(self):
-        print('Attempting to Connect with Pi Hardware')
+        print('Attempting to Connect with Video Server')
         while not self.connected:
-            print("Waiting for Hardware Connection...")
+            print("Waiting for Video Connection...")
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, self.BUFFER_SIZE)
@@ -42,21 +42,23 @@ class Video_Sender_Client:
         if self.connected:
             try:
                 self.socket.sendall(data.encode())
-                print("Data sent")
+                print("Video Frame Sent")
             except socket.error as e:
                 print(f"Error sending data: {e}")
                 self.connected = False
                 self.socket.close()
         else:
-            print("Not connected. Unable to send data.")
+            print("Video Server Not Connected. Unable to send data.")
 
 
     def video_stream_data(self):
-        print('Attempting to Connect with Pi Hardware')
+        print('Streaming Video')
         while not self.connected:
             frame = self.socket.recv(self.BUFFER_SIZE)
-            if not self.frame_queue.full():
-                self.frame_queue.put(frame)
+            frame = frame.decode()
+            print(frame)
+            # if not self.frame_queue.full():
+            #     self.frame_queue.put(frame)
 
 
     def close_connection(self):
