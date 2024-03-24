@@ -19,9 +19,7 @@ class Event_Server:
         self.overlay = None
         self.video_server = None
 
-
         print(f"Server listening on {self.host}:{self.port}")
-        # self.run_thread = threading.Thread(target=self.run, daemon=True).start()
 
     def set_hardware(self, hardware, overlay):
         self.hardware = hardware

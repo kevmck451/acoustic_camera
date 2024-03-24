@@ -22,9 +22,7 @@ class Video_Server:
         self.sending_video = False
         self.transmission_rate = 0.5
 
-
         print(f"Server listening on {self.host}:{self.port}")
-        # self.run_thread = threading.Thread(target=self.run, daemon=True).start()
 
     def set_hardware(self, hardware, overlay):
         self.hardware = hardware
@@ -68,7 +66,8 @@ class Video_Server:
             self.client_list.append(client)
             print(f"Connection from {client.name} with address: {addr}")
             client_socket.sendall('ack'.encode())
-            threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True).start()
+            video_stream_feed = threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True)
+            video_stream_feed.start()
 
     def stop(self):
         self.running = False
@@ -76,6 +75,7 @@ class Video_Server:
 
     def send_video_stream(self, client_socket):
         while self.sending_video:
+            print('attempting to stream video')
             # client_socket.sendall(self.overlay.total_overlay_compressed)
             client_socket.sendall('Testing'.encode())
             time.sleep(self.transmission_rate)
