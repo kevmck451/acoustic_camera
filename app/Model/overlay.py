@@ -142,6 +142,7 @@ class Overlay:
 
                 # Calculate the number of bytes: 921600 bytes
 
+
     def stream_video_data(self):
         while self.stream_video:
             # Compress the combined overlay to a JPEG format in memory
@@ -154,9 +155,9 @@ class Overlay:
             # print(self.total_overlay_compressed)
 
             if result:
-                # test_array = np.zeros((10, 10, 3))
-                # self.video_client.send_data(test_array)
-                self.video_client.send_data('testing')
+                test_array = np.zeros((10, 10, 3))
+                self.video_client.send_data(test_array)
+                # self.video_client.send_data('testing')
                 # self.video_client.send_data(self.total_overlay_compressed)
                 print('Frame sent')
             time.sleep(0.3)

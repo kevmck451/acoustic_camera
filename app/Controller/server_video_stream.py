@@ -1,6 +1,8 @@
 
 import numpy as np
 import threading
+import imutils
+import base64
 import socket
 import time
 import cv2
@@ -10,12 +12,15 @@ class Video_Overlay_Server:
     def __init__(self, host='0.0.0.0', port=55555):
         self.host = host
         self.port = port
-        # Create a UDP socket
+        host_name = socket.gethostname()
+        host_ip = socket.gethostbyname(host_name)
+        self.BUFFER_SIZE = 65536
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # Bind the socket to the address and port
-        self.sock.bind((self.host, self.port))
+        self.sock.setsockopt(socket.SOL_SOCKET,socket.SO_RCVBUF,self.BUFFER_SIZE)
+        self.sock.bind((host_ip, self.port))
         self.decompressed_image = None
         self.running = False
+
         # self.run()
 
     def start_server(self):

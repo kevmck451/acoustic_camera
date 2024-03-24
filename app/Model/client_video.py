@@ -11,8 +11,8 @@ class Video_Client:
 
     def send_data(self, data):
         print(f'TX Data Type: {type(data)}')
-        self.sock.sendto(data.encode(), (self.host, self.port))
-        # self.sock.sendto(data.tobytes(), (self.host, self.port))
+        # self.sock.sendto(data.encode(), (self.host, self.port))
+        self.sock.sendto(data.tobytes(), (self.host, self.port))
 
     def close(self):
         self.sock.close()
