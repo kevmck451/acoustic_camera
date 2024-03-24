@@ -143,7 +143,7 @@ class Overlay:
                 # which can be sent over a network or saved to disk
 
                 # Calculate the number of bytes: 921600 bytes
-                num_bytes = self.total_overlay.nbytes
+                num_bytes = self.total_overlay_compressed.nbytes
                 print(num_bytes)
 
                 # Optional: If you want to display the compressed image for debugging
