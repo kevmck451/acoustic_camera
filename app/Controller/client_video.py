@@ -16,6 +16,7 @@ class Video_Sender_Client:
         self.connect_thread.start()
         self.connected = False
         self.frame_queue = queue.Queue(maxsize=10)
+        self.receive_video_thread = None
 
 
     def ensure_connection(self):
@@ -32,9 +33,12 @@ class Video_Sender_Client:
                 if not response.decode('utf-8') == 'ack': continue
                 print(f"Connected to {self.host}:{self.port}")
                 self.connected = True
+                self.receive_video_thread = threading.Thread(target=self.video_stream_data, daemon=True)
+                self.receive_video_thread.start()
 
             except Exception as e:
                 # print(f"Error connecting to the server: {e}")
+                self.connected = False
                 time.sleep(1)  # Retry after a delay
 
 
@@ -54,7 +58,7 @@ class Video_Sender_Client:
     def video_stream_data(self):
         print('Streaming Video')
         while not self.connected:
-            frame = self.socket.recv(self.BUFFER_SIZE)
+            frame = self.socket.recv(1024)
             frame = frame.decode()
             print(frame)
             # if not self.frame_queue.full():
