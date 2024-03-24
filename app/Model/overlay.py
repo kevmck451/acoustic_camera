@@ -1,4 +1,5 @@
 
+from app.Model.client_video import Video_Client
 
 import threading
 import numpy as np
@@ -14,6 +15,7 @@ class Overlay:
         self.total_overlay = np.zeros((self.height, self.width))
         self.total_overlay_compressed = None
         self.save_video = False
+        self.stream_video = False
         self.detect_sound_power = False
         self.detect_drones = False
         self.classify_drones = False
@@ -24,6 +26,7 @@ class Overlay:
         self.rms_threshold = np.log(20)  # 20
         self.rms_max = np.log(85)  # 85
         self.audio_overlay_color = 2
+        self.video_client = Video_Client(host='127.0.0.1')
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
@@ -143,15 +146,11 @@ class Overlay:
                 # which can be sent over a network or saved to disk
 
                 # Calculate the number of bytes: 921600 bytes
-                num_bytes = self.total_overlay_compressed.nbytes
-                print(num_bytes)
+                # num_bytes = self.total_overlay_compressed.nbytes
+                # print(num_bytes)
 
-                # Optional: If you want to display the compressed image for debugging
-                # decompressed_image = cv2.imdecode(self.total_overlay_compressed, cv2.IMREAD_COLOR)
-                # cv2.imshow('Compressed Overlay', decompressed_image)
-                # if cv2.waitKey(1) & 0xFF == ord('q'):
-                #     break
-        # cv2.destroyAllWindows()
+                if self.stream_video:
+                    self.video_client.send_data(self.total_overlay_compressed)
 
 
     def stop_overlay(self):

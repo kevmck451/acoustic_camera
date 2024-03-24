@@ -1,6 +1,4 @@
 
-from app.Model.client_video import Video_Client
-
 
 from dataclasses import dataclass
 import threading
@@ -19,7 +17,7 @@ class Event_Server:
         self.client_list = []
         self.hardware = None
         self.overlay = None
-        # self.video_client = Video_Client(host='127.0.0.1')
+
 
         print(f"Server listening on {self.host}:{self.port}")
         # self.run_thread = threading.Thread(target=self.run, daemon=True).start()
@@ -85,8 +83,7 @@ class Event_Server:
                 self.overlay.audio_overlay_color = 0
         elif command == 'transmit_video':
             if value == 'True':
-                # tell video client to start transmitting
-                pass
+                self.video_client
             else:
                 # tell video client to stop transmitting
                 pass
