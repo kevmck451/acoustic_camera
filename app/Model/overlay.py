@@ -146,12 +146,13 @@ class Overlay:
         while self.stream_video:
             # Compress the combined overlay to a JPEG format in memory
             compression_rate = 90  # Max 100
-            result, image_compressed = cv2.imencode('.jpg', self.total_overlay,
+            result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
             if result:
-                self.video_client.send_data(image_compressed)
+                self.video_client.send_data(self.total_overlay_compressed)
+                print(image_compressed)
                 print('Frame sent')
-            time.sleep(0.1)
+            # time.sleep(0.1)
 
 
     def stop_overlay(self):
