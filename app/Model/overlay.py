@@ -151,7 +151,7 @@ class Overlay:
 
             # num_bytes = self.total_overlay_compressed.nbytes
             # print(num_bytes)
-            print(self.total_overlay_compressed)
+            # print(self.total_overlay_compressed)
 
             if result:
                 test_array = np.zeros((10, 10, 3))
