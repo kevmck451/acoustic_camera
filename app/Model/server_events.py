@@ -84,8 +84,8 @@ class Event_Server:
         elif command == 'send_video':
             if value == 'True':
                 self.overlay.stream_video = True
-            else:
-                self.overlay.stream_video = False
+            # else:
+            #     self.overlay.stream_video = False
 
 
 
