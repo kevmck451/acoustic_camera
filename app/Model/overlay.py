@@ -150,7 +150,7 @@ class Overlay:
 
                 # num_bytes = self.total_overlay_compressed.nbytes
                 # print(num_bytes)
-                # print(self.total_overlay_compressed)
+                print(self.total_overlay_compressed)
 
 
 
