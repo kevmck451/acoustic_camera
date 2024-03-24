@@ -102,6 +102,7 @@ class Overlay:
         #
         # cv2.destroyAllWindows()
 
+
     def view_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
@@ -127,12 +128,9 @@ class Overlay:
                 # Blend the audio overlay with the video frame
                 combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
                 self.total_overlay = combined_overlay
-
-
-
-
-
-
+                # Calculate the number of bytes
+                num_bytes = self.total_overlay.nbytes
+                print(num_bytes)
 
     def stop_overlay(self):
         self.running = False

@@ -2,7 +2,7 @@
 
 import socket
 
-class Video_Overlay_Sending:
+class Video_Client:
     def __init__(self, host='10.0.0.13', port=55555):
         self.host = host
         self.port = port
@@ -13,3 +13,10 @@ class Video_Overlay_Sending:
 
     def close(self):
         self.sock.close()
+
+
+
+
+
+
+
