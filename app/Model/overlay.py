@@ -155,7 +155,7 @@ class Overlay:
             num_bytes = self.total_overlay_compressed.nbytes
             print(num_bytes)
             print('frame sent')
-            time.sleep(0.1)
+            time.sleep(1)
 
 
     def stop_overlay(self):
