@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 import customtkinter as ctk
 import tkinter as tk
 import warnings
-import queue
+import cv2
 
 
 
@@ -253,13 +253,20 @@ class Video_Frame(ctk.CTkFrame):
 
     def update_camera_feed(self):
         try:
-            frame = self.parent.video_stream.decompressed_image
-            self.label.configure(image=frame)
-            self.label.image = frame
+            cv_image = self.parent.video_stream.decompressed_image
+            if cv_image is not None:
+                # Convert the color format from BGR (OpenCV) to RGB
+                cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+                # Convert the OpenCV image to PIL format
+                pil_image = Image.fromarray(cv_image)
+                # Convert the PIL image to a format that tkinter can use
+                tk_image = ImageTk.PhotoImage(image=pil_image)
+                self.label.configure(image=tk_image)
+                self.label.image = tk_image  # keep a reference!
         except Exception as e:
             print(e)
 
-        self.after(5, self.update_camera_feed)
+        self.after(5, self.update_camera_feed)  # Update every 5 milliseconds
 
 
 
