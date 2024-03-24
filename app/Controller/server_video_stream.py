@@ -3,7 +3,7 @@
 import threading
 import socket
 import time
-
+import cv2
 
 # UDP Socket used for communicating to pi's camera
 class Video_Overlay_Server:
@@ -17,8 +17,17 @@ class Video_Overlay_Server:
 
     def start_server(self):
         while True:
-            data, addr = self.sock.recvfrom(1024)  # Buffer size is 1024 bytes
+            data, addr = self.sock.recvfrom(50000)  # Buffer size is 1024 bytes
             print(data)
+            decompressed_image = cv2.imdecode(data, cv2.IMREAD_COLOR)
+
+
+            cv2.imshow('Compressed Overlay', decompressed_image)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        cv2.destroyAllWindows()
+
 
 
 if __name__ == '__main__':

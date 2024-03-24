@@ -1,9 +1,8 @@
 
 
-import cv2
 import threading
 import numpy as np
-import cv2 # pip install opencv-python # This will take really long time
+import cv2
 
 
 class Overlay:
