@@ -134,8 +134,8 @@ class Overlay:
                 self.total_overlay = combined_overlay
                 # print(self.total_overlay.shape)
                 # Calculate the number of bytes: 921600 bytes
-                num_bytes = self.total_overlay.nbytes
-                print(num_bytes)
+                # num_bytes = self.total_overlay.nbytes
+                # print(num_bytes)
 
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
@@ -155,7 +155,7 @@ class Overlay:
             if result:
                 self.video_client.send_data(self.total_overlay_compressed)
                 print('Frame sent')
-            time.sleep(0.05)
+            time.sleep(0.1)
 
 
     def stop_overlay(self):
