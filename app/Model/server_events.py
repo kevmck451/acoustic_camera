@@ -58,6 +58,7 @@ class Event_Server:
     def run(self):
         while self.running:
             client_socket, addr = self.socket.accept()
+            print('client accepted')
             time.sleep(0.1)
             name = client_socket.recv(1024).decode()
 
