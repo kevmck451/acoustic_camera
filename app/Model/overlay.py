@@ -125,6 +125,7 @@ class Overlay:
 
 
     def start_overlay(self):
+        print('overlay started')
         while self.running:
             frame = self.camera_hardware.read()
             if frame is not None:
