@@ -1,6 +1,6 @@
 
 
-import cv2 # pip install opencv-python
+import cv2
 import threading
 import numpy as np
 import cv2 # pip install opencv-python # This will take really long time
@@ -13,6 +13,8 @@ class Overlay:
         self.height, self.width = self.camera_hardware.height, self.camera_hardware.width
         self.audio_overlay = np.zeros((self.height, self.width))
         self.total_overlay = np.zeros((self.height, self.width))
+        self.total_overlay_compressed = None
+        self.save_video = False
         self.detect_sound_power = False
         self.detect_drones = False
         self.classify_drones = False
@@ -128,9 +130,29 @@ class Overlay:
                 # Blend the audio overlay with the video frame
                 combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
                 self.total_overlay = combined_overlay
-                # Calculate the number of bytes
+                # Calculate the number of bytes: 921600 bytes
+                # num_bytes = self.total_overlay.nbytes
+                # print(num_bytes)
+
+                # Compress the combined overlay to a JPEG format in memory
+                compression_rate = 90  # Max 100
+                result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
+                                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+
+                # Now, self.total_overlay_compressed contains the compressed image data
+                # which can be sent over a network or saved to disk
+
+                # Calculate the number of bytes: 921600 bytes
                 num_bytes = self.total_overlay.nbytes
                 print(num_bytes)
+
+                # Optional: If you want to display the compressed image for debugging
+                # decompressed_image = cv2.imdecode(self.total_overlay_compressed, cv2.IMREAD_COLOR)
+                # cv2.imshow('Compressed Overlay', decompressed_image)
+                # if cv2.waitKey(1) & 0xFF == ord('q'):
+                #     break
+        # cv2.destroyAllWindows()
+
 
     def stop_overlay(self):
         self.running = False
