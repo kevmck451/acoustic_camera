@@ -20,14 +20,14 @@ if __name__ == "__main__":
     event_thread = threading.Thread(target=event_server.run, daemon=True)
     event_thread.start()
 
-    # print('Stating Papa Pi Hardware-----------------------')
-    # pi_hardware = PiHardware()
-    #
-    # print('Starting Overlay-----------------------')
-    # overlay = Overlay(pi_hardware)
-    #
-    # print('Ready for Commands-----------------------')
-    # event_server.set_hardware(pi_hardware, overlay)
+    print('Stating Papa Pi Hardware-----------------------')
+    pi_hardware = PiHardware()
+
+    print('Starting Overlay-----------------------')
+    overlay = Overlay(pi_hardware)
+
+    print('Ready for Commands-----------------------')
+    event_server.set_hardware(pi_hardware, overlay)
 
     while True:
         try:
