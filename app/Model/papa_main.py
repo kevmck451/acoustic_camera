@@ -29,8 +29,8 @@ if __name__ == "__main__":
     print('Ready for Commands-----------------------')
     event_server.set_hardware(pi_hardware, overlay)
 
-    overlay_thread = threading.Thread(target=overlay.start_overlay, daemon=True)
-    overlay_thread.start()
+    # overlay_thread = threading.Thread(target=overlay.start_overlay, daemon=True)
+    # overlay_thread.start()
 
     while True:
         try:

@@ -14,10 +14,11 @@ class Video_Overlay_Server:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Bind the socket to the address and port
         self.sock.bind((self.host, self.port))
+        self.running = True
 
     def start_server(self):
         print('Server Running')
-        while True:
+        while self.running:
             data, addr = self.sock.recvfrom(50000)  # Buffer size is 1024 bytes
             print(data)
             decompressed_image = cv2.imdecode(data, cv2.IMREAD_COLOR)
