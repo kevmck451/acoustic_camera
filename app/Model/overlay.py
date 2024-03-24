@@ -134,8 +134,8 @@ class Overlay:
                 self.total_overlay = combined_overlay
                 # print(self.total_overlay.shape)
                 # Calculate the number of bytes: 921600 bytes
-                # num_bytes = self.total_overlay.nbytes
-                # print(num_bytes)
+                num_bytes = self.total_overlay.nbytes
+                print(num_bytes)
 
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
@@ -148,6 +148,10 @@ class Overlay:
             compression_rate = 90  # Max 100
             result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+
+            num_bytes = self.total_overlay_compressed.nbytes
+            print(num_bytes)
+
             if result:
                 self.video_client.send_data(self.total_overlay_compressed)
                 print('Frame sent')
