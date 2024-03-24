@@ -88,7 +88,16 @@ class Controller:
 
         elif event == Event.START_CAMERA:
             print('START_CAMERA')
+            command = 'send_video=True'
+            self.event_sender.send_data(command)
             self.gui.Center_Frame.update_camera_feed()
+
+        elif event == Event.STOP_CAMERA:
+            print('STOP CAMERA')
+            command = 'send_video=False'
+            self.event_sender.send_data(command)
+            # self.gui.Center_Frame.stop_camera_feed()
+
 
 
         # Window Closing Actions
