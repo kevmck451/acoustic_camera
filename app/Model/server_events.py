@@ -32,8 +32,10 @@ class Event_Server:
                     break
 
                 message = data.decode()
+                if message == 'heartbeat':
+                    pass
 
-                if '=' in message:
+                elif '=' in message:
                     command_message = message.split('=')
                     command = command_message[0]
                     value = command_message[1]
