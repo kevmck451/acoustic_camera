@@ -123,9 +123,6 @@ class Overlay:
 
 
     def start_overlay(self):
-        print('overlay started')
-        print(self.running)
-        print(self.audio_visual_running)
         while self.running:
             frame = self.camera_hardware.read()
             if frame is not None:
@@ -142,7 +139,6 @@ class Overlay:
                 compression_rate = 90  # Max 100
                 result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
                                                                      [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
-                print(f'result: {result}')
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
 
@@ -150,7 +146,7 @@ class Overlay:
                 # num_bytes = self.total_overlay_compressed.nbytes
                 # print(num_bytes)
 
-                # print(self.stream_video)
+                print(self.stream_video)
                 # if self.stream_video:
                 #     self.video_client.send_data(self.total_overlay_compressed)
                 #     print('frame sent')
