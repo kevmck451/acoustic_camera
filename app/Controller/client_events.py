@@ -3,7 +3,7 @@ import threading
 import time
 
 class Event_Sender_Client:
-    def __init__(self, host='10.0.0.1', port=42069, name='Pi App'):
+    def __init__(self, host='10.0.0.1', port=42069, name='Pi App Events'):
         self.host = host
         self.port = port
         self.name = name

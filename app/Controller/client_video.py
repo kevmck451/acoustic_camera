@@ -5,7 +5,7 @@ import queue
 import time
 
 class Video_Sender_Client:
-    def __init__(self, host='10.0.0.1', port=55555, name='Pi App'):
+    def __init__(self, host='10.0.0.1', port=55555, name='Pi App Video'):
         self.host = host
         self.port = port
         self.name = name
