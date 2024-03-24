@@ -252,8 +252,10 @@ class Video_Frame(ctk.CTkFrame):
         # self.update_camera_feed()
 
     def update_camera_feed(self):
+        print('updating_camera_feed')
         try:
             cv_image = self.parent.video_stream.decompressed_image
+            print(cv_image)
             if cv_image is not None:
                 # Convert the color format from BGR (OpenCV) to RGB
                 cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
