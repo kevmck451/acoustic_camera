@@ -23,7 +23,7 @@ class Video_Overlay_Server:
     def start_server(self):
         print('Server Running')
         while self.running:
-            data, addr = self.sock.recvfrom(65507)  # Use the maximum safe UDP packet size
+            data, addr = self.sock.recvfrom(1024)  # Use the maximum safe UDP packet size 65507
             if not data:
                 continue
             print(f'RX Data Type: {type(data)}')
