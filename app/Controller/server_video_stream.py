@@ -14,7 +14,11 @@ class Video_Overlay_Server:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # Bind the socket to the address and port
         self.sock.bind((self.host, self.port))
+
+        self.decompressed_image = None
+
         self.running = True
+        self.run()
 
     def start_server(self):
         print('Server Running')
@@ -25,7 +29,7 @@ class Video_Overlay_Server:
             print(type(data))
             # Attempt to decode the received bytes as an image
             image_data = np.frombuffer(data, dtype=np.uint8)
-            decompressed_image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
+            self.decompressed_image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
 
         #     if decompressed_image is not None:
         #         cv2.imshow('Compressed Overlay', decompressed_image)
@@ -33,6 +37,11 @@ class Video_Overlay_Server:
         #             break
         #
         # cv2.destroyAllWindows()
+
+    def run(self):
+        self.server_thread = threading.Thread(target=self.start_server, daemon=True)
+        self.server_thread.start()
+
 
 
 
