@@ -3,7 +3,9 @@ from app.Model.client_video import Video_Client
 
 import threading
 import numpy as np
+import time
 import cv2
+
 
 
 class Overlay:
@@ -135,21 +137,26 @@ class Overlay:
                 # num_bytes = self.total_overlay.nbytes
                 # print(num_bytes)
 
-                # Compress the combined overlay to a JPEG format in memory
-                compression_rate = 90  # Max 100
-                result, self.total_overlay_compressed = cv2.imencode('.jpg', combined_overlay,
-                                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+
                 # Now, self.total_overlay_compressed contains the compressed image data
                 # which can be sent over a network or saved to disk
 
                 # Calculate the number of bytes: 921600 bytes
 
-                if self.stream_video:
-                    # print('sending frame')
-                    self.video_client.send_data(self.total_overlay_compressed)
-                    num_bytes = self.total_overlay_compressed.nbytes
-                    print(num_bytes)
-                    print('frame sent')
+
+
+    def stream_video_data(self):
+        while self.stream_video:
+            # Compress the combined overlay to a JPEG format in memory
+            compression_rate = 90  # Max 100
+            result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
+                                                                 [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+            self.video_client.send_data(self.total_overlay_compressed)
+            num_bytes = self.total_overlay_compressed.nbytes
+            print(num_bytes)
+            print('frame sent')
+            time.sleep(0.1)
+
 
     def stop_overlay(self):
         self.running = False

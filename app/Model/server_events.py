@@ -84,6 +84,8 @@ class Event_Server:
         elif command == 'send_video':
             if value == 'True':
                 self.overlay.stream_video = True
+                overlay_thread = threading.Thread(target=self.overlay.stream_video_data)
+                overlay_thread.start()
             else:
                 self.overlay.stream_video = False
 
