@@ -50,7 +50,6 @@ class Event_Server:
 
                 else: print(message)
 
-
     def run(self):
         while self.running:
             client_socket, addr = self.socket.accept()
@@ -85,14 +84,6 @@ class Event_Server:
                 self.overlay.audio_overlay_color = 1
             elif value == 'blue':
                 self.overlay.audio_overlay_color = 0
-        elif command == 'send_video':
-            if value == 'True':
-                self.overlay.stream_video = True
-                overlay_thread = threading.Thread(target=self.overlay.stream_video_data)
-                overlay_thread.start()
-            else:
-                self.overlay.stream_video = False
-
 
 
 
