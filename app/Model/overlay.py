@@ -150,7 +150,6 @@ class Overlay:
                                                     [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
             if result:
                 self.video_client.send_data(self.total_overlay_compressed)
-                print(image_compressed)
                 print('Frame sent')
             # time.sleep(0.1)
 
