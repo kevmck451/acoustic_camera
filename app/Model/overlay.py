@@ -38,8 +38,8 @@ class Overlay:
         audio_scale_thread.start()
 
         # if wanting to view overlay uncomment this and comment out above
-        overlay_thread = threading.Thread(target=self.view_overlay, daemon=True)
-        overlay_thread.start()
+        # overlay_thread = threading.Thread(target=self.view_overlay, daemon=True)
+        # overlay_thread.start()
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns

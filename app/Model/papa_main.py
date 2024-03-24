@@ -26,8 +26,8 @@ if __name__ == "__main__":
 
     print('Starting Overlay-----------------------')
     overlay = Overlay(pi_hardware)
-    # overlay_thread = threading.Thread(target=overlay.start_overlay, daemon=True)
-    # overlay_thread.start()
+    overlay_thread = threading.Thread(target=overlay.start_overlay, daemon=True)
+    overlay_thread.start()
 
     event_server.set_hardware(pi_hardware, overlay)
 
