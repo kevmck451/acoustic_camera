@@ -27,8 +27,8 @@ class Event_Sender_Client:
                 response = self.socket.recv(1024)
                 if not response.decode('utf-8') == 'ack': continue
                 print(f"Connected to {self.host}:{self.port}")
-                # self.heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
-                # self.heartbeat_thread.start()
+                self.heartbeat_thread = threading.Thread(target=self.heartbeat, daemon=True)
+                self.heartbeat_thread.start()
                 self.connected = True
 
             except Exception as e:
