@@ -54,12 +54,14 @@ class Video_Server:
         while self.running:
             client_socket, addr = self.socket.accept()
             print('client accepted')
-            time.sleep(0.1)
+            # time.sleep(0.1)
             name = client_socket.recv(1024).decode()
 
             # check if client name already exists and remove them
+            print(self.client_list)
             for client_x in self.client_list:
                 if client_x.name == name:
+                    print('Duplicated Client Discovered and Removing')
                     self.client_list.remove(client_x)
 
             client = Client(name=name, socket=client_socket, ip_addr=addr[0], port=addr[1])
@@ -75,7 +77,7 @@ class Video_Server:
 
     def send_video_stream(self, client_socket):
         while self.sending_video:
-            print('attempting to stream video')
+            print(f'attempting to stream video to {client_socket}')
             # client_socket.sendall(self.overlay.total_overlay_compressed)
             client_socket.sendall('Testing'.encode())
             time.sleep(self.transmission_rate)
