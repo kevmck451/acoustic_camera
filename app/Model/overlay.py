@@ -34,8 +34,6 @@ class Overlay:
         audio_scale_thread = threading.Thread(target=self._generate_audio_view, daemon=True)
         audio_scale_thread.start()
 
-        overlay_thread = threading.Thread(target=self.start_overlay, daemon=True)
-        overlay_thread.start()
         # if wanting to view overlay uncomment this and comment out above
         # overlay_thread = threading.Thread(target=self.view_overlay, daemon=True)
         # overlay_thread.start()
