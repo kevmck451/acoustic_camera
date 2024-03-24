@@ -252,7 +252,7 @@ class Video_Frame(ctk.CTkFrame):
         # self.update_camera_feed()
 
     def update_camera_feed(self):
-        print('updating_camera_feed')
+        # print('updating_camera_feed')
         try:
             cv_image = self.parent.video_stream.decompressed_image
             print(cv_image)
