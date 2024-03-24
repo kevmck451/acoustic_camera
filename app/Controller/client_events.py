@@ -18,7 +18,7 @@ class Event_Sender_Client:
     def ensure_connection(self):
         print('Attempting to Connect with Pi Hardware')
         while not self.connected:
-            print("Waiting for connection...")
+            print("Waiting for Hardware Connection...")
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.socket.connect((self.host, self.port))
@@ -32,7 +32,7 @@ class Event_Sender_Client:
                 self.heartbeat_thread.start()
 
             except Exception as e:
-                print(f"Error connecting to the server: {e}")
+                # print(f"Error connecting to the server: {e}")
                 time.sleep(1)  # Retry after a delay
 
     def heartbeat(self):
