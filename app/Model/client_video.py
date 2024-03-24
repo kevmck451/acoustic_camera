@@ -1,5 +1,5 @@
 
-
+import numpy as np
 import socket
 import time
 
@@ -22,7 +22,9 @@ class Video_Client:
 if __name__ == '__main__':
     video_client = Video_Client(host='127.0.0.1')
 
+    total_overlay = np.zeros((640, 480))
+
     while True:
-        video_client.send_data('test')
+        video_client.send_data(total_overlay)
         time.sleep(1)
 

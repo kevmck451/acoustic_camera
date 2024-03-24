@@ -1,5 +1,5 @@
 
-
+import numpy as np
 import threading
 import socket
 import time
@@ -19,14 +19,18 @@ class Video_Overlay_Server:
     def start_server(self):
         print('Server Running')
         while self.running:
-            data, addr = self.sock.recvfrom(50000)  # Buffer size is 1024 bytes
-            print(data)
-            decompressed_image = cv2.imdecode(data, cv2.IMREAD_COLOR)
+            data, addr = self.sock.recvfrom(65507)  # Use the maximum safe UDP packet size
+            if not data:
+                continue
 
+            # Attempt to decode the received bytes as an image
+            image_data = np.frombuffer(data, dtype=np.uint8)
+            decompressed_image = cv2.imdecode(image_data, cv2.IMREAD_COLOR)
 
-            cv2.imshow('Compressed Overlay', decompressed_image)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+            if decompressed_image is not None:
+                cv2.imshow('Compressed Overlay', decompressed_image)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
 
         cv2.destroyAllWindows()
 

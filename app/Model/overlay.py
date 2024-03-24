@@ -143,18 +143,15 @@ class Overlay:
 
                 # Calculate the number of bytes: 921600 bytes
 
-
-
     def stream_video_data(self):
         while self.stream_video:
             # Compress the combined overlay to a JPEG format in memory
             compression_rate = 90  # Max 100
-            result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                 [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
-            self.video_client.send_data(self.total_overlay_compressed)
-            num_bytes = self.total_overlay_compressed.nbytes
-            print(num_bytes)
-            print('frame sent')
+            result, image_compressed = cv2.imencode('.jpg', self.total_overlay,
+                                                    [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+            if result:
+                self.video_client.send_data(image_compressed)
+                print('Frame sent')
             time.sleep(1)
 
 
