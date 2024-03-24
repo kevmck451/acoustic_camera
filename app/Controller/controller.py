@@ -87,7 +87,7 @@ class Controller:
 
 
         elif event == Event.START_CAMERA:
-            self.gui.Video_Frame.update_camera_feed()
+            self.gui.Center_Frame.update_camera_feed()
 
 
         # Window Closing Actions
