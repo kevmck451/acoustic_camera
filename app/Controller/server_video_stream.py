@@ -16,6 +16,7 @@ class Video_Overlay_Server:
         self.sock.bind((self.host, self.port))
 
     def start_server(self):
+        print('Server Running')
         while True:
             data, addr = self.sock.recvfrom(50000)  # Buffer size is 1024 bytes
             print(data)
@@ -34,7 +35,7 @@ if __name__ == '__main__':
     # for running mac to mac
     # client = Event_Sender_Client('127.0.0.1', name='MacBook')
     # for running papapi to mac
-    server = Video_Overlay_Server()
+    server = Video_Overlay_Server('0.0.0.0')
     server_thread = threading.Thread(target=server.start_server(), daemon=True)
 
     while True:
