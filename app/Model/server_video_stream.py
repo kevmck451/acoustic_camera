@@ -40,6 +40,7 @@ class Video_Server:
                 if not data:
                     break
                 message = data.decode()
+                print(message)
                 if 'start' in message:
                     # start stream thread
                     self.sending_video = True
@@ -50,7 +51,6 @@ class Video_Server:
                     # stop stream thread
                     self.sending_video = False
 
-                else: print(message)
 
     def run(self):
         while self.running:

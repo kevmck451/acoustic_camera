@@ -42,7 +42,7 @@ class Video_Sender_Client:
         if self.connected:
             try:
                 self.socket.sendall(data.encode())
-                print("Video Frame Sent")
+                print("Sending Start/Stop Command")
             except socket.error as e:
                 print(f"Error sending data: {e}")
                 self.connected = False
