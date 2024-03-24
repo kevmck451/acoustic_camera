@@ -1,0 +1,14 @@
+customtkinter==5.2.2
+cycler==0.11.0
+darkdetect==0.8.0
+fonttools==4.38.0
+kiwisolver==1.4.5
+matplotlib==3.5.3
+numpy==1.21.6
+opencv-python==4.9.0.80
+packaging==23.2
+Pillow==9.5.0
+pyparsing==3.1.2
+python-dateutil==2.9.0.post0
+six==1.16.0
+typing-extensions==4.7.1

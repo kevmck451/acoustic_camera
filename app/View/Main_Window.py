@@ -1,20 +1,11 @@
 
 
-from app.Model.mic_matrix import Matrix_Mics
-from app.Model.camera import Camera
-
-
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.animation import FuncAnimation
-import matplotlib
-matplotlib.use('TkAgg')  # Specify the backend
-import matplotlib.pyplot as plt
+# import matplotlib
+# matplotlib.use('TkAgg')  # Specify the backend
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import customtkinter as ctk
 import tkinter as tk
-import numpy as np
 import warnings
 import queue
 
@@ -38,27 +29,32 @@ class Main_Window(ctk.CTk):
         # Main Setup ------------------------------------------------------------
         self.title(configuration.window_title)
 
-        # Start full screen
-        self.attributes('-fullscreen', True)
+        # Screen: full screen
+        # self.attributes('-fullscreen', True)
+        # Get the screen dimension
 
-        # Audio / Visual
-        self.Camera = Camera()
-        # self.matrix_mics = Matrix_Mics()
+        # Screen: can see window
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        center_x = int((screen_width / 2) - (configuration.window_width / 2))
+        center_y = int((screen_height / 2) - (configuration.window_height / 2))
+        self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
+        self.minsize(configuration.min_window_width, configuration.min_window_height)
 
-
+        # Main Frames
         self.Left_Frame = Left_Frame(self, self.event_handler)
-        self.Video_Frame = Video_Frame(self, self.event_handler, self.Camera)
+        self.Center_Frame = Video_Frame(self, self.event_handler)
         self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
-        self.columnconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.columnconfigure(1, weight=1)  # Right column with 1/3 of the space
-        self.columnconfigure(2, weight=1)  # Right column with 1/3 of the space
+        self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
+        self.columnconfigure(1, weight=5)  # Right column with x/3 of the space
+        self.columnconfigure(2, weight=1)  # Right column with x/3 of the space
 
 
         # Place the frames using grid
         self.Left_Frame.grid(row=0, column=0, sticky='nsew')  # Left frame in column 0
-        self.Video_Frame.grid(row=0, column=1, sticky='nsew')  # Right frame in column 1
+        self.Center_Frame.grid(row=0, column=1, sticky='nsew')  # Right frame in column 1
         self.Right_Frame.grid(row=0, column=2, sticky='nsew')  # Right frame in column 1
 
         # Ending Procedures
@@ -91,6 +87,7 @@ class Left_Frame(ctk.CTkFrame):
         self.demo_button_state = True
         self.audio_feed_figure = None
         self.update_mic_levels_id = None
+        self.overlay_color_button_state = 0
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
@@ -126,109 +123,133 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        self.middle_frame_view(top_frame)
-        self.mic_levels_frame(middle_frame)
-        self.demo_frame(bottom_frame)
+        self.detection_overlays(top_frame)
+        self.overlay_options(middle_frame)
+        self.template_bottom_buttons(bottom_frame)
 
     # FRAMES ---------------------------------------------
-    def middle_frame_view(self, frame):
 
-        frame.grid_rowconfigure(0, weight=1)
-        frame.grid_rowconfigure(1, weight=1)
-        frame.grid_rowconfigure(2, weight=1)
-        frame.grid_columnconfigure(0, weight=1)  # Single column
-
-        self.camera_button = ctk.CTkButton(frame, text='Camera', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                        command=lambda: self.event_handler(Event.CAMERA_VIEWER))
-        self.camera_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-        self.acoustic_viewer = ctk.CTkButton(frame, text='Acoustic', font=(configuration.main_font_style, configuration.main_font_size),
-                                                    fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                                    command=lambda: self.event_handler(Event.ACOUSTIC_VIEWER))
-        self.acoustic_viewer.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-        self.acoustic_camera_button = ctk.CTkButton(frame, text='Acoustic+Camera', font=(configuration.main_font_style, configuration.main_font_size),
-                                         fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
-                                         command=lambda: self.event_handler(Event.ACOUSTIC_CAMERA_VIEWER))
-        self.acoustic_camera_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
-    def mic_levels_frame(self, frame):
-
-        self.audio_feed_figure, axs = plt.subplots(8, 1, figsize=(2, 2), dpi=100)
-        for ax in axs:
-            x = np.arange(0, 16384)
-            y = np.zeros(16384)
-            ax.plot(x, y, color='blue')  # This creates a Line2D object internally and adds it to the ax
-            ax.set_ylim(-3000, 3000)
-            ax.set_yticklabels([])
-            ax.set_xticklabels([])
-            ax.set_xticks([])
-        self.audio_feed_figure.tight_layout(pad=.1)
-
-
-        # Create a canvas and add the figure to it
-        self.mic_canvas = FigureCanvasTkAgg(self.audio_feed_figure, master=frame)  # A tk.DrawingArea.
-        self.mic_canvas.draw()
-        widget = self.mic_canvas.get_tk_widget()
-        widget.pack(fill=tk.BOTH, expand=True)
-
-    def demo_frame(self, frame):
+    # Detection Overlays: Sound, Drones, Vehicles
+    def detection_overlays(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
-        # frame.grid_rowconfigure(1, weight=1)  # Row for the load button
-        # frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.demo_button = ctk.CTkButton(frame, text='Demo Overlay', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
-                                          image=self.start_icon, command=lambda: self.event_handler(Event.DEMO))
-        self.demo_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+        self.button_detect_sounds = ctk.CTkButton(frame, text='Detect Sounds', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
+                                          command=lambda: self.event_handler(Event.DETECT_SOUNDS))
+        self.button_detect_sounds.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.button_detect_drones = ctk.CTkButton(frame, text='Detect Drones',
+                                          font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
+                                          command=lambda: self.event_handler(Event.DETECT_DRONES))
+        self.button_detect_drones.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.button_detect_vehicles = ctk.CTkButton(frame, text='Detect Vehicles', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
+                                        command=lambda: self.event_handler(Event.DETECT_VEHICLES))
+        self.button_detect_vehicles.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+    # Overlay Options
+    def overlay_options(self, frame):
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.overlay_options_display = ctk.CTkLabel(frame, text='Overlay Options',
+                                               font=(configuration.main_font_style, configuration.main_font_size))
+        self.overlay_options_display.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
+                                     sticky='nsew')
+
+        self.overlay_color_button = ctk.CTkButton(frame, text='Blue Overlay',
+                                      font=(configuration.main_font_style, configuration.main_font_size),
+                                      fg_color=configuration.blue_fg_color,
+                                      hover_color=configuration.blue_hover_color,
+                                      command=lambda: self.event_handler(Event.OVERLAY_COLOR_BLUE))
+        self.overlay_color_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.overlay_threshold_button = ctk.CTkButton(frame, text='Overlay Threshold',
+                                                  font=(configuration.main_font_style, configuration.main_font_size),
+                                                  fg_color=configuration.bluelight_fg_color,
+                                                  hover_color=configuration.bluelight_hover_color,
+                                                  command=lambda: self.event_handler(Event.OVERLAY_THRESHOLD_WINDOW))
+        self.overlay_threshold_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
+                                       sticky='nsew')
+
+
+    def template_bottom_buttons(self, frame):
+        frame.grid_rowconfigure(0, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(1, weight=1)  # Row for the load button
+        frame.grid_rowconfigure(2, weight=1)  # Row for the load button
+        frame.grid_columnconfigure(0, weight=1)  # Single column
+
+        self.button_dummy_4 = ctk.CTkButton(frame, text='Button',
+                                      font=(configuration.main_font_style, configuration.main_font_size),
+                                      fg_color=configuration.gray_fg_color,
+                                      hover_color=configuration.gray_hover_color,
+                                      command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.button_dummy_4.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.button_dummy_5 = ctk.CTkButton(frame, text='Button',
+                                      font=(configuration.main_font_style, configuration.main_font_size),
+                                      fg_color=configuration.gray_fg_color,
+                                      hover_color=configuration.gray_hover_color,
+                                      command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.button_dummy_5.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+
+        self.button_dummy_6 = ctk.CTkButton(frame, text='Button',
+                                      font=(configuration.main_font_style, configuration.main_font_size),
+                                      fg_color=configuration.gray_fg_color,
+                                      hover_color=configuration.gray_hover_color,
+                                      command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+        self.button_dummy_6.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     # BUTTON TOGGLE STATES ------------------------
-    def toggle_demo_button(self):
-        if self.demo_button_state:
-            self.demo_button.configure(text="Stop Demo",
-                                       fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
-                                       image=self.stop_icon,
-                                       command=lambda: self.event_handler(Event.DEMO))
+    def toggle_overlay_color_button(self):
+        if self.overlay_color_button_state == 0:
+            self.overlay_color_button.configure(text="Green Overlay",
+                                               fg_color=configuration.green_fg_color,
+                                               hover_color=configuration.green_hover_color,
+                                               command=lambda: self.event_handler(Event.OVERLAY_COLOR_GREEN))
+            self.overlay_color_button_state += 1
+        elif self.overlay_color_button_state == 1:
+            self.overlay_color_button.configure(text="Red Overlay",
+                                               fg_color=configuration.red_fg_color,
+                                               hover_color=configuration.red_hover_color,
+                                               command=lambda: self.event_handler(Event.OVERLAY_COLOR_RED))
+            self.overlay_color_button_state += 1
 
-            self.demo_button_state = False
         else:
-            self.demo_button.configure(text="Demo Overlay",
-                                       fg_color=configuration.reset_fg_color, hover_color=configuration.reset_hover_color,
-                                       image=self.start_icon,
-                                       command=lambda: self.event_handler(Event.DEMO))
-            self.demo_button_state = True
-
+            self.overlay_color_button.configure(text="Blue Overlay",
+                                        fg_color=configuration.blue_fg_color,
+                                        hover_color=configuration.blue_hover_color,
+                                        command=lambda: self.event_handler(Event.OVERLAY_COLOR_BLUE))
+            self.overlay_color_button_state = 0
 
 
     # UPDATE METADATA FRAMES ------------------------
-    def update_mic_levels(self):
-        self.event_handler(Event.GET_PLOT_VALUES)
-        self.update_mic_levels_id = self.after(100, self.update_mic_levels)
 
-    def stop_mic_levels(self):
-        if self.update_mic_levels_id:
-            self.after_cancel(self.update_mic_levels_id)
-            self.update_mic_levels_id = None
 
 
 # ---------------------------------------------------
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------
 class Video_Frame(ctk.CTkFrame):
-    def __init__(self, parent, event_handler, camera):
+    def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.event_handler = event_handler
-        self.camera = camera
+        # self.camera = camera
 
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
-        self.update_gui()
+        # self.update_camera_feed()
 
-    def update_gui(self):
+    def update_camera_feed(self):
         try:
             frame = self.camera.frame_queue.get_nowait()
             self.label.configure(image=frame)
@@ -236,7 +257,7 @@ class Video_Frame(ctk.CTkFrame):
         except queue.Empty:
             pass
 
-        self.after(5, self.update_gui)
+        self.after(5, self.update_camera_feed)
 
 
 
@@ -286,7 +307,7 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
         self.camera_settings_frame(top_frame)
-        self.target_detection_frame(middle_frame)
+        self.template_button_frame_z(middle_frame)
         self.settings_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
@@ -298,14 +319,14 @@ class Right_Frame(ctk.CTkFrame):
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
         self.capture_image_button = ctk.CTkButton(frame, text='Save Image', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.start_fg_color, hover_color=configuration.start_hover_color,
+                                          fg_color=configuration.green_fg_color, hover_color=configuration.green_hover_color,
                                           command=lambda: self.event_handler(Event.TAKE_PICTURE))
         self.capture_image_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.capture_video_button = ctk.CTkButton(frame, text='Rec Video',
                                           font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.button_fg_color,
-                                          hover_color=configuration.button_hover_color,
+                                          fg_color=configuration.bluelight_fg_color,
+                                          hover_color=configuration.bluelight_hover_color,
                                           command=lambda: self.event_handler(Event.RECORD_VIDEO))
         self.capture_video_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
@@ -315,26 +336,26 @@ class Right_Frame(ctk.CTkFrame):
         self.total_time_display.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
                                      sticky='nsew')
 
-    def target_detection_frame(self, frame):
+    def template_button_frame_z(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
         frame.grid_rowconfigure(1, weight=1)  # Row for the load button
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.button_1 = ctk.CTkButton(frame, text='Detect Sounds', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+        self.button_1 = ctk.CTkButton(frame, text='Button', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
                                           command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.button_2 = ctk.CTkButton(frame, text='Detect Drones',
+        self.button_2 = ctk.CTkButton(frame, text='Button',
                                           font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+                                          fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
                                           command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.button_3 = ctk.CTkButton(frame, text='Detect Vehicles', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.dropdown_fg_color, hover_color=configuration.dropdown_hover_color,
+        self.button_3 = ctk.CTkButton(frame, text='Button', font=(configuration.main_font_style, configuration.main_font_size),
+                                        fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
                                         command=lambda: self.event_handler(Event.DUMMY_BUTTON))
         self.button_3.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
@@ -345,20 +366,20 @@ class Right_Frame(ctk.CTkFrame):
         # frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.settings_button_1 = ctk.CTkButton(frame, text='Button 1', font=(configuration.main_font_style, configuration.main_font_size),
-                                          fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+        self.settings_button_1 = ctk.CTkButton(frame, text='Button', font=(configuration.main_font_style, configuration.main_font_size),
+                                          fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
                                           command=lambda: self.event_handler(Event.SETTINGS_BUTTON_1))
         self.settings_button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
 
 
         self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.pause_fg_color, hover_color=configuration.pause_hover_color,
+                                        fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
                                         command=lambda: self.event_handler(Event.SETTINGS))
         self.settings_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.exit_button = ctk.CTkButton(frame, text='EXIT',
                                          font=(configuration.main_font_style, configuration.main_font_size),
-                                         fg_color=configuration.stop_fg_color, hover_color=configuration.stop_hover_color,
+                                         fg_color=configuration.red_fg_color, hover_color=configuration.red_hover_color,
                                          command=self.parent.close_application)
         self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')

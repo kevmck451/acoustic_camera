@@ -120,7 +120,9 @@ nano .gitignore # add camera_venv/
 # install libraries
 pip install -r requirement.txt
 ```
-
+```zsh
+python -c "import picamera"
+```
 
 #### Run Application
 ```zsh

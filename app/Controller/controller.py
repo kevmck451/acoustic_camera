@@ -1,32 +1,34 @@
 
 
 
-
-from app.Model.mic_matrix import Matrix_Mics
+from app.View.overlay_threshold import Overlay_Threshold_Window
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
 
 
 
-from threading import Thread
-import threading
-import numpy as np
-import time
-
 
 
 class Controller:
     def __init__(self):
         self.app_state = State.IDLE
+        self.gui = None
+        self.event_sender = None
+
+
+
+        # self.video_stream_server = Video_Overlay_Server().start_server()
+        # Start Hardware Scripts
+        # Attempt to start camera and mic streams
+
         self.demo_stop = True
-        self.matrix_mics = Matrix_Mics()
-
-
-
 
     def set_gui(self, gui):
         self.gui = gui
+
+    def set_event_sender(self, event_sender):
+        self.event_sender = event_sender
 
     # These are the gate keepers for whether or not to perform the action
     def handle_event(self, event):
@@ -39,6 +41,7 @@ class Controller:
         elif event == Event.SETTINGS_BUTTON_1:
             print('SETTINGS BUTTON 1 PRESSED')
 
+
         elif event == Event.SETTINGS_BUTTON_2:
             print('SETTINGS BUTTON 2 PRESSED')
 
@@ -47,234 +50,61 @@ class Controller:
 
         elif event == Event.RECORD_VIDEO:
             print('RECORD VIDEO')
+            command = 'mic_overlay_color=blue'
+            self.event_sender.send_data(command)
 
         elif event == Event.DUMMY_BUTTON:
             print('BUTTON PRESSED')
 
-        elif event == Event.ACOUSTIC_VIEWER:
-            print('ACOUSTIC_VIEWER')
-            self.gui.Left_Frame.audio_feed_figure = self.matrix_mics.ch8_viewer_figure()
-            self.gui.Left_Frame.update_mic_levels()
+        elif event == Event.OVERLAY_COLOR_RED:
+            # Check if Connected to Hardware
+            if self.event_sender.connected:
+                command = 'mic_overlay_color=red'
+                self.event_sender.send_data(command)
 
-        elif event == Event.GET_PLOT_VALUES:
-            self.get_audio_visuals()
+                print('OVERLAY_COLOR_RED')
+                self.gui.Left_Frame.toggle_overlay_color_button()
 
-        elif event == Event.CAMERA_VIEWER:
-            print('CAMERA_VIEWER')
+            else: print('Not Connected to Hardware')
 
-        elif event == Event.ACOUSTIC_CAMERA_VIEWER:
-            print('ACOUSTIC_CAMERA_VIEWER')
+        elif event == Event.OVERLAY_COLOR_BLUE:
+            # Check if Connected to Hardware
+            if self.event_sender.connected:
+                command = 'mic_overlay_color=blue'
+                self.event_sender.send_data(command)
 
-        elif event == Event.DEMO:
-            if self.app_state == State.IDLE:
-                self.app_state = State.DEMO_IN_PROGRESS
-                self.gui.Left_Frame.toggle_demo_button()
-                self.start_demo()
-            elif self.app_state == State.DEMO_IN_PROGRESS:
-                self.app_state = State.IDLE
-                self.gui.Left_Frame.toggle_demo_button()
-                self.stop_demo()
+                print('OVERLAY_COLOR_BLUE')
+                self.gui.Left_Frame.toggle_overlay_color_button()
+
+            else: print('Not Connected to Hardware')
+
+        elif event == Event.OVERLAY_COLOR_GREEN:
+            # Check if Connected to Hardware
+            if self.event_sender.connected:
+                command = 'mic_overlay_color=green'
+                self.event_sender.send_data(command)
+
+                print('OVERLAY_COLOR_GREEN')
+                self.gui.Left_Frame.toggle_overlay_color_button()
+
+            else: print('Not Connected to Hardware')
+
+        elif event == Event.OVERLAY_THRESHOLD_WINDOW:
+            if self.event_sender.connected:
+                self.overlay_threshold_window = Overlay_Threshold_Window(self.handle_event)
+                self.overlay_threshold_window.mainloop()
+
+
+
+
 
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
-            self.matrix_mics.stop_stream()
+            pass
 
         elif event == Event.START_CAMERA:
             pass
 
     # Action Functions ------------------------------
-
-    def get_audio_visuals(self):
-        # threshold = 800
-        # data = self.matrix_mics.get_audio_data()
-        # if data is not None:  # Ensure there is data to process
-        #     for i in range(self.matrix_mics.mic_channels):
-        #         channel_data = data[i::self.matrix_mics.mic_channels]
-        #
-        #         if np.any(np.abs(channel_data) > threshold):
-        #             self.gui.Left_Frame.audio_feed_figure.lines[i].set_color(
-        #                 'red')  # Change color to red if threshold is exceeded
-        #         else:
-        #             self.gui.Left_Frame.audio_feed_figure.lines[i].set_color('blue')  # Reset to default color otherwise
-        #
-        #         self.gui.Left_Frame.audio_feed_figure.lines[i].set_ydata(channel_data)
-        #
-        #     # Ensure the canvas is redrawn to display the updates
-        #     self.gui.Left_Frame.mic_canvas.draw_idle()
-
-        threshold = 800
-        data = self.matrix_mics.get_audio_data()
-        if data is not None:  # Ensure there is data to process
-            fig = self.gui.Left_Frame.audio_feed_figure  # Assuming this is where your figure is stored
-            axs = fig.axes  # Get all axes in the figure
-
-            for i, ax in enumerate(axs):
-                if i >= len(data):  # Safety check in case there are more axes than data channels
-                    break
-                channel_data = data[i::self.matrix_mics.mic_channels]
-                lines = ax.get_lines()  # Assuming there is only one line per ax, but can be adjusted if more
-
-                if lines:  # Check if there are any lines in the ax
-                    line = lines[0]  # Access the first line; adjust if your structure is different
-                    if np.any(np.abs(channel_data) > threshold):
-                        line.set_color('red')  # Change color to red if threshold is exceeded
-                    else:
-                        line.set_color('blue')  # Reset to default color otherwise
-                    line.set_ydata(channel_data)
-
-            # Ensure the canvas is redrawn to display the updates
-            self.gui.Left_Frame.audio_feed_figure = fig
-            self.gui.Left_Frame.mic_canvas.draw_idle()
-
-
-
-    def start_demo(self):
-        print('start demo')
-        self.demo_stop = True
-        threading.Thread(target=self.demo, daemon=True).start()
-
-    def stop_demo(self):
-        print('stop demo')
-        self.demo_stop = False
-        self.gui.Camera.clear_squares()
-
-    def demo(self):
-        # Create a list to hold properties for 4 squares
-        # squares = [{
-        #     'position': [100, 100],  # Starting position
-        #     'direction': [2, 3],  # Initial movement direction
-        #     'size': 50,
-        #     'color': [0, 100, 200],
-        #     'transparency': 0.6
-        # } for _ in range(4)]  # Creates 4 square dicts with the same initial properties
-
-        squares = [
-            {
-                'position': [100, 100],  # Starting position
-                'direction': [2, 2],  # Initial movement direction
-                'size': 50,
-                'color': [255, 0, 0],  # Red
-                'transparency': 0.6
-            },
-            {
-                'position': [200, 100],  # Starting position
-                'direction': [-2, 3],  # Initial movement direction, moving left and down
-                'size': 60,
-                'color': [0, 255, 0],  # Green
-                'transparency': 0.6
-            },
-            {
-                'position': [300, 100],  # Starting position
-                'direction': [3, -2],  # Initial movement direction, moving right and up
-                'size': 70,
-                'color': [0, 0, 255],  # Blue
-                'transparency': 0.6
-            },
-            {
-                'position': [400, 100],  # Starting position
-                'direction': [-3, -2],  # Initial movement direction, moving left and up
-                'size': 80,
-                'color': [255, 255, 0],  # Yellow
-                'transparency': 0.6
-            }
-        ]
-
-        max_width, max_height = 580, 580  # Maximum dimensions
-        min_size, max_size = 20, 150  # Size range
-        size_increment = 1
-        transparency_increment = 0.01
-        color_increment = [1, 2, 3]  # Adjust as needed for visual effect
-
-        while self.demo_stop:
-            for square in squares:
-                position = square['position']
-                size = square['size']
-                color = square['color']
-
-                # Update position and reverse direction on bounds
-                for i in range(2):
-                    position[i] += square['direction'][i]
-                    if position[i] >= max_width - size or position[i] <= 0:
-                        square['direction'][i] *= -1
-
-                # Update size
-                size += size_increment
-                if size >= max_size or size <= min_size:
-                    size_increment *= -1
-
-                # Update transparency (Example logic, customize as needed)
-                # square['transparency'] += transparency_increment
-                # if square['transparency'] >= 1.0 or square['transparency'] <= 0.1:
-                #     transparency_increment *= -1
-
-                # Update color
-                for i in range(3):
-                    color[i] += color_increment[i]
-                    if color[i] > 255 or color[i] < 0:
-                        color_increment[i] *= -1
-                    color[i] = max(0, min(255, color[i]))
-
-                # Apply updates
-                square['position'] = position
-                square['size'] = size
-                square['color'] = color
-
-            # Draw each square on the frame
-            # Assuming there is a method in gui.Camera to clear previous squares
-            self.gui.Camera.clear_squares()
-            for square in squares:
-                self.gui.Camera.add_square(square['position'], square['size'], tuple(square['color']),
-                                           square['transparency'])
-
-            time.sleep(0.05)
-
-
-    # def demo(self):
-    #     # Initial setup
-    #     direction = [2, 3]  # Initial direction for movement (x, y)
-    #     max_width, max_height = 580, 580  # Maximum dimensions based on the camera setup
-    #     min_size, max_size = 20, 150  # Min and max square sizes
-    #     size_increment = 1  # Size change per iteration
-    #     transparency_increment = 0.1  # Transparency change per iteration
-    #     color_increment = [1, 1, 1]  # RGB color change per iteration
-    #
-    #     while self.demo_stop:
-    #         position = list(self.gui.Camera.square_position)
-    #         size = self.gui.Camera.square_size
-    #         transparency = 0.6
-    #         color = list(self.gui.Camera.square_color)
-    #
-    #         # Update position
-    #         for i in range(2):
-    #             position[i] += direction[i]
-    #             if position[i] >= max_width - size or position[i] <= 0:
-    #                 direction[i] *= -1  # Reverse direction on hitting bounds
-    #
-    #         # Update size
-    #         size += size_increment
-    #         if size >= max_size or size <= min_size:
-    #             size_increment *= -1  # Reverse size change direction
-    #
-    #         # Update transparency
-    #         # transparency += transparency_increment
-    #         # if transparency >= 1.0 or transparency <= 0.1:
-    #         #     transparency_increment *= -1  # Reverse transparency change direction
-    #
-    #         # Update color
-    #         for i in range(3):
-    #             color[i] += color_increment[i]
-    #             if color[i] > 255 or color[i] < 0:
-    #                 color_increment[i] *= -1  # Reverse color change direction
-    #             color[i] = max(0, min(255, color[i]))  # Ensure color stays within valid range
-    #
-    #         # Apply updates
-    #         self.gui.Camera.square_position = tuple(position)
-    #         self.gui.Camera.square_size = size
-    #         self.gui.Camera.square_transparency = transparency
-    #         self.gui.Camera.square_color = tuple(color)
-    #
-    #         # Wait a bit before the next update to make the movement visible
-    #         time.sleep(0.05)
-
 
 
