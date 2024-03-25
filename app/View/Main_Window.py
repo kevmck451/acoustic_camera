@@ -92,6 +92,7 @@ class Left_Frame(ctk.CTkFrame):
         self.audio_feed_figure = None
         self.update_mic_levels_id = None
         self.overlay_color_button_state = 0
+        self.overlay_start_feed_state = 0
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
@@ -191,12 +192,12 @@ class Left_Frame(ctk.CTkFrame):
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.button_dummy_4 = ctk.CTkButton(frame, text='Start Video Feed',
+        self.video_feed_button = ctk.CTkButton(frame, text='Start Video Feed',
                                       font=(configuration.main_font_style, configuration.main_font_size),
                                       fg_color=configuration.green_fg_color,
                                       hover_color=configuration.green_hover_color,
                                       command=lambda: self.event_handler(Event.START_CAMERA))
-        self.button_dummy_4.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+        self.video_feed_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_dummy_5 = ctk.CTkButton(frame, text='Button',
                                       font=(configuration.main_font_style, configuration.main_font_size),
@@ -233,6 +234,21 @@ class Left_Frame(ctk.CTkFrame):
                                         hover_color=configuration.blue_hover_color,
                                         command=lambda: self.event_handler(Event.OVERLAY_COLOR_BLUE))
             self.overlay_color_button_state = 0
+
+    def toggle_video_feed_button(self):
+        if self.overlay_start_feed_state == 0:
+            self.video_feed_button.configure(text="Stop Video Feed",
+                                               fg_color=configuration.red_fg_color,
+                                               hover_color=configuration.red_hover_color,
+                                               command=lambda: self.event_handler(Event.STOP_CAMERA))
+            self.overlay_start_feed_state += 1
+
+        else:
+            self.video_feed_button.configure(text="Start Video Feed",
+                                        fg_color=configuration.green_fg_color,
+                                        hover_color=configuration.green_hover_color,
+                                        command=lambda: self.event_handler(Event.START_CAMERA))
+            self.overlay_start_feed_state = 0
 
 
     # UPDATE METADATA FRAMES ------------------------

@@ -40,8 +40,6 @@ class Controller:
 
         elif event == Event.RECORD_VIDEO:
             print('RECORD VIDEO')
-            command = 'mic_overlay_color=blue'
-            self.event_sender.send_data(command)
 
         elif event == Event.DUMMY_BUTTON:
             print('BUTTON PRESSED')
@@ -89,12 +87,15 @@ class Controller:
             print('START_CAMERA')
             self.gui.video_sender.send_data('start')
             # self.gui.Center_Frame.update_camera_feed()
+            if self.event_sender.connected:
+                self.gui.Left_Frame.toggle_video_feed_button()
 
         elif event == Event.STOP_CAMERA:
             print('STOP CAMERA')
             # self.gui.video_sender.send_data('stop')
             # self.gui.Center_Frame.update_camera_feed()
-
+            if self.event_sender.connected:
+                self.gui.Left_Frame.toggle_video_feed_button()
 
 
         # Window Closing Actions
