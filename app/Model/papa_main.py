@@ -36,8 +36,8 @@ if __name__ == "__main__":
     video_thread = threading.Thread(target=video_server.run, daemon=True)
     video_thread.start()
 
-    # video_server.set_hardware(overlay)
-    # event_server.set_video_server(video_server)
+    video_server.set_hardware(overlay)
+    event_server.set_video_server(video_server)
 
 
     print('Ready for Commands-----------------------')

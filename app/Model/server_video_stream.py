@@ -26,14 +26,14 @@ class Video_Server:
         self.overlay = overlay
 
     def handle_client(self, client_socket):
-        print(f'Handing Client: {client_socket}')
+        # print(f'Handing Client: {client_socket}')
         with client_socket:
             while True:
                 data = client_socket.recv(1024)
                 if not data:
                     break
                 message = data.decode()
-                print(message)
+                print(f'Data Received: {message}')
                 if message == 'start':
                     # start stream thread
                     self.sending_video = True
@@ -62,8 +62,7 @@ class Video_Server:
             self.client_list.append(client)
 
             print(f"Connection from {client.name} with address: {addr}")
-            print(f'Client List: {self.client_list}')
-
+            # print(f'Client List: {self.client_list}')
             client_socket.sendall('ack'.encode())
             client_handle_thread = threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True)
             client_handle_thread.start()
