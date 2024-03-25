@@ -45,6 +45,7 @@ if __name__ == "__main__":
         try:
             time.sleep(0.1)
         except KeyboardInterrupt:
+            print('Shutting Down')
             event_server.stop()
             video_server.stop()
             overlay.stop_overlay()

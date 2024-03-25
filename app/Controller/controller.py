@@ -115,8 +115,8 @@ class Controller:
     def check_papapi_connection(self):
         while True:
             if self.event_sender.connected:
-                self.gui.Left_Frame.set_papapi_connected_label()
+                self.gui.Right_Frame.set_papapi_connected_label()
 
 
-            else: self.gui.Left_Frame.set_papapi_disconnected_label()
+            else: self.gui.Right_Frame.set_papapi_disconnected_label()
             time.sleep(1)
