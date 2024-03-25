@@ -44,7 +44,11 @@ if __name__ == "__main__":
     while True:
         try:
             time.sleep(0.1)
-        except KeyboardInterrupt: break
+        except KeyboardInterrupt:
+            event_server.stop()
+            video_server.stop()
+            overlay.stop_overlay()
+            break
 
 
 

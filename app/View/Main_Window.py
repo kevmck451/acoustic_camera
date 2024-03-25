@@ -167,7 +167,7 @@ class Left_Frame(ctk.CTkFrame):
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.overlay_options_display = ctk.CTkLabel(frame, text='------- Overlay Options -------',
+        self.overlay_options_display = ctk.CTkLabel(frame, text='---- Overlay Options ----',
                                                font=(configuration.main_font_style, configuration.main_font_size))
         self.overlay_options_display.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
                                      sticky='nsew')
@@ -406,7 +406,7 @@ class Right_Frame(ctk.CTkFrame):
 
 
         self.settings_button = ctk.CTkButton(frame, text='Settings', font=(configuration.main_font_style, configuration.main_font_size),
-                                        fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
+                                        fg_color=configuration.darkgray_fg_color, hover_color=configuration.darkgray_hover_color,
                                         command=lambda: self.event_handler(Event.SETTINGS))
         self.settings_button.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 

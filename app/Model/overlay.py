@@ -152,6 +152,5 @@ class Overlay:
                     # print(self.total_overlay_compressed)
 
 
-
     def stop_overlay(self):
         self.running = False
