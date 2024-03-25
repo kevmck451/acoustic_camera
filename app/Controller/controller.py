@@ -87,7 +87,7 @@ class Controller:
 
         elif event == Event.START_CAMERA:
             print('START_CAMERA')
-            # self.gui.video_sender.send_data('start')
+            self.gui.video_sender.send_data('start')
             # self.gui.Center_Frame.update_camera_feed()
 
         elif event == Event.STOP_CAMERA:

@@ -51,7 +51,6 @@ class Video_Server:
             print('client accepted')
             # time.sleep(0.1)
             name = client_socket.recv(1024).decode()
-
             # check if client name already exists and remove them
             for client_x in self.client_list:
                 if client_x.name == name:
