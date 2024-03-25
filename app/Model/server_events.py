@@ -46,6 +46,9 @@ class Event_Server:
                     print(f"Received: {command} = {value}")
                     self.event_commands(command, value)
 
+                elif message == 'fpga_status':
+                    print('Feature in Progress')
+
                 else: print(message)
 
     def run(self):

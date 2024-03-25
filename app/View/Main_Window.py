@@ -93,6 +93,8 @@ class Left_Frame(ctk.CTkFrame):
         self.update_mic_levels_id = None
         self.overlay_color_button_state = 0
         self.overlay_start_feed_state = 0
+        self.papapi_connection_state = 0
+        self.micfpga_connection_state = 0
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
@@ -165,7 +167,7 @@ class Left_Frame(ctk.CTkFrame):
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.overlay_options_display = ctk.CTkLabel(frame, text='Overlay Options',
+        self.overlay_options_display = ctk.CTkLabel(frame, text='------- Overlay Options -------',
                                                font=(configuration.main_font_style, configuration.main_font_size))
         self.overlay_options_display.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
                                      sticky='nsew')
@@ -199,20 +201,17 @@ class Left_Frame(ctk.CTkFrame):
                                       command=lambda: self.event_handler(Event.START_CAMERA))
         self.video_feed_button.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.button_dummy_5 = ctk.CTkButton(frame, text='Button',
-                                      font=(configuration.main_font_style, configuration.main_font_size),
-                                      fg_color=configuration.gray_fg_color,
-                                      hover_color=configuration.gray_hover_color,
-                                      command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.button_dummy_5.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
+        self.papapi_hardware_connect_label = ctk.CTkLabel(frame, text='Papa Pi Disconnected',
+                                                    font=(configuration.main_font_style, configuration.main_font_size),
+                                                           text_color=configuration.red_fg_color)
+        self.papapi_hardware_connect_label.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
+                                          sticky='nsew')
 
-        self.button_dummy_6 = ctk.CTkButton(frame, text='Button',
-                                      font=(configuration.main_font_style, configuration.main_font_size),
-                                      fg_color=configuration.gray_fg_color,
-                                      hover_color=configuration.gray_hover_color,
-                                      command=lambda: self.event_handler(Event.DUMMY_BUTTON))
-        self.button_dummy_6.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
-
+        self.micfpga_hardware_connect_label = ctk.CTkLabel(frame, text='Mic FPGA Disconnected',
+                                                    font=(configuration.main_font_style, configuration.main_font_size),
+                                                           text_color=configuration.red_fg_color)
+        self.micfpga_hardware_connect_label.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
+                                          sticky='nsew')
     # BUTTON TOGGLE STATES ------------------------
     def toggle_overlay_color_button(self):
         if self.overlay_color_button_state == 0:
@@ -250,6 +249,20 @@ class Left_Frame(ctk.CTkFrame):
                                         command=lambda: self.event_handler(Event.START_CAMERA))
             self.overlay_start_feed_state = 0
 
+    def set_papapi_connected_label(self):
+        self.papapi_hardware_connect_label.configure(text="Papa Pi Connected", text_color=configuration.green_fg_color)
+
+    def set_papapi_disconnected_label(self):
+        self.papapi_hardware_connect_label.configure(text="Papa Pi Disconnected", text_color=configuration.red_fg_color)
+
+    def toggle_micfpga_connection_label(self):
+        if self.micfpga_connection_state == 0:
+            self.micfpga_hardware_connect_label.configure(text="Mic FPGA Connected", text_color=configuration.green_fg_color)
+            self.micfpga_connection_state += 1
+
+        else:
+            self.micfpga_hardware_connect_label.configure(text="Mic FPGA Disconnected", text_color=configuration.red_fg_color)
+            self.micfpga_connection_state = 0
 
     # UPDATE METADATA FRAMES ------------------------
 

@@ -1,10 +1,13 @@
-
-
+import threading
 
 from app.View.overlay_threshold import Overlay_Threshold_Window
 from app.View.settings import Settings_Window
 from app.Controller.events_states import Event
 from app.Controller.events_states import State
+
+
+
+import time
 
 
 
@@ -20,6 +23,9 @@ class Controller:
 
     def set_event_sender(self, event_sender):
         self.event_sender = event_sender
+        check_connection_thred = threading.Thread(target=self.check_papapi_connection, daemon=True)
+        check_connection_thred.start()
+
 
     # These are the gate keepers for whether or not to perform the action
     def handle_event(self, event):
@@ -100,11 +106,15 @@ class Controller:
 
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
-            pass
+            self.event_sender.close_connection()
 
-        elif event == Event.START_CAMERA:
-            pass
+
 
     # Action Functions ------------------------------
 
-
+    def check_papapi_connection(self):
+        while True:
+            if self.event_sender.connected:
+                self.gui.Left_Frame.set_papapi_connected_label()
+            else: self.gui.Left_Frame.set_papapi_disconnected_label()
+            time.sleep(1)
