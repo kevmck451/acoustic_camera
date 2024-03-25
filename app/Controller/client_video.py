@@ -33,7 +33,7 @@ class Video_Sender_Client:
                 if not response.decode('utf-8') == 'ack': continue
                 print(f"Connected to {self.host}:{self.port}")
                 self.connected = True
-                self.receive_video_thread = threading.Thread(target=self.video_stream_data, daemon=True)
+                self.receive_video_thread = threading.Thread(target=self.get_video_stream, daemon=True)
                 self.receive_video_thread.start()
 
             except Exception as e:
@@ -55,12 +55,12 @@ class Video_Sender_Client:
             print("Video Server Not Connected. Unable to send data.")
 
 
-    def video_stream_data(self):
-        print('Streaming Video')
+    def get_video_stream(self):
         while not self.connected:
+            print('Streaming Video')
             frame = self.socket.recv(1024)
             frame = frame.decode()
-            print(frame)
+            print(f'Frame: {frame}')
             # if not self.frame_queue.full():
             #     self.frame_queue.put(frame)
 

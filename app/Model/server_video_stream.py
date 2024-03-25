@@ -16,20 +16,14 @@ class Video_Server:
         self.socket.listen()
         self.running = True
         self.client_list = []
-        self.hardware = None
         self.overlay = None
-        self.video_server = None
         self.sending_video = False
         self.transmission_rate = 0.5
 
         print(f"Server listening on {self.host}:{self.port}")
 
-    def set_hardware(self, hardware, overlay):
-        self.hardware = hardware
+    def set_hardware(self, overlay):
         self.overlay = overlay
-
-    def set_video_server(self, video_server):
-        self.video_server = video_server
 
     def handle_client(self, client_socket):
         with client_socket:
@@ -58,7 +52,7 @@ class Video_Server:
             name = client_socket.recv(1024).decode()
 
             # check if client name already exists and remove them
-            print(self.client_list)
+            print(f'Client List: {self.client_list}')
             for client_x in self.client_list:
                 if client_x.name == name:
                     print('Duplicated Client Discovered and Removing')
@@ -66,10 +60,11 @@ class Video_Server:
 
             client = Client(name=name, socket=client_socket, ip_addr=addr[0], port=addr[1])
             self.client_list.append(client)
+            print(f'Client List: {self.client_list}')
             print(f"Connection from {client.name} with address: {addr}")
             client_socket.sendall('ack'.encode())
-            video_stream_feed = threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True)
-            video_stream_feed.start()
+            client_handle_thread = threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True)
+            client_handle_thread.start()
 
     def stop(self):
         self.running = False
@@ -78,8 +73,9 @@ class Video_Server:
     def send_video_stream(self, client_socket):
         while self.sending_video:
             print(f'attempting to stream video to {client_socket}')
-            # client_socket.sendall(self.overlay.total_overlay_compressed)
             client_socket.sendall('Testing'.encode())
+
+            # client_socket.sendall(self.overlay.total_overlay_compressed)
             time.sleep(self.transmission_rate)
 
 
