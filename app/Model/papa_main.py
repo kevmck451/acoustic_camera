@@ -32,10 +32,10 @@ if __name__ == "__main__":
     event_server.set_hardware(pi_hardware, overlay)
 
     print('Video Stream Server Starting-----------------------')
-    # video_server = Video_Server()
-    # video_thread = threading.Thread(target=video_server.run, daemon=True)
-    # video_thread.start()
-    #
+    video_server = Video_Server()
+    video_thread = threading.Thread(target=video_server.run, daemon=True)
+    video_thread.start()
+
     # video_server.set_hardware(overlay)
     # event_server.set_video_server(video_server)
 
