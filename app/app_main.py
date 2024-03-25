@@ -5,10 +5,10 @@ from app.Controller.client_video import Video_Sender_Client
 
 if __name__ == "__main__":
 
-    event_sender = Event_Sender_Client(name='Pi App')
+    event_sender = Event_Sender_Client(name='Pi App Event')
     # event_sender = Event_Sender_Client(name='MacBook')
 
-    video_sender = Video_Sender_Client(name='Pi App')
+    video_sender = Video_Sender_Client(name='Pi App Video')
 
     controller = Controller()
     gui = Main_Window(controller.handle_event)

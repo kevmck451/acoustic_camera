@@ -57,7 +57,7 @@ class Video_Sender_Client:
 
     def get_video_stream(self):
         while not self.connected:
-            print('Streaming Video')
+            print('Getting Video Frame')
             frame = self.socket.recv(1024)
             frame = frame.decode()
             print(f'Frame: {frame}')

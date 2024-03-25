@@ -250,7 +250,6 @@ class Video_Frame(ctk.CTkFrame):
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
-        # self.update_camera_feed()
 
     def update_camera_feed(self):
         # print('updating_camera_feed')

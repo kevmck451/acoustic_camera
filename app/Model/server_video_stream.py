@@ -26,6 +26,7 @@ class Video_Server:
         self.overlay = overlay
 
     def handle_client(self, client_socket):
+        print(f'Handing Client: {client_socket}')
         with client_socket:
             while True:
                 data = client_socket.recv(1024)
@@ -45,14 +46,13 @@ class Video_Server:
 
 
     def run(self):
-        while self.running:
+        while True:
             client_socket, addr = self.socket.accept()
             print('client accepted')
             # time.sleep(0.1)
             name = client_socket.recv(1024).decode()
 
             # check if client name already exists and remove them
-            print(f'Client List: {self.client_list}')
             for client_x in self.client_list:
                 if client_x.name == name:
                     print('Duplicated Client Discovered and Removing')
@@ -60,8 +60,10 @@ class Video_Server:
 
             client = Client(name=name, socket=client_socket, ip_addr=addr[0], port=addr[1])
             self.client_list.append(client)
-            print(f'Client List: {self.client_list}')
+
             print(f"Connection from {client.name} with address: {addr}")
+            print(f'Client List: {self.client_list}')
+
             client_socket.sendall('ack'.encode())
             client_handle_thread = threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True)
             client_handle_thread.start()
@@ -71,6 +73,7 @@ class Video_Server:
 
 
     def send_video_stream(self, client_socket):
+        print('send video stream function')
         while self.sending_video:
             print(f'attempting to stream video to {client_socket}')
             client_socket.sendall('Testing'.encode())
