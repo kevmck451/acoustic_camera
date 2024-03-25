@@ -8,8 +8,6 @@ from app.Controller.events_states import State
 
 
 
-
-
 class Controller:
     def __init__(self):
         self.app_state = State.IDLE
