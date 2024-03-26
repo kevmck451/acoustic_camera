@@ -154,3 +154,23 @@ class Overlay:
 
     def stop_overlay(self):
         self.running = False
+
+
+    def get_data(self):
+        """
+        Get the compressed video data for network transmission.
+
+        Returns:
+            bytes: The compressed video data.
+        """
+        # Ensure the video data is ready for transmission
+        if self.total_overlay_compressed is not None:
+            # Return the data as a bytes object
+            return self.total_overlay_compressed.tobytes()
+        else:
+            return b''
+
+
+
+
+

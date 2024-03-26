@@ -2,7 +2,7 @@
 from app.Model.server_events import Event_Server
 from app.Model.pi_hardware.pi_hardware import PiHardware
 from app.Model.overlay import Overlay
-from app.Model.server_video_stream import Video_Server
+from app.Model.server_video import Video_Server
 
 
 import threading
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     video_thread = threading.Thread(target=video_server.run, daemon=True)
     video_thread.start()
 
-    video_server.set_hardware(overlay)
+    video_server.set_video_hw(overlay)
     event_server.set_video_server(video_server)
 
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print('Shutting Down')
             event_server.stop()
-            video_server.stop()
+            # video_server.stop()
             overlay.stop_overlay()
             break
 

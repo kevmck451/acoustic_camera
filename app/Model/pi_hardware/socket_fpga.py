@@ -3,8 +3,6 @@
 
 import socket
 
-
-
 # TCP Socket used for communicating to mics
 class FPGASocket:
     def __init__(self, host, port, MSGLEN, sock=None):
