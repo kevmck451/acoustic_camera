@@ -111,9 +111,9 @@ class Main_Frame(ctk.CTkFrame):
         self.event_handler = event_handler
         self.parent = parent
 
-        self.Left_Frame = Left_Frame(self, self.event_handler)
-        self.Center_Frame = Video_Frame(self, self.event_handler)
-        self.Right_Frame = Right_Frame(self, self.event_handler)
+        self.Left_Frame = Left_Frame(self.parent, self.event_handler)
+        self.Center_Frame = Video_Frame(self.parent, self.event_handler)
+        self.Right_Frame = Right_Frame(self.parent, self.event_handler)
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
