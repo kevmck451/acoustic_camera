@@ -102,7 +102,7 @@ class Controller:
             # self.gui.Center_Frame.update_camera_feed()
             self.event_sender.send_data('video_stream=False')
             if self.event_sender.connected:
-                self.gui.Left_Frame.toggle_video_feed_button()
+                self.gui.Right_Frame.toggle_video_feed_button()
 
 
         # Window Closing Actions
