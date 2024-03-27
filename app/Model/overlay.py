@@ -24,7 +24,7 @@ class Overlay:
         self.classify_vehicles = False
         self.audio_visual_running = True
         self.running = True
-        self.rms_threshold = np.log(22)  # 20
+        self.rms_threshold = np.log(25)  # 20
         self.rms_max = np.log(85)  # 85
         self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red
         self.compression_rate = 50 # 20  # Max 100
