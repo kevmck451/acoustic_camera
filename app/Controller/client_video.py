@@ -64,7 +64,7 @@ class VideoClient:
                     self.calculate_transfer_speed(self.current_frame.nbytes)
 
                     if self.gui is not None:
-                        self.gui.Center_Frame.update_frame(self.current_frame)
+                        self.gui.Main_Frame.Center_Frame.update_frame(self.current_frame)
 
 
         except Exception as e:
