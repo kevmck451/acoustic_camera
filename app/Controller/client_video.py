@@ -27,6 +27,9 @@ class VideoClient:
         else:
             self.sock = sock
 
+    def set_callback_function(self, frame_callback):
+        self.frame_callback = frame_callback
+
     def connect(self):
         self.sock.connect((self.host, self.port))
         print(f"Connected to {self.host}:{self.port}")
@@ -46,12 +49,12 @@ class VideoClient:
 
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
-                    self.current_frame = self.process_video_data(data)
+                    frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
 
-                # Pass the frame to the callback function
-                if self.frame_callback:
-                    self.frame_callback(frame)
+                    # Pass the frame to the callback function
+                    if self.frame_callback:
+                        self.frame_callback(frame)
 
         except Exception as e:
             print(f"Error receiving video data: {e}")

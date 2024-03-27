@@ -56,7 +56,13 @@ source venv_app/bin/activate
   - to view camera + acoustic heat map uncomment the overlay thread with view_overlay
 
 
-
+# Acoustic Camera Small Screen Network Demo
+- run fpga mic
+- run papa main
+- ssh into pi app with venv
+- cd app/Controller
+- export display command
+- run client code
 
 
 

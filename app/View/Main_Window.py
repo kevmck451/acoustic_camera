@@ -274,9 +274,9 @@ class Video_Frame(tk.Frame):
         self.label.configure(image=photo)
         self.label.image = photo  # Keep a reference to avoid garbage collection
 
-    def update_camera_feed(self, frame):
+    def process_new_frame(self, frame):
+        # Directly display the new frame
         self.display_frame(frame)
-        self.after(5, self.update_camera_feed)
 
 
 # ---------------------------------------------------

@@ -12,12 +12,12 @@ if __name__ == "__main__":
     video_sender.connect()
 
     controller = Controller()
+    controller.set_video_sender(video_sender)
+
     gui = Main_Window(controller.handle_event)
-    gui.set_video_sender(video_sender)
 
     controller.set_gui(gui)
     controller.set_event_sender(event_sender)
-
 
     gui.mainloop()
 
