@@ -11,8 +11,8 @@ import time
 # FPGA / Mics giving data | RP / Video giving data
 
 class Video_Server:
-    def __init__(self):
-        self.host = '10.0.0.1' # self._get_ip()
+    def __init__(self, host='127.0.0.1'):
+        self.host = host # self._get_ip()
         self.port = 56565
         print(f"listening at IP {self.host} port {self.port}")
 
@@ -90,7 +90,13 @@ class Video_Server:
         print("Video capture ended")
 
 
+# To run the server
+if __name__ == '__main__':
+    server = Video_Server('0.0.0.0')
+    run_thread = threading.Thread(target=server.run, daemon=True).start()
 
+    while True:
+        time.sleep(0.1)
 
 
 
