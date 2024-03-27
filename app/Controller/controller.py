@@ -120,10 +120,12 @@ class Controller:
         while True:
             if self.event_sender and self.event_sender.connected:
                 # self.gui.Main_Frame.Right_Frame.set_papapi_connected_label()
-                self.gui.after(0, self.gui.Main_Frame.Right_Frame.set_papapi_connected_label)
-            else:
+                if self.gui is not None:
+                    self.gui.after(0, self.gui.Main_Frame.Right_Frame.set_papapi_connected_label)
+            elif self.event_sender and not self.event_sender.connected:
                 # self.gui.Main_Frame.Right_Frame.set_papapi_disconnected_label()
-                self.gui.after(0, self.gui.Main_Frame.Right_Frame.set_papapi_disconnected_label)
+                if self.gui is not None:
+                    self.gui.after(0, self.gui.Main_Frame.Right_Frame.set_papapi_disconnected_label)
             time.sleep(1)
 
 

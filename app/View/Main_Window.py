@@ -54,8 +54,8 @@ class Main_Window(ctk.CTk):
         self.rowconfigure(1, weight=1)
 
         # Place the frames using grid
-        self.Console_Frame.grid(row=1, column=0, sticky='nsew')
-        self.Main_Frame.grid(row=0, column=0, sticky='nsew')
+        self.Console_Frame.grid(row=0, column=0, sticky='nsew')
+        self.Main_Frame.grid(row=1, column=0, sticky='nsew')
 
 
         # Ending Procedures
