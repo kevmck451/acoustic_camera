@@ -63,6 +63,14 @@ class Main_Window(ctk.CTk):
         self.bind("<Escape>", self.close_application)
         self.bind("<Control-c>", self.close_application)
 
+        print("Console_Frame parent:", self.Console_Frame.winfo_parent())
+        print("Main_Frame parent:", self.Main_Frame.winfo_parent())
+
+        self.Console_Frame.grid(row=0, column=0, sticky='nsew')
+        print("Console_Frame grid info:", self.Console_Frame.grid_info())
+        self.Main_Frame.grid(row=1, column=0, sticky='nsew')
+        print("Main_Frame grid info:", self.Main_Frame.grid_info())
+
     def set_video_sender(self, video_server):
         self.video_sender = video_server
 
@@ -87,14 +95,22 @@ class Console_Frame(ctk.CTkFrame):
         super().__init__(parent)
 
         # Main Frame
-        # main_frame = ctk.CTkFrame(self)
-        # main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-        # self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
-        # self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
+        main_frame = ctk.CTkFrame(parent)
+        main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
+        self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
+        self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
+
+    def console_box(self, frame):
+
+        # Experiment Metadata Info Box (Title)
+        self.main_info_label = ctk.CTkLabel(frame, text="TEST", font=configuration.console_font_style)
+        self.main_info_label.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='ew')
 
 
 
-
+        # Configure the rows to not expand
+        for i in range(21):
+            frame.grid_rowconfigure(i, weight=0)
 
 # ---------------------------------------------------
 # MAIN FRAME --------------------------------------
