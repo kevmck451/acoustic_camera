@@ -51,7 +51,7 @@ class Main_Window(ctk.CTk):
 
         # Grid configuration
         self.rowconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.rowconfigure(1, weight=8)  # Left column with 2/3 of the space
+        self.rowconfigure(1, weight=1)  # Left column with 2/3 of the space
 
         # Place the frames using grid
 
