@@ -60,8 +60,11 @@ class VideoClient:
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
-                    self.gui.Center_Frame.update_frame(self.current_frame)
+
                     self.calculate_transfer_speed(self.current_frame.nbytes)
+
+                    if self.gui is not None:
+                        self.gui.Center_Frame.update_frame(self.current_frame)
 
 
         except Exception as e:
