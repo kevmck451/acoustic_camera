@@ -49,14 +49,13 @@ class Main_Window(ctk.CTk):
         self.Console_Frame = Console_Frame(self)
         self.Main_Frame = Main_Frame(self, self.Console_Frame, self.event_handler)
 
-        # Grid configuration
-        self.rowconfigure(0, weight=1)  # Left column with 2/3 of the space
-        self.rowconfigure(1, weight=1)  # Left column with 2/3 of the space
+        # Configure grid rows with equal weight
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
 
         # Place the frames using grid
-
-        self.Console_Frame.grid(row=0, column=0, sticky='nsew')  # Right frame in column 1
-        self.Main_Frame.grid(row=1, column=0, sticky='nsew')  # Left frame in column 0
+        self.Console_Frame.grid(row=1, column=0, sticky='nsew')
+        self.Main_Frame.grid(row=0, column=0, sticky='nsew')
 
 
         # Ending Procedures
@@ -152,19 +151,16 @@ class Left_Frame(ctk.CTkFrame):
         # Top Frame
         top_frame = ctk.CTkFrame(self)
         top_frame.grid(row=0, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-
         top_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Middle Frame
         middle_frame = ctk.CTkFrame(self)
         middle_frame.grid(row=1, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-
         middle_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Bottom Frame
         bottom_frame = ctk.CTkFrame(self)
         bottom_frame.grid(row=2, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-
         bottom_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Configure the grid rows and column for self
@@ -333,19 +329,16 @@ class Right_Frame(ctk.CTkFrame):
         # Top Frame
         top_frame = ctk.CTkFrame(self)
         top_frame.grid(row=0, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-
         top_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Middle Frame
         middle_frame = ctk.CTkFrame(self)
         middle_frame.grid(row=1, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-
         middle_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Bottom Frame
         bottom_frame = ctk.CTkFrame(self)
         bottom_frame.grid(row=2, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-
         bottom_frame.grid_rowconfigure(0, weight=1, uniform='row')
 
         # Configure the grid rows and column for self
