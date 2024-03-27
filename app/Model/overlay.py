@@ -26,7 +26,7 @@ class Overlay:
         self.running = True
         self.rms_threshold = np.log(25)  # 20
         self.rms_max = np.log(85)  # 85
-        self.audio_overlay_color = 2 # 0 Blue, 1 Green, 2 Red
+        self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red
         self.compression_rate = 50 # 20  # Max 100
 
 
