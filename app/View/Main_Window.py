@@ -254,18 +254,17 @@ class Left_Frame(ctk.CTkFrame):
     # BUTTON TOGGLE STATES ------------------------
     def toggle_overlay_color_button(self):
         if self.overlay_color_button_state == 0:
-            self.overlay_color_button.configure(text="Green Overlay",
-                                               fg_color=configuration.green_fg_color,
-                                               hover_color=configuration.green_hover_color,
-                                               command=lambda: self.event_handler(Event.OVERLAY_COLOR_GREEN))
+            self.overlay_color_button.configure(text="Red Overlay",
+                                                fg_color=configuration.red_fg_color,
+                                                hover_color=configuration.red_hover_color,
+                                                command=lambda: self.event_handler(Event.OVERLAY_COLOR_RED))
             self.overlay_color_button_state += 1
         elif self.overlay_color_button_state == 1:
-            self.overlay_color_button.configure(text="Red Overlay",
-                                               fg_color=configuration.red_fg_color,
-                                               hover_color=configuration.red_hover_color,
-                                               command=lambda: self.event_handler(Event.OVERLAY_COLOR_RED))
+            self.overlay_color_button.configure(text="Green Overlay",
+                                                fg_color=configuration.green_fg_color,
+                                                hover_color=configuration.green_hover_color,
+                                                command=lambda: self.event_handler(Event.OVERLAY_COLOR_GREEN))
             self.overlay_color_button_state += 1
-
         else:
             self.overlay_color_button.configure(text="Blue Overlay",
                                         fg_color=configuration.blue_fg_color,
@@ -347,6 +346,10 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
+        top_frame = ctk.CTkFrame(self, bg='red')
+        middle_frame = ctk.CTkFrame(self, bg='green')
+        bottom_frame = ctk.CTkFrame(self, bg='blue')
+
         self.template_bottom_buttons(top_frame)
         self.camera_settings_frame(middle_frame)
         self.settings_frame(bottom_frame)
@@ -373,7 +376,7 @@ class Right_Frame(ctk.CTkFrame):
         self.papapi_hardware_connect_label.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
                                           sticky='nsew')
 
-        self.micfpga_hardware_connect_label = ctk.CTkLabel(frame, text='Mic FPGA Disconnected',
+        self.micfpga_hardware_connect_label = ctk.CTkLabel(frame, text='',
                                                     font=(configuration.main_font_style, configuration.main_font_size),
                                                            text_color=configuration.red_fg_color)
         self.micfpga_hardware_connect_label.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
