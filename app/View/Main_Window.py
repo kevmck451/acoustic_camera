@@ -43,21 +43,21 @@ class Main_Window(ctk.CTk):
         # self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
         # self.minsize(configuration.min_window_width, configuration.min_window_height)
 
-        # Main Frames
-        self.Left_Frame = Left_Frame(self, self.event_handler)
-        self.Center_Frame = Video_Frame(self, self.event_handler)
-        self.Right_Frame = Right_Frame(self, self.event_handler)
+        # -------------------------------
+        # MAIN TWO LEVELS: TOP AND BOTTOM
+        # -------------------------------
+        self.Console_Frame = Console_Frame(self)
+        self.Main_Frame = Main_Frame(self, self.Console_Frame, self.event_handler)
 
         # Grid configuration
-        self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
-        self.columnconfigure(1, weight=5)  # Right column with x/3 of the space
-        self.columnconfigure(2, weight=1)  # Right column with x/3 of the space
-
+        self.rowconfigure(0, weight=10)  # Left column with 2/3 of the space
+        self.rowconfigure(1, weight=1)  # Left column with 2/3 of the space
 
         # Place the frames using grid
-        self.Left_Frame.grid(row=0, column=0, sticky='nsew')  # Left frame in column 0
-        self.Center_Frame.grid(row=0, column=1, sticky='nsew')  # Right frame in column 1
-        self.Right_Frame.grid(row=0, column=2, sticky='nsew')  # Right frame in column 1
+
+        self.Console_Frame.grid(row=0, column=0, sticky='nsew')  # Right frame in column 1
+        self.Main_Frame.grid(row=1, column=0, sticky='nsew')  # Left frame in column 0
+
 
         # Ending Procedures
         self.protocol("WM_DELETE_WINDOW", self.on_close)
@@ -77,6 +77,52 @@ class Main_Window(ctk.CTk):
         # Perform any cleanup or process termination steps here
         # Then close the application
         self.on_close()
+
+
+# ---------------------------------------------------
+# CONSOLE FRAME --------------------------------------
+# ---------------------------------------------------
+class Console_Frame(ctk.CTkFrame):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.group_number = 0
+
+        # Main Frame
+        main_frame = ctk.CTkFrame(self)
+        main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
+        self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
+
+        self.console_box(main_frame)
+
+    def console_box(self, frame):
+        frame.grid_rowconfigure(0, weight=0)
+        frame.grid_columnconfigure(0, weight=0)
+
+
+
+# ---------------------------------------------------
+# MAIN FRAME --------------------------------------
+# ---------------------------------------------------
+class Main_Frame(ctk.CTkFrame):
+    def __init__(self, parent, console_frame, event_handler):
+        super().__init__(parent)
+        self.console_frame = console_frame
+        self.event_handler = event_handler
+
+        self.Left_Frame = Left_Frame(self, self.event_handler)
+        self.Center_Frame = Video_Frame(self, self.event_handler)
+        self.Right_Frame = Right_Frame(self, self.event_handler)
+
+        # Grid configuration
+        self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
+        self.columnconfigure(1, weight=5)  # Right column with x/3 of the space
+        self.columnconfigure(2, weight=1)  # Right column with x/3 of the space
+
+        # Place the frames using grid
+        self.Left_Frame.grid(row=0, column=0, sticky='nsew')  # Left frame in column 0
+        self.Center_Frame.grid(row=0, column=1, sticky='nsew')  # Right frame in column 1
+        self.Right_Frame.grid(row=0, column=2, sticky='nsew')  # Right frame in column 1
 
 
 
