@@ -91,12 +91,12 @@ class Console_Frame(ctk.CTkFrame):
         # Main Frame
         main_frame = ctk.CTkFrame(self)
         main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-        self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
-        self.grid_columnconfigure(1, weight=1)  # Configure the column to expand
-        self.grid_columnconfigure(2, weight=1)  # Configure the column to expand
-        self.grid_columnconfigure(3, weight=1)  # Configure the column to expand
-        self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
-        self.grid_rowconfigure(1, weight=1)  # Configure the column to expand
+        main_frame.grid_columnconfigure(0, weight=1)  # Configure the column to expand
+        main_frame.grid_columnconfigure(1, weight=1)  # Configure the column to expand
+        main_frame.grid_columnconfigure(2, weight=1)  # Configure the column to expand
+        main_frame.grid_columnconfigure(3, weight=1)  # Configure the column to expand
+        main_frame.grid_rowconfigure(0, weight=1)  # Configure the column to expand
+        main_frame.grid_rowconfigure(1, weight=1)  # Configure the column to expand
 
         self.console_box(main_frame)
 
