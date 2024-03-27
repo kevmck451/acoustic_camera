@@ -94,24 +94,21 @@ class Console_Frame(ctk.CTkFrame):
 
         # Configure the columns and rows of main_frame to expand
         main_frame.grid_columnconfigure(0, weight=1)
-        main_frame.grid_columnconfigure(1, weight=3)  # Adjust the weight as needed
+        main_frame.grid_columnconfigure(1, weight=3)
         main_frame.grid_rowconfigure(0, weight=1)
         main_frame.grid_rowconfigure(1, weight=1)
 
         self.console_box(main_frame)
 
     def console_box(self, frame):
-        # Place the title in the second column, centered
+        # Experiment Metadata Info Box (Title)
         self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style)
-        self.title.grid(row=0, column=1, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        # Place the title in the third column, centered
+        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
-        # Place the main info label in the second column, centered
         self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style)
-        self.main_info_label.grid(row=1, column=1, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
-
-        # Additional label for demonstration, adjust as needed
-        self.console_title = ctk.CTkLabel(frame, text="Console Frame", font=configuration.console_font_style)
-        self.console_title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        # Place the main info label in the third column, centered
+        self.main_info_label.grid(row=1, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
 
 
