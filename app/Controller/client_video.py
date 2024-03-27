@@ -16,7 +16,7 @@ import cv2
 import numpy as np
 
 class VideoClient:
-    def __init__(self, host, port, sock=None):
+    def __init__(self, host='10.0.0.1', port=56565, sock=None):
         self.host = host
         self.port = port
         if sock is None:
