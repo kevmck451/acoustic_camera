@@ -50,8 +50,8 @@ class Main_Window(ctk.CTk):
         self.Main_Frame = Main_Frame(self, self.Console_Frame, self.event_handler)
 
         # Grid configuration
-        self.rowconfigure(0, weight=10)  # Left column with 2/3 of the space
-        self.rowconfigure(1, weight=1)  # Left column with 2/3 of the space
+        self.rowconfigure(0, weight=1)  # Left column with 2/3 of the space
+        self.rowconfigure(1, weight=8)  # Left column with 2/3 of the space
 
         # Place the frames using grid
 
@@ -62,6 +62,7 @@ class Main_Window(ctk.CTk):
         # Ending Procedures
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind("<Escape>", self.close_application)
+        self.bind("<Control-c>", self.close_application)
 
     def set_video_sender(self, video_server):
         self.video_sender = video_server
@@ -92,12 +93,9 @@ class Console_Frame(ctk.CTkFrame):
         main_frame = ctk.CTkFrame(self)
         main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
         self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
+        self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
 
-        self.console_box(main_frame)
 
-    def console_box(self, frame):
-        frame.grid_rowconfigure(0, weight=0)
-        frame.grid_columnconfigure(0, weight=0)
 
 
 
