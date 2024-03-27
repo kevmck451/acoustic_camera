@@ -100,17 +100,13 @@ class Console_Frame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
         self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
 
-    def console_box(self, frame):
+        self.console_box(main_frame)
 
+    def console_box(self, frame):
         # Experiment Metadata Info Box (Title)
         self.main_info_label = ctk.CTkLabel(frame, text="TEST", font=configuration.console_font_style)
         self.main_info_label.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='ew')
 
-
-
-        # Configure the rows to not expand
-        for i in range(21):
-            frame.grid_rowconfigure(i, weight=0)
 
 # ---------------------------------------------------
 # MAIN FRAME --------------------------------------
@@ -183,9 +179,9 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        self.detection_overlays(top_frame)
-        self.overlay_options(middle_frame)
-        self.template_button_frame_z(bottom_frame)
+        # self.detection_overlays(top_frame)
+        # self.overlay_options(middle_frame)
+        # self.template_button_frame_z(bottom_frame)
 
     # FRAMES ---------------------------------------------
 
@@ -360,9 +356,9 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        self.template_bottom_buttons(top_frame)
-        self.camera_settings_frame(middle_frame)
-        self.settings_frame(bottom_frame)
+        # self.template_bottom_buttons(top_frame)
+        # self.camera_settings_frame(middle_frame)
+        # self.settings_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
 
