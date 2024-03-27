@@ -51,25 +51,19 @@ class Main_Window(ctk.CTk):
 
         # Configure grid rows with equal weight
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=8)
+        self.rowconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
 
         # Place the frames using grid
         self.Console_Frame.grid(row=0, column=0, sticky='nsew')
         self.Main_Frame.grid(row=1, column=0, sticky='nsew')
 
 
+
         # Ending Procedures
         self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.bind("<Escape>", self.close_application)
         self.bind("<Control-c>", self.close_application)
-
-        print("Console_Frame parent:", self.Console_Frame.winfo_parent())
-        print("Main_Frame parent:", self.Main_Frame.winfo_parent())
-
-        self.Console_Frame.grid(row=0, column=0, sticky='nsew')
-        print("Console_Frame grid info:", self.Console_Frame.grid_info())
-        self.Main_Frame.grid(row=1, column=0, sticky='nsew')
-        print("Main_Frame grid info:", self.Main_Frame.grid_info())
 
     def set_video_sender(self, video_server):
         self.video_sender = video_server
@@ -123,15 +117,18 @@ class Main_Frame(ctk.CTkFrame):
         self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
+        self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
-        self.columnconfigure(1, weight=5)  # Right column with x/3 of the space
+        self.columnconfigure(1, weight=1)  # Right column with x/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with x/3 of the space
+
+
+
 
         # Place the frames using grid
         self.Left_Frame.grid(row=0, column=0, sticky='nsew')  # Left frame in column 0
         self.Center_Frame.grid(row=0, column=1, sticky='nsew')  # Right frame in column 1
         self.Right_Frame.grid(row=0, column=2, sticky='nsew')  # Right frame in column 1
-
 
 
 # ---------------------------------------------------
@@ -287,7 +284,6 @@ class Left_Frame(ctk.CTkFrame):
     # UPDATE METADATA FRAMES ------------------------
 
 
-
 # ---------------------------------------------------
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------
@@ -307,8 +303,6 @@ class Video_Frame(ctk.CTkFrame):
         # Update the label with the new image
         self.label.configure(image=tk_image)
         self.label.image = tk_image  # Keep a reference to avoid garbage collection
-
-
 
 
 # ---------------------------------------------------
@@ -361,7 +355,6 @@ class Right_Frame(ctk.CTkFrame):
         self.settings_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
-
 
     def template_bottom_buttons(self, frame):
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
@@ -483,12 +476,3 @@ class Right_Frame(ctk.CTkFrame):
 
     def set_papapi_disconnected_label(self):
         self.papapi_hardware_connect_label.configure(text="Papa Pi Disconnected", text_color=configuration.red_fg_color)
-
-    def toggle_micfpga_connection_label(self):
-        if self.micfpga_connection_state == 0:
-            self.micfpga_hardware_connect_label.configure(text="Mic FPGA Connected", text_color=configuration.green_fg_color)
-            self.micfpga_connection_state += 1
-
-        else:
-            self.micfpga_hardware_connect_label.configure(text="Mic FPGA Disconnected", text_color=configuration.red_fg_color)
-            self.micfpga_connection_state = 0
