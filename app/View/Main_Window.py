@@ -33,16 +33,15 @@ class Main_Window(ctk.CTk):
         self.title(configuration.window_title)
 
         # Screen: full screen
-        # self.attributes('-fullscreen', True)
-        # Get the screen dimension
+        self.attributes('-fullscreen', True)
 
         # Screen: can see window
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        center_x = int((screen_width / 2) - (configuration.window_width / 2))
-        center_y = int((screen_height / 2) - (configuration.window_height / 2))
-        self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
-        self.minsize(configuration.min_window_width, configuration.min_window_height)
+        # screen_width = self.winfo_screenwidth()
+        # screen_height = self.winfo_screenheight()
+        # center_x = int((screen_width / 2) - (configuration.window_width / 2))
+        # center_y = int((screen_height / 2) - (configuration.window_height / 2))
+        # self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
+        # self.minsize(configuration.min_window_width, configuration.min_window_height)
 
         # Main Frames
         self.Left_Frame = Left_Frame(self, self.event_handler)
@@ -258,13 +257,6 @@ class Video_Frame(ctk.CTkFrame):
         # Update the label with the new image
         self.label.configure(image=tk_image)
         self.label.image = tk_image  # Keep a reference to avoid garbage collection
-
-    def update_camera_feed(self):
-        frame = self.parent.video_sender.current_frame
-        self.label.configure(image=frame)
-        self.label.image = frame
-        self.after(5, self.update_camera_feed)
-
 
 
 
