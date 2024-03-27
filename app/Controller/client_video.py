@@ -112,6 +112,9 @@ class VideoClient:
                         break
         except Exception as e:
             print(f"Error receiving video data: {e}")
+        except KeyboardInterrupt:
+            print('Shutting Down')
+            self.close()
         finally:
             self.close()
 
