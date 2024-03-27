@@ -61,7 +61,7 @@ class VideoClient:
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
-                    self.num_bytes += (self.current_frame.nbytes // 1000000)
+                    self.num_bytes += (self.current_frame.nbytes // 1000)
                     if self.i_loop % 60 == 0:
 
                         print(f'Streaming Video: {self.num_bytes} MBs')
