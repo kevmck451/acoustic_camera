@@ -51,7 +51,7 @@ class Main_Window(ctk.CTk):
 
         # Configure grid rows with equal weight
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=1)
+        self.rowconfigure(1, weight=8)
 
         # Place the frames using grid
         self.Console_Frame.grid(row=0, column=0, sticky='nsew')
@@ -105,7 +105,7 @@ class Console_Frame(ctk.CTkFrame):
     def console_box(self, frame):
         # Experiment Metadata Info Box (Title)
         self.main_info_label = ctk.CTkLabel(frame, text="TEST", font=configuration.console_font_style)
-        self.main_info_label.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='ew')
+        self.main_info_label.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
 
 # ---------------------------------------------------
