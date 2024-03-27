@@ -20,9 +20,10 @@ if __name__ == "__main__":
     gui = Main_Window(controller.handle_event)
 
     video_sender.set_gui(gui)
-    controller.set_gui(gui)
+
     controller.set_video_sender(video_sender)
     controller.set_event_sender(event_sender)
+    controller.set_gui(gui)
 
     gui.mainloop()
 
