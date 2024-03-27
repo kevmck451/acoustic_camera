@@ -27,7 +27,7 @@ class VideoClient:
         self.stream_video = False
         self.i_loop = 0
         self.num_bytes = 0
-        self.timer_start = self.timer_start = time.time()
+        self.timer_speed = self.timer_start = time.time()
 
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -75,9 +75,10 @@ class VideoClient:
 
     def calculate_transfer_speed(self, frame_bytes):
         self.num_bytes += (frame_bytes / 1000000)
-        if self.timer_start - time.time() > 6000:
+        if self.timer_speed - time.time() > 6000:
             print(f'Streaming Video: {int(np.round(self.num_bytes))} MB/s')
             self.num_bytes = 0
+            self.timer_speed = time.time()
 
 
     def demo_overlay_stream(self):
