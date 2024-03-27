@@ -109,6 +109,7 @@ class Main_Frame(ctk.CTkFrame):
         super().__init__(parent)
         self.console_frame = console_frame
         self.event_handler = event_handler
+        self.parent = parent
 
         self.Left_Frame = Left_Frame(self, self.event_handler)
         self.Center_Frame = Video_Frame(self, self.event_handler)
