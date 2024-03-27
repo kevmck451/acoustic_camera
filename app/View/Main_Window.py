@@ -103,11 +103,11 @@ class Console_Frame(ctk.CTkFrame):
     def console_box(self, frame):
         # Experiment Metadata Info Box (Title)
         self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style)
-        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew', columnspan=1)
+        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
         self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style)
         self.main_info_label.grid(row=1, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad,
-                                  sticky='nsew', columnspan=1)
+                                  sticky='nsew')
 
 
 # ---------------------------------------------------
