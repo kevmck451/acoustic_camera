@@ -40,20 +40,13 @@ class VideoClient:
         print(f"Connected to {self.host}:{self.port}")
 
 
-    def start_streaming(self):
-        self.stream_video = True
-
-    def stop_streaming(self):
-        self.stream_video = False
-
-
     def receive_video_data(self):
         """
         Receive video data from the server.
         """
         data = b''
         try:
-            while self.stream_video:
+            while True:
                 # Receive data in chunks
                 chunk = self.sock.recv(4096)
                 if not chunk:
@@ -77,13 +70,11 @@ class VideoClient:
     def calculate_transfer_speed(self, frame_bytes):
         self.num_bytes += (frame_bytes / 1000000)
         if time.time() - self.timer_speed > 1:
-            if time.time() - self.timer_print > 30:
+            if time.time() - self.timer_print > 10:
                 print(f'Streaming Video: {int(np.round(self.num_bytes))} MB/s')
                 self.timer_print = time.time()
             self.num_bytes = 0
             self.timer_speed = time.time()
-
-
 
 
     def demo_overlay_stream(self):
@@ -92,7 +83,7 @@ class VideoClient:
         """
         data = b''
         try:
-            while self.stream_video:
+            while True:
                 # Receive data in chunks
                 chunk = self.sock.recv(4096)
                 if not chunk:
@@ -153,6 +144,5 @@ if __name__ == "__main__":
 
     client = VideoClient(host, port)
     client.connect()
-    client.start_streaming()
     # client.receive_video_data()
     client.demo_overlay_stream()

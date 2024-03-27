@@ -1,3 +1,5 @@
+import threading
+
 from app.View.Main_Window import Main_Window
 from app.Controller.controller import Controller
 from app.Controller.client_events import Event_Sender_Client
@@ -16,6 +18,9 @@ if __name__ == "__main__":
 
     controller.set_gui(gui)
     controller.set_event_sender(event_sender)
+
+    video_sender_thread = threading.Thread(target=video_sender.receive_video_data())
+    video_sender_thread.start()
 
     gui.mainloop()
 
