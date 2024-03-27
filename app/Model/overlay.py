@@ -24,10 +24,10 @@ class Overlay:
         self.classify_vehicles = False
         self.audio_visual_running = True
         self.running = True
-        self.rms_threshold = np.log(20)  # 20
+        self.rms_threshold = np.log(22)  # 20
         self.rms_max = np.log(85)  # 85
-        self.audio_overlay_color = 0 # 2
-        self.compression_rate = 100 # 20  # Max 100
+        self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red
+        self.compression_rate = 50 # 20  # Max 100
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
