@@ -59,7 +59,7 @@ class Controller:
                 self.event_sender.send_data(command)
 
                 print('OVERLAY_COLOR_RED')
-                self.gui.Left_Frame.toggle_overlay_color_button()
+                self.gui.Main_Frame.Left_Frame.toggle_overlay_color_button()
 
             else: print('Not Connected to Hardware')
 
@@ -70,7 +70,7 @@ class Controller:
                 self.event_sender.send_data(command)
 
                 print('OVERLAY_COLOR_BLUE')
-                self.gui.Left_Frame.toggle_overlay_color_button()
+                self.gui.Main_Frame.Left_Frame.toggle_overlay_color_button()
 
             else: print('Not Connected to Hardware')
 
@@ -81,7 +81,7 @@ class Controller:
                 self.event_sender.send_data(command)
 
                 print('OVERLAY_COLOR_GREEN')
-                self.gui.Left_Frame.toggle_overlay_color_button()
+                self.gui.Main_Frame.Left_Frame.toggle_overlay_color_button()
 
             else: print('Not Connected to Hardware')
 
@@ -97,7 +97,7 @@ class Controller:
             # self.gui.Center_Frame.update_camera_feed()
             self.event_sender.send_data('video_stream=True')
             if self.event_sender.connected:
-                self.gui.Right_Frame.toggle_video_feed_button()
+                self.gui.Main_Frame.Right_Frame.toggle_video_feed_button()
 
         elif event == Event.STOP_CAMERA:
             print('STOP CAMERA')
@@ -105,7 +105,7 @@ class Controller:
             # self.gui.Center_Frame.update_camera_feed()
             self.event_sender.send_data('video_stream=False')
             if self.event_sender.connected:
-                self.gui.Right_Frame.toggle_video_feed_button()
+                self.gui.Main_Frame.Right_Frame.toggle_video_feed_button()
 
 
         # Window Closing Actions
