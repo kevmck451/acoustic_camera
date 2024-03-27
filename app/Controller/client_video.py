@@ -16,10 +16,12 @@ import cv2
 import numpy as np
 
 class VideoClient:
-    def __init__(self, host='0.0.0.0', port=56565, sock=None):
+    def __init__(self, host='0.0.0.0', port=56565, frame_callback=None, sock=None):
         self.host = host
         self.port = port
         self.current_frame = None
+        self.frame_callback = frame_callback
+
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
@@ -46,6 +48,10 @@ class VideoClient:
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
+
+                # Pass the frame to the callback function
+                if self.frame_callback:
+                    self.frame_callback(frame)
 
         except Exception as e:
             print(f"Error receiving video data: {e}")
