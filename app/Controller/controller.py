@@ -23,7 +23,7 @@ class Controller:
 
     def set_event_sender(self, event_sender):
         self.event_sender = event_sender
-        check_connection_thread = threading.Thread(target=controller.check_papapi_connection, daemon=True)
+        check_connection_thread = threading.Thread(target=self.check_papapi_connection, daemon=True)
         check_connection_thread.start()
 
     def set_video_sender(self, video_sender):
