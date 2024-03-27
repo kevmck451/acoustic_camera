@@ -250,6 +250,14 @@ class Video_Frame(ctk.CTkFrame):
         self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
+    def update_frame(self, cv_image):
+        # Convert the OpenCV image to PIL format
+        pil_image = Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGBA))
+        tk_image = ImageTk.PhotoImage(image=pil_image)
+
+        # Update the label with the new image
+        self.label.configure(image=tk_image)
+        self.label.image = tk_image  # Keep a reference to avoid garbage collection
 
     def update_camera_feed(self):
         frame = self.parent.video_sender.current_frame

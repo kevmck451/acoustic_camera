@@ -23,6 +23,7 @@ class VideoClient:
     def __init__(self, host='0.0.0.0', port=56565, frame_callback=None, sock=None):
         self.host = host
         self.port = port
+        self.gui = None
         self.current_frame = None
         self.stream_video = False
         self.i_loop = 0
@@ -40,6 +41,9 @@ class VideoClient:
         print(f"Connected to {self.host}:{self.port}")
 
 
+    def set_gui(self, gui):
+        self.gui = gui
+
     def receive_video_data(self):
         """
         Receive video data from the server.
@@ -52,13 +56,12 @@ class VideoClient:
                 if not chunk:
                     break  # No more data
                 data += chunk
-
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
+                    self.gui.Center_Frame.update_frame(self.current_frame)
                     self.calculate_transfer_speed(self.current_frame.nbytes)
-
 
 
         except Exception as e:
@@ -97,10 +100,7 @@ class VideoClient:
 
                     self.calculate_transfer_speed(frame.nbytes)
 
-                    # Now `frame` contains the uncompressed image data
-                    # which can be used for further processing
-                    # For demonstration, we will just show the frame
-                    cv2.imshow('Video Frame', frame)
+                    cv2.imshow('Acoustic Camera Overlay', frame)
                     if cv2.waitKey(1) & 0xFF == ord('q'):
                         break
         except Exception as e:
