@@ -28,13 +28,7 @@ class Controller:
 
     def set_video_sender(self, video_sender):
         self.video_sender = video_sender
-        self.video_sender.frame_callback = self.handle_video_frame
 
-    def handle_video_frame(self, frame):
-        # Process the received frame (e.g., update GUI)
-        # Assuming your GUI has a method to update the video frame
-        if self.gui and hasattr(self.gui, 'update_video_frame'):
-            self.gui.update_video_frame(frame)
 
     # These are the gate keepers for whether or not to perform the action
     def handle_event(self, event):
@@ -100,8 +94,9 @@ class Controller:
 
         elif event == Event.START_CAMERA:
             print('START_CAMERA')
-            self.gui.video_sender.send_data('start')
+            # self.gui.video_sender.send_data('start')
             # self.gui.Center_Frame.update_camera_feed()
+            self.start_camera()
             if self.event_sender.connected:
                 self.gui.Left_Frame.toggle_video_feed_button()
 
@@ -109,6 +104,7 @@ class Controller:
             print('STOP CAMERA')
             # self.gui.video_sender.send_data('stop')
             # self.gui.Center_Frame.update_camera_feed()
+            self.stop_camera()
             if self.event_sender.connected:
                 self.gui.Left_Frame.toggle_video_feed_button()
 
@@ -129,3 +125,26 @@ class Controller:
 
             else: self.gui.Right_Frame.set_papapi_disconnected_label()
             time.sleep(1)
+
+
+    def handle_video_frame(self, frame):
+        # Process the received frame (e.g., update GUI)
+        # Assuming your GUI has a method to update the video frame
+        if self.gui and hasattr(self.gui, 'update_video_frame'):
+            self.gui.update_video_frame(frame)
+
+    def start_camera(self):
+        if self.video_sender:
+            self.video_sender.start_feed()  # Assuming start_feed() is a method in VideoClient
+            print('Camera started')
+            # Update GUI if necessary
+            if self.gui:
+                self.gui.Left_Frame.toggle_video_feed_button(True)  # Assuming this method exists
+
+    def stop_camera(self):
+        if self.video_sender:
+            self.video_sender.stop_feed()  # Assuming stop_feed() is a method in VideoClient
+            print('Camera stopped')
+            # Update GUI if necessary
+            if self.gui:
+                self.gui.Left_Frame.toggle_video_feed_button(False)  # Assuming this method exists
