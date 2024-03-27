@@ -92,7 +92,7 @@ class Controller:
             print('START_CAMERA')
             # self.gui.video_sender.send_data('start')
             # self.gui.Center_Frame.update_camera_feed()
-
+            self.event_sender.send_data('video_stream=True')
             if self.event_sender.connected:
                 self.gui.Left_Frame.toggle_video_feed_button()
 
@@ -100,7 +100,7 @@ class Controller:
             print('STOP CAMERA')
             # self.gui.video_sender.send_data('stop')
             # self.gui.Center_Frame.update_camera_feed()
-
+            self.event_sender.send_data('video_stream=False')
             if self.event_sender.connected:
                 self.gui.Left_Frame.toggle_video_feed_button()
 

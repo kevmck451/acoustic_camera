@@ -47,7 +47,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print('Shutting Down')
             event_server.stop()
-            # video_server.stop()
+            video_server.stop()
             overlay.stop_overlay()
             break
 

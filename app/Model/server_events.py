@@ -85,7 +85,11 @@ class Event_Server:
                 self.overlay.audio_overlay_color = 1
             elif value == 'blue':
                 self.overlay.audio_overlay_color = 0
-
+        elif command == 'video_stream':
+            if value == 'True':
+                self.video_server = True
+            elif value == 'False':
+                self.video_server = False
 
 
 @dataclass

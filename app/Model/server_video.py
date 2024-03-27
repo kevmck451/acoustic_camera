@@ -21,6 +21,7 @@ class Video_Server:
         self.server_socket.listen(1)
 
         self.video_hw = None
+        self.send_video_stream = False
 
 
     @staticmethod
@@ -64,22 +65,23 @@ class Video_Server:
 
         while True:
             try:
-                data_bytes = self.video_hw.get_data()
-                if not data_bytes:
-                    print("No data received, waiting...")
-                    time.sleep(0.1)
-                    continue
+                if self.send_video_stream:
+                    data_bytes = self.video_hw.get_data()
+                    if not data_bytes:
+                        print("No data received, waiting...")
+                        time.sleep(0.1)
+                        continue
 
-                print(f"Sending {len(data_bytes)} bytes of video data")
+                    print(f"Sending {len(data_bytes)} bytes of video data")
 
-                # Send the data in chunks to the client
-                bytes_sent = 0
-                while bytes_sent < len(data_bytes):
-                    sent = sock.send(data_bytes[bytes_sent:bytes_sent + 4096])
-                    if sent == 0:
-                        print("Connection probably broken")
-                        return
-                    bytes_sent += sent
+                    # Send the data in chunks to the client
+                    bytes_sent = 0
+                    while bytes_sent < len(data_bytes):
+                        sent = sock.send(data_bytes[bytes_sent:bytes_sent + 4096])
+                        if sent == 0:
+                            print("Connection probably broken")
+                            return
+                        bytes_sent += sent
 
             except Exception as e:
                 print(f"Error during video capture: {e}")
@@ -89,6 +91,9 @@ class Video_Server:
 
         print("Video capture ended")
 
+
+    def stop(self):
+        self.server_socket.close()
 
 # To run the server
 if __name__ == '__main__':
