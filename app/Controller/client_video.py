@@ -62,7 +62,7 @@ class VideoClient:
                     self.current_frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
                     self.num_bytes += (self.current_frame.nbytes // 1000000)
-                    if self.i_loop % 60 == 0:
+                    if self.i_loop % 10 == 0:
 
                         print(f'Streaming Video: {self.num_bytes} MBs')
                         self.num_bytes = 0
@@ -144,4 +144,5 @@ if __name__ == "__main__":
     client = VideoClient(host, port)
     client.connect()
     client.start_streaming()
-    client.demo_overlay_stream()
+    client.receive_video_data()
+    # client.demo_overlay_stream()
