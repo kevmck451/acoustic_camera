@@ -26,9 +26,9 @@ class Video_Server:
     def run(self):
         while True:
             client_socket, address = self.server_socket.accept()
-            print(f"client accepted from {address}")
+            print(f"Client connected from {address}")
             # Handle each client connection in a separate thread
-            threading.Thread(target=self.handle_client, args=(client_socket,), daemon=True).start()
+            threading.Thread(target=self.capture, args=(client_socket,), daemon=True).start()
 
     def handle_client(self, client_socket):
         try:
@@ -41,11 +41,37 @@ class Video_Server:
         finally:
             client_socket.close()
 
+    def capture(self, sock):
+        while self.send_video_stream:
+            try:
+                data_bytes = self.video_hw.get_data()
+                if not data_bytes:
+                    print("No data received, waiting...")
+                    time.sleep(0.1)  # Briefly pause to avoid overwhelming the CPU
+                    continue
+
+                print(f"Sending {len(data_bytes)} bytes of video data")
+
+                # Send the data in chunks to the client
+                bytes_sent = 0
+                while bytes_sent < len(data_bytes):
+                    sent = sock.send(data_bytes[bytes_sent:bytes_sent + 4096])
+                    if sent == 0:
+                        print("Connection probably broken")
+                        return  # Exit the function if connection is broken
+                    bytes_sent += sent
+
+            except Exception as e:
+                print(f"Error during video capture: {e}")
+                break  # Break the loop in case of an error
+
     # Additional methods for start and stop commands
     def start_streaming(self):
+        print('Streaming Video!')
         self.send_video_stream = True
 
     def stop_streaming(self):
+        print('Stopped Streaming Video!')
         self.send_video_stream = False
 
 
@@ -53,6 +79,7 @@ class Video_Server:
         self.video_hw = video_hw
 
     def stop(self):
+        self.send_video_stream = False
         self.server_socket.close()
 
 # To run the server

@@ -87,9 +87,9 @@ class Event_Server:
                 self.overlay.audio_overlay_color = 0
         elif command == 'video_stream':
             if value == 'True':
-                self.video_server.send_video_stream = True
+                self.video_server.start_streaming()
             elif value == 'False':
-                self.video_server.send_video_stream = False
+                self.video_server.stop_streaming()
 
 
 @dataclass
