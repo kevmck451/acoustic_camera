@@ -99,10 +99,10 @@ class Console_Frame(ctk.CTkFrame):
 
     def console_box(self, frame):
         # Experiment Metadata Info Box (Title)
-        self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style)
+        self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style, anchor='center')
         self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
-        self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style)
+        self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style, anchor='center')
         self.main_info_label.grid(row=1, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad,
                                   sticky='nsew')
 
@@ -134,6 +134,28 @@ class Main_Frame(ctk.CTkFrame):
         self.Left_Frame.grid(row=0, column=0, sticky='nsew')  # Left frame in column 0
         self.Center_Frame.grid(row=0, column=1, sticky='nsew')  # Right frame in column 1
         self.Right_Frame.grid(row=0, column=2, sticky='nsew')  # Right frame in column 1
+
+
+# ---------------------------------------------------
+# VIDEO FRAME --------------------------------------
+# ---------------------------------------------------
+class Video_Frame(ctk.CTkFrame):
+    def __init__(self, parent, event_handler):
+        super().__init__(parent)
+        self.parent = parent
+        self.event_handler = event_handler
+        self.label = tk.Label(self)  # Assuming video display within the custom frame
+        self.label.pack(expand=True, fill='both')
+
+    def update_frame(self, cv_image):
+        # Convert the OpenCV image to PIL format
+        pil_image = Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGBA))
+        tk_image = ImageTk.PhotoImage(image=pil_image)
+
+        # Update the label with the new image
+        self.label.configure(image=tk_image)
+        self.label.image = tk_image  # Keep a reference to avoid garbage collection
+
 
 
 # ---------------------------------------------------
@@ -289,25 +311,7 @@ class Left_Frame(ctk.CTkFrame):
     # UPDATE METADATA FRAMES ------------------------
 
 
-# ---------------------------------------------------
-# VIDEO FRAME --------------------------------------
-# ---------------------------------------------------
-class Video_Frame(ctk.CTkFrame):
-    def __init__(self, parent, event_handler):
-        super().__init__(parent)
-        self.parent = parent
-        self.event_handler = event_handler
-        self.label = tk.Label(self)  # Assuming video display within the custom frame
-        self.label.pack()
 
-    def update_frame(self, cv_image):
-        # Convert the OpenCV image to PIL format
-        pil_image = Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGBA))
-        tk_image = ImageTk.PhotoImage(image=pil_image)
-
-        # Update the label with the new image
-        self.label.configure(image=tk_image)
-        self.label.image = tk_image  # Keep a reference to avoid garbage collection
 
 
 # ---------------------------------------------------
