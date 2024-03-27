@@ -5,7 +5,7 @@
 import threading
 import socket
 import queue
-import time
+
 
 
 # ----------------------------------------------------
@@ -13,10 +13,11 @@ import time
 # ----------------------------------------------------
 # RP using data/video for something
 
-
-import socket
-import cv2
 import numpy as np
+import socket
+import time
+import cv2
+
 
 class VideoClient:
     def __init__(self, host='0.0.0.0', port=56565, frame_callback=None, sock=None):
@@ -26,6 +27,7 @@ class VideoClient:
         self.stream_video = False
         self.i_loop = 0
         self.num_bytes = 0
+        self.timer_start = self.timer_start = time.time()
 
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,13 +63,7 @@ class VideoClient:
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
-                    self.num_bytes += (self.current_frame.nbytes / 1000000)
-                    if self.i_loop % 120 == 0:
-
-                        print(f'Streaming Video: {int(np.round(self.num_bytes))} MBs')
-                        self.num_bytes = 0
-                        self.i_loop = 0
-                    self.i_loop+=1
+                    self.calculate_transfer_speed(self.current_frame.nbytes)
 
 
 
@@ -77,6 +73,11 @@ class VideoClient:
             self.close()
 
 
+    def calculate_transfer_speed(self, frame_bytes):
+        self.num_bytes += (frame_bytes / 1000000)
+        if self.timer_start - time.time() > 6000:
+            print(f'Streaming Video: {int(np.round(self.num_bytes))} MB/s')
+            self.num_bytes = 0
 
 
     def demo_overlay_stream(self):
@@ -97,12 +98,7 @@ class VideoClient:
                     frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
 
-                    self.num_bytes += (frame.nbytes / 1000000)
-                    if self.i_loop % 120 == 0:
-                        print(f'Streaming Video: {int(np.round(self.num_bytes))} MBs')
-                        self.num_bytes = 0
-                        self.i_loop = 0
-                    self.i_loop += 1
+                    self.calculate_transfer_speed(frame.nbytes)
 
                     # Now `frame` contains the uncompressed image data
                     # which can be used for further processing
