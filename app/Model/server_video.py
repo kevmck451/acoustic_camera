@@ -11,7 +11,7 @@ import time
 # FPGA / Mics giving data | RP / Video giving data
 
 class Video_Server:
-    def __init__(self, host='127.0.0.1'):
+    def __init__(self, host='0.0.0.0'):
         self.host = host # self._get_ip()
         self.port = 56565
         print(f"listening at IP {self.host} port {self.port}")
