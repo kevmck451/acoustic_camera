@@ -179,9 +179,9 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        # self.detection_overlays(top_frame)
-        # self.overlay_options(middle_frame)
-        # self.template_button_frame_z(bottom_frame)
+        self.detection_overlays(top_frame)
+        self.overlay_options(middle_frame)
+        self.template_button_frame_z(bottom_frame)
 
     # FRAMES ---------------------------------------------
 
@@ -356,9 +356,9 @@ class Right_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
 
-        # self.template_bottom_buttons(top_frame)
-        # self.camera_settings_frame(middle_frame)
-        # self.settings_frame(bottom_frame)
+        self.template_bottom_buttons(top_frame)
+        self.camera_settings_frame(middle_frame)
+        self.settings_frame(bottom_frame)
 
     # FRAMES ---------------------------------------------
 
