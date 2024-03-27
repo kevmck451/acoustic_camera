@@ -51,14 +51,14 @@ class Main_Window(ctk.CTk):
 
         # Configure grid rows with equal weight
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=1)
-        self.columnconfigure(0, weight=1)
+        self.rowconfigure(1, weight=3)
+
 
         # Place the frames using grid
         self.Console_Frame.grid(row=0, column=0, sticky='nsew')
         self.Main_Frame.grid(row=1, column=0, sticky='nsew')
 
-
+        self.columnconfigure(0, weight=1)
 
         # Ending Procedures
         self.protocol("WM_DELETE_WINDOW", self.on_close)
@@ -119,7 +119,7 @@ class Main_Frame(ctk.CTkFrame):
         # Grid configuration
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
-        self.columnconfigure(1, weight=1)  # Right column with x/3 of the space
+        self.columnconfigure(1, weight=2)  # Right column with x/3 of the space
         self.columnconfigure(2, weight=1)  # Right column with x/3 of the space
 
 
