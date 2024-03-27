@@ -117,7 +117,6 @@ class Controller:
             if self.event_sender.connected:
                 self.gui.Right_Frame.set_papapi_connected_label()
 
-
             else: self.gui.Right_Frame.set_papapi_disconnected_label()
             time.sleep(1)
 

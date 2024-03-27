@@ -341,7 +341,6 @@ class Right_Frame(ctk.CTkFrame):
         self.micfpga_hardware_connect_label.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2,
                                           sticky='nsew')
 
-
     def camera_settings_frame(self, frame):
 
         frame.grid_rowconfigure(0, weight=1)  # Row for the load button
