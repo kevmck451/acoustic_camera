@@ -50,7 +50,8 @@ class VideoClient:
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
-                    print(self.current_frame.shape)
+                    num_bytes = self.current_frame.nbytes
+                    print(num_bytes)
                     data = b''  # Reset buffer for next frame
 
 
@@ -61,10 +62,10 @@ class VideoClient:
             self.close()
 
 
-    def start_video_stream(self):
+    def start_streaming(self):
         self.stream_video = True
 
-    def stop_video_stream(self):
+    def stop_streaming(self):
         self.stream_video = False
 
 
@@ -84,7 +85,8 @@ class VideoClient:
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
                     frame = self.process_video_data(data)
-                    print(frame.shape)
+                    num_bytes = frame.nbytes
+                    print(num_bytes)
                     data = b''  # Reset buffer for next frame
 
                     # Now `frame` contains the uncompressed image data
@@ -131,5 +133,5 @@ if __name__ == "__main__":
 
     client = VideoClient(host, port)
     client.connect()
-    client.start_video_stream()
+    client.start_streaming()
     client.demo_overlay_stream()
