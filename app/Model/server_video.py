@@ -12,7 +12,7 @@ import time
 
 class Video_Server:
     def __init__(self):
-        self.host = self._get_ip()
+        self.host = '10.0.0.1' # self._get_ip()
         self.port = 56565
         print(f"listening at IP {self.host} port {self.port}")
 
@@ -53,6 +53,7 @@ class Video_Server:
                     client_socket.close()
         finally:
             self.server_socket.close()
+
 
     def set_video_hw(self, video_hw):
         self.video_hw = video_hw
