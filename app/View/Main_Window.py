@@ -241,42 +241,23 @@ class Left_Frame(ctk.CTkFrame):
 # ---------------------------------------------------
 # VIDEO FRAME --------------------------------------
 # ---------------------------------------------------
-# class Video_Frame(ctk.CTkFrame):
-#     def __init__(self, parent, event_handler):
-#         super().__init__(parent)
-#         self.parent = parent
-#         self.event_handler = event_handler
-#         self.label = tk.Label(self)  # Assuming video display within the custom frame
-#         self.label.pack()
-#
-#
-#     def update_camera_feed(self):
-#         # print('updating_camera_feed')
-#
-#         frame = self.parent.video_sender.current_frame
-#         self.label.configure(image=frame)
-#         self.label.image = frame
-#         self.after(5, self.update_camera_feed)
-
-
-class Video_Frame(tk.Frame):
+class Video_Frame(ctk.CTkFrame):
     def __init__(self, parent, event_handler):
         super().__init__(parent)
         self.parent = parent
         self.event_handler = event_handler
-        self.label = tk.Label(self)
+        self.label = tk.Label(self)  # Assuming video display within the custom frame
         self.label.pack()
 
-    def display_frame(self, frame):
-        # Convert the OpenCV image to a format Tkinter can use
-        image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-        photo = ImageTk.PhotoImage(image=image)
-        self.label.configure(image=photo)
-        self.label.image = photo  # Keep a reference to avoid garbage collection
 
-    def process_new_frame(self, frame):
-        # Directly display the new frame
-        self.display_frame(frame)
+    def update_camera_feed(self):
+        frame = self.parent.video_sender.current_frame
+        self.label.configure(image=frame)
+        self.label.image = frame
+        self.after(5, self.update_camera_feed)
+
+
+
 
 
 # ---------------------------------------------------

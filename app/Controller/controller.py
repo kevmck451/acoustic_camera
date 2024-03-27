@@ -26,10 +26,6 @@ class Controller:
         check_connection_thred = threading.Thread(target=self.check_papapi_connection, daemon=True)
         check_connection_thred.start()
 
-    def set_video_sender(self, video_sender):
-        self.video_sender = video_sender
-        self.video_sender.frame_callback = self.handle_video_frame
-
     # These are the gate keepers for whether or not to perform the action
     def handle_event(self, event):
 
@@ -126,8 +122,4 @@ class Controller:
             time.sleep(1)
 
 
-    def handle_video_frame(self, frame):
-        if self.gui:
-            # Assuming 'Center_Frame' is the part of GUI where video should be displayed
-            self.gui.Center_Frame.process_new_frame(frame)
 
