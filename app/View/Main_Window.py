@@ -92,7 +92,6 @@ class Left_Frame(ctk.CTkFrame):
         self.audio_feed_figure = None
         self.update_mic_levels_id = None
         self.overlay_color_button_state = 0
-        self.overlay_start_feed_state = 0
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
@@ -272,6 +271,7 @@ class Right_Frame(ctk.CTkFrame):
 
         self.papapi_connection_state = 0
         self.micfpga_connection_state = 0
+        self.overlay_start_feed_state = 0
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
