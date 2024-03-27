@@ -61,11 +61,12 @@ class Video_Server:
 
 
     def capture(self, sock):
-        print("Video capture is starting!")
+        print("Video Stream is Ready!")
 
         while True:
             try:
                 if self.send_video_stream:
+                    print("Video capture is starting!")
                     data_bytes = self.video_hw.get_data()
                     if not data_bytes:
                         print("No data received, waiting...")
