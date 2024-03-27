@@ -25,9 +25,9 @@ class Main_Window(ctk.CTk):
         self.event_handler = event_handler
 
         # Computer Icon
-        img = Image.open(configuration.main_window_icon)
-        icon = ImageTk.PhotoImage(img)
-        self.tk.call('wm', 'iconphoto', self._w, icon)
+        # img = Image.open(configuration.main_window_icon)
+        # icon = ImageTk.PhotoImage(img)
+        # self.tk.call('wm', 'iconphoto', self._w, icon)
 
         # Main Setup ------------------------------------------------------------
         self.title(configuration.window_title)
@@ -89,24 +89,50 @@ class Console_Frame(ctk.CTkFrame):
         super().__init__(parent)
 
         # Main Frame
-        main_frame = ctk.CTkFrame(self)
-        main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
-        main_frame.grid_columnconfigure(0, weight=1)  # Configure the column to expand
-        main_frame.grid_columnconfigure(1, weight=1)  # Configure the column to expand
-        main_frame.grid_columnconfigure(2, weight=1)  # Configure the column to expand
-        main_frame.grid_columnconfigure(3, weight=1)  # Configure the column to expand
-        main_frame.grid_rowconfigure(0, weight=1)  # Configure the column to expand
-        main_frame.grid_rowconfigure(1, weight=1)  # Configure the column to expand
+        # main_frame = ctk.CTkFrame(self)
+        # main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
+        # main_frame.grid_columnconfigure(0, weight=1)  # Configure the column to expand
+        # main_frame.grid_columnconfigure(1, weight=1)  # Configure the column to expand
+        # main_frame.grid_columnconfigure(2, weight=1)  # Configure the column to expand
+        # main_frame.grid_columnconfigure(3, weight=1)  # Configure the column to expand
+        # main_frame.grid_rowconfigure(0, weight=1)  # Configure the column to expand
+        # main_frame.grid_rowconfigure(1, weight=1)  # Configure the column to expand
+        #
+        # self.console_box(main_frame)
 
-        self.console_box(main_frame)
+        # Top Frame
+        col_1_frame = ctk.CTkFrame(self)
+        col_1_frame.grid(row=0, column=0, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
+        col_1_frame.grid_columnconfigure(0, weight=1, uniform='col')
+
+        # Middle Frame
+        col_2_frame = ctk.CTkFrame(self)
+        col_2_frame.grid(row=0, column=1, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
+        col_2_frame.grid_columnconfigure(1, weight=1, uniform='col')
+
+        # Bottom Frame
+        col_3_frame = ctk.CTkFrame(self)
+        col_3_frame.grid(row=0, column=1, padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
+        col_3_frame.grid_columnconfigure(2, weight=1, uniform='col')
+
+        # Configure the grid rows and column for self
+        self.grid_rowconfigure(0, weight=1)  # Top row
+        self.grid_rowconfigure(1, weight=1)  # Middle row
+        self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
+        self.grid_columnconfigure(1, weight=1, uniform='col')  # Single column
+        self.grid_columnconfigure(2, weight=1, uniform='col')  # Single column
+
+
+
+
 
     def console_box(self, frame):
         # Experiment Metadata Info Box (Title)
         self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style)
-        self.title.grid(row=0, column=2, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
         self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style)
-        self.main_info_label.grid(row=1, column=2, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        self.main_info_label.grid(row=1, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
 
 # ---------------------------------------------------
