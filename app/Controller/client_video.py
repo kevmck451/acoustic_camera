@@ -23,6 +23,7 @@ class VideoClient:
         self.host = host
         self.port = port
         self.current_frame = None
+        self.stream_video = False
 
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -39,7 +40,7 @@ class VideoClient:
         """
         data = b''
         try:
-            while True:
+            while self.stream_video:
                 # Receive data in chunks
                 chunk = self.sock.recv(4096)
                 if not chunk:
@@ -48,7 +49,8 @@ class VideoClient:
 
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
-                    self._current_frame = self.process_video_data(data)
+                    self.current_frame = self.process_video_data(data)
+                    print(self.current_frame.shape)
                     data = b''  # Reset buffer for next frame
 
 
@@ -58,13 +60,21 @@ class VideoClient:
         finally:
             self.close()
 
+
+    def start_video_stream(self):
+        self.stream_video = True
+
+    def stop_video_stream(self):
+        self.stream_video = False
+
+
     def demo_overlay_stream(self):
         """
         Receive video data from the server.
         """
         data = b''
         try:
-            while True:
+            while self.stream_video:
                 # Receive data in chunks
                 chunk = self.sock.recv(4096)
                 if not chunk:
@@ -74,6 +84,7 @@ class VideoClient:
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
                     frame = self.process_video_data(data)
+                    print(self.current_frame.shape)
                     data = b''  # Reset buffer for next frame
 
                     # Now `frame` contains the uncompressed image data
@@ -120,4 +131,5 @@ if __name__ == "__main__":
 
     client = VideoClient(host, port)
     client.connect()
+    client.start_video_stream()
     client.demo_overlay_stream()
