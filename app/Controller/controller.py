@@ -1,4 +1,4 @@
-import threading
+
 
 from app.View.overlay_threshold import Overlay_Threshold_Window
 from app.View.settings import Settings_Window
@@ -6,7 +6,7 @@ from app.Controller.events_states import Event
 from app.Controller.events_states import State
 
 
-
+import threading
 import time
 
 

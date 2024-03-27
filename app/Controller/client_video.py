@@ -19,6 +19,7 @@ class VideoClient:
     def __init__(self, host='0.0.0.0', port=56565, sock=None):
         self.host = host
         self.port = port
+        self.current_frame = None
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
@@ -29,6 +30,29 @@ class VideoClient:
         print(f"Connected to {self.host}:{self.port}")
 
     def receive_video_data(self):
+        """
+        Receive video data from the server.
+        """
+        data = b''
+        try:
+            while True:
+                # Receive data in chunks
+                chunk = self.sock.recv(4096)
+                if not chunk:
+                    break  # No more data
+                data += chunk
+
+                # Process received data if it's the end of a frame
+                if self.is_end_of_frame(data):
+                    self.current_frame = self.process_video_data(data)
+                    data = b''  # Reset buffer for next frame
+
+        except Exception as e:
+            print(f"Error receiving video data: {e}")
+        finally:
+            self.close()
+
+    def demo_overlay_stream(self):
         """
         Receive video data from the server.
         """
@@ -90,7 +114,7 @@ if __name__ == "__main__":
 
     client = VideoClient(host, port)
     client.connect()
-    client.receive_video_data()
+    client.demo_overlay_stream()
 
 
 

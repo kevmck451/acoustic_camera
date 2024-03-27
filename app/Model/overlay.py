@@ -27,6 +27,7 @@ class Overlay:
         self.rms_threshold = np.log(20)  # 20
         self.rms_max = np.log(85)  # 85
         self.audio_overlay_color = 2
+        self.compression_rate = 20  # Max 100
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
@@ -137,15 +138,10 @@ class Overlay:
                     # num_bytes = self.total_overlay.nbytes
                     # print(num_bytes)
 
-                    # Now, self.total_overlay_compressed contains the compressed image data
-                    # which can be sent over a network or saved to disk
-
-                    # Calculate the number of bytes: 921600 bytes
-
                     # Compress the combined overlay to a JPEG format in memory
-                    compression_rate = 20  # Max 100
+
                     result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                         [int(cv2.IMWRITE_JPEG_QUALITY), compression_rate])
+                                                                         [int(cv2.IMWRITE_JPEG_QUALITY), self.compression_rate])
 
                     # num_bytes = self.total_overlay_compressed.nbytes
                     # print(num_bytes)

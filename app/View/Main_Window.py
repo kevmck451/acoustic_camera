@@ -252,15 +252,11 @@ class Video_Frame(ctk.CTkFrame):
 
     def update_camera_feed(self):
         # print('updating_camera_feed')
-        try:
-            frame = self.parent.video_sender.frame_queue.get_nowait()
-            self.label.configure(image=frame)
-            self.label.image = frame
-        except queue.Empty:
-            pass
 
+        frame = self.parent.video_sender.current_frame
+        self.label.configure(image=frame)
+        self.label.image = frame
         self.after(5, self.update_camera_feed)
-
 
 
 
