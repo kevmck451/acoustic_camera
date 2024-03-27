@@ -89,7 +89,7 @@ class Console_Frame(ctk.CTkFrame):
         self.group_number = 0
 
         # Main Frame
-        main_frame = ctk.CTkFrame(self)
+        main_frame = ctk.CTkFrame(parent)
         main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
         self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
         self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
