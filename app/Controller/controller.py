@@ -59,7 +59,7 @@ class Controller:
                 self.event_sender.send_data(command)
 
                 print('OVERLAY_COLOR_RED')
-                self.gui.Main_Frame.Left_Frame.toggle_overlay_color_button()
+                self.gui.Main_Frame.Left_Frame.set_overlay_color_red()
 
             else: print('Not Connected to Hardware')
 
@@ -70,7 +70,7 @@ class Controller:
                 self.event_sender.send_data(command)
 
                 print('OVERLAY_COLOR_BLUE')
-                self.gui.Main_Frame.Left_Frame.toggle_overlay_color_button()
+                self.gui.Main_Frame.Left_Frame.set_overlay_color_blue()
 
             else: print('Not Connected to Hardware')
 
@@ -81,7 +81,7 @@ class Controller:
                 self.event_sender.send_data(command)
 
                 print('OVERLAY_COLOR_GREEN')
-                self.gui.Main_Frame.Left_Frame.toggle_overlay_color_button()
+                self.gui.Main_Frame.Left_Frame.set_overlay_color_green()
 
             else: print('Not Connected to Hardware')
 

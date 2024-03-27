@@ -175,7 +175,6 @@ class Left_Frame(ctk.CTkFrame):
         self.demo_button_state = True
         self.audio_feed_figure = None
         self.update_mic_levels_id = None
-        self.overlay_color_button_state = 0
 
         self.playing_icon = PhotoImage(file=configuration.playing_icon_filepath)
         self.playing_icon_s = PhotoImage(file=configuration.playing_icon_s_filepath)
@@ -291,27 +290,23 @@ class Left_Frame(ctk.CTkFrame):
 
 
     # BUTTON TOGGLE STATES ------------------------
-    def toggle_overlay_color_button(self):
-        if self.overlay_color_button_state == 0:
-            self.overlay_color_button.configure(text="Red Overlay",
-                                                fg_color=configuration.red_fg_color,
-                                                hover_color=configuration.red_hover_color,
-                                                command=lambda: self.event_handler(Event.OVERLAY_COLOR_RED))
-            self.overlay_color_button_state += 1
-        elif self.overlay_color_button_state == 1:
-            self.overlay_color_button.configure(text="Green Overlay",
-                                                fg_color=configuration.green_fg_color,
-                                                hover_color=configuration.green_hover_color,
-                                                command=lambda: self.event_handler(Event.OVERLAY_COLOR_GREEN))
-            self.overlay_color_button_state += 1
-        else:
-            self.overlay_color_button.configure(text="Blue Overlay",
-                                        fg_color=configuration.blue_fg_color,
-                                        hover_color=configuration.blue_hover_color,
-                                        command=lambda: self.event_handler(Event.OVERLAY_COLOR_BLUE))
-            self.overlay_color_button_state = 0
+    def set_overlay_color_red(self):
+        self.overlay_color_button.configure(text="Red Overlay",
+                                            fg_color=configuration.red_fg_color,
+                                            hover_color=configuration.red_hover_color,
+                                            command=lambda: self.event_handler(Event.OVERLAY_COLOR_RED))
 
+    def set_overlay_color_blue(self):
+        self.overlay_color_button.configure(text="Blue Overlay",
+                                            fg_color=configuration.blue_fg_color,
+                                            hover_color=configuration.blue_hover_color,
+                                            command=lambda: self.event_handler(Event.OVERLAY_COLOR_BLUE))
 
+    def set_overlay_color_green(self):
+        self.overlay_color_button.configure(text="Green Overlay",
+                                            fg_color=configuration.green_fg_color,
+                                            hover_color=configuration.green_hover_color,
+                                            command=lambda: self.event_handler(Event.OVERLAY_COLOR_GREEN))
 
     # UPDATE METADATA FRAMES ------------------------
 
