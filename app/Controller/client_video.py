@@ -97,7 +97,7 @@ class VideoClient:
                     frame = self.process_video_data(data)
                     data = b''  # Reset buffer for next frame
 
-                    self.num_bytes += (self.current_frame.nbytes / 1000000)
+                    self.num_bytes += (frame.nbytes / 1000000)
                     if self.i_loop % 120 == 0:
                         print(f'Streaming Video: {int(np.round(self.num_bytes))} MBs')
                         self.num_bytes = 0
