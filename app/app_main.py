@@ -1,9 +1,12 @@
-import threading
+
 
 from app.View.Main_Window import Main_Window
 from app.Controller.controller import Controller
 from app.Controller.client_events import Event_Sender_Client
 from app.Controller.client_video import VideoClient
+
+
+import threading
 
 if __name__ == "__main__":
 

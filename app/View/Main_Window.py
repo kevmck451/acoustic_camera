@@ -1,5 +1,9 @@
 
 
+
+import app.View.configuration as configuration
+from app.Controller.events_states import Event
+
 # import matplotlib
 # matplotlib.use('TkAgg')  # Specify the backend
 from tkinter import PhotoImage
@@ -12,8 +16,6 @@ import cv2
 
 
 
-import app.View.configuration as configuration
-from app.Controller.events_states import Event
 
 
 class Main_Window(ctk.CTk):
