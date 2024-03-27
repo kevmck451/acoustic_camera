@@ -14,9 +14,6 @@ if __name__ == "__main__":
 
     video_sender = VideoClient('10.0.0.1')
     video_sender.connect()
-    video_sender_thread = threading.Thread(target=video_sender.receive_video_data)
-    # video_sender_thread = threading.Thread(target=video_sender.demo_overlay_stream)
-    video_sender_thread.start()
 
     controller = Controller()
 

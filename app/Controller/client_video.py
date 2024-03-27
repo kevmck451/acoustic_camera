@@ -39,7 +39,9 @@ class VideoClient:
     def connect(self):
         self.sock.connect((self.host, self.port))
         print(f"Connected to {self.host}:{self.port}")
-
+        video_sender_thread = threading.Thread(target=self.receive_video_data)
+        # video_sender_thread = threading.Thread(target=video_sender.demo_overlay_stream)
+        video_sender_thread.start()
 
     def set_gui(self, gui):
         self.gui = gui
@@ -72,7 +74,6 @@ class VideoClient:
             print(f"Error receiving video data: {e}")
         finally:
             self.close()
-
 
     def calculate_transfer_speed(self, frame_bytes):
         self.num_bytes += (frame_bytes / 1000000)
