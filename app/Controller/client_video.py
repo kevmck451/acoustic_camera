@@ -75,7 +75,7 @@ class VideoClient:
 
     def calculate_transfer_speed(self, frame_bytes):
         self.num_bytes += (frame_bytes / 1000000)
-        if time.time() - self.timer_speed > 1000:
+        if time.time() - self.timer_speed > 1:
             print(f'Streaming Video: {int(np.round(self.num_bytes))} MB/s')
             self.num_bytes = 0
             self.timer_speed = time.time()
