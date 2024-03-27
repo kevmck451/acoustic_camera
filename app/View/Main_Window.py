@@ -104,11 +104,11 @@ class Console_Frame(ctk.CTkFrame):
         # Experiment Metadata Info Box (Title)
         self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style)
         # Place the title in the third column, centered
-        self.title.grid(row=0, column=2, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
         self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style)
         # Place the main info label in the third column, centered
-        self.main_info_label.grid(row=1, column=2, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        self.main_info_label.grid(row=1, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
         self.console_title = ctk.CTkLabel(frame, text="Console Frame", font=configuration.console_font_style)
         # Place the main info label in the third column, centered
