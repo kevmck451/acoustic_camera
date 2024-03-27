@@ -89,7 +89,7 @@ class Console_Frame(ctk.CTkFrame):
         self.group_number = 0
 
         # Main Frame
-        main_frame = ctk.CTkFrame(parent)
+        main_frame = ctk.CTkFrame(self)
         main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
         self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
         self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
@@ -108,9 +108,9 @@ class Main_Frame(ctk.CTkFrame):
         self.event_handler = event_handler
         self.parent = parent
 
-        self.Left_Frame = Left_Frame(self.parent, self.event_handler)
-        self.Center_Frame = Video_Frame(self.parent, self.event_handler)
-        self.Right_Frame = Right_Frame(self.parent, self.event_handler)
+        self.Left_Frame = Left_Frame(self, self.event_handler)
+        self.Center_Frame = Video_Frame(self, self.event_handler)
+        self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
@@ -168,10 +168,6 @@ class Left_Frame(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)  # Middle row
         self.grid_rowconfigure(2, weight=1)  # Bottom row
         self.grid_columnconfigure(0, weight=1, uniform='col')  # Single column
-
-        top_frame = ctk.CTkFrame(self, bg='red')
-        middle_frame = ctk.CTkFrame(self, bg='green')
-        bottom_frame = ctk.CTkFrame(self, bg='blue')
 
         self.detection_overlays(top_frame)
         self.overlay_options(middle_frame)
