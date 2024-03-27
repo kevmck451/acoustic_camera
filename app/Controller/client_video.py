@@ -24,6 +24,8 @@ class VideoClient:
         self.port = port
         self.current_frame = None
         self.stream_video = False
+        self.i_loop = 0
+        self.num_bytes = 0
 
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -33,6 +35,14 @@ class VideoClient:
     def connect(self):
         self.sock.connect((self.host, self.port))
         print(f"Connected to {self.host}:{self.port}")
+
+
+    def start_streaming(self):
+        self.stream_video = True
+
+    def stop_streaming(self):
+        self.stream_video = False
+
 
     def receive_video_data(self):
         """
@@ -50,9 +60,14 @@ class VideoClient:
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
                     self.current_frame = self.process_video_data(data)
-                    num_bytes = self.current_frame.nbytes
-                    print(num_bytes)
                     data = b''  # Reset buffer for next frame
+                    self.num_bytes += (self.current_frame.nbytes // 1000000)
+                    if self.i_loop % 60 == 0:
+
+                        print(f'Streaming Video: {self.num_bytes} MBs')
+                        self.num_bytes = 0
+                        self.i_loop = 0
+                    self.i_loop+=1
 
 
 
@@ -62,11 +77,6 @@ class VideoClient:
             self.close()
 
 
-    def start_streaming(self):
-        self.stream_video = True
-
-    def stop_streaming(self):
-        self.stream_video = False
 
 
     def demo_overlay_stream(self):
@@ -85,8 +95,8 @@ class VideoClient:
                 # Process received data if it's the end of a frame
                 if self.is_end_of_frame(data):
                     frame = self.process_video_data(data)
-                    num_bytes = frame.nbytes
-                    print(num_bytes)
+                    # num_bytes = frame.nbytes
+                    # print(num_bytes)
                     data = b''  # Reset buffer for next frame
 
                     # Now `frame` contains the uncompressed image data
