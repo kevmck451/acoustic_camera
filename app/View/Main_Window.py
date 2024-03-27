@@ -95,7 +95,7 @@ class Console_Frame(ctk.CTkFrame):
         super().__init__(parent)
 
         # Main Frame
-        main_frame = ctk.CTkFrame(parent)
+        main_frame = ctk.CTkFrame(self)
         main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
         self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
         self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
@@ -118,9 +118,9 @@ class Main_Frame(ctk.CTkFrame):
         self.event_handler = event_handler
         self.parent = parent
 
-        self.Left_Frame = Left_Frame(self.parent, self.event_handler)
-        self.Center_Frame = Video_Frame(self.parent, self.event_handler)
-        self.Right_Frame = Right_Frame(self.parent, self.event_handler)
+        self.Left_Frame = Left_Frame(self, self.event_handler)
+        self.Center_Frame = Video_Frame(self, self.event_handler)
+        self.Right_Frame = Right_Frame(self, self.event_handler)
 
         # Grid configuration
         self.columnconfigure(0, weight=1)  # Left column with x/3 of the space
@@ -458,7 +458,7 @@ class Right_Frame(ctk.CTkFrame):
         self.exit_button = ctk.CTkButton(frame, text='EXIT',
                                          font=(configuration.main_font_style, configuration.main_font_size),
                                          fg_color=configuration.red_fg_color, hover_color=configuration.red_hover_color,
-                                         command=self.parent.close_application)
+                                         command=self.parent.parent.close_application)
         self.exit_button.grid(row=2, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
     # BUTTON TOGGLE STATES ------------------------
