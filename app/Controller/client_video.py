@@ -16,7 +16,7 @@ import cv2
 import numpy as np
 
 class VideoClient:
-    def __init__(self, host='10.0.0.1', port=56565, sock=None):
+    def __init__(self, host='0.0.0.0', port=56565, sock=None):
         self.host = host
         self.port = port
         if sock is None:
@@ -85,7 +85,7 @@ class VideoClient:
         print("Connection closed")
 
 if __name__ == "__main__":
-    host = 'localhost'  # Change to your server's IP address
+    host = '10.0.0.1'  # Change to your server's IP address
     port = 56565        # Change to your server's port
 
     client = VideoClient(host, port)
