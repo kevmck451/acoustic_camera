@@ -64,7 +64,7 @@ class Event_Sender_Client:
         if self.connected:
             try:
                 self.socket.sendall(data.encode())
-                print("Data sent")
+                print("event data sent")
             except socket.error as e:
                 print(f"Error sending data: {e}")
                 self.connected = False
