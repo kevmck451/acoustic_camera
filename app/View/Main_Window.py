@@ -92,6 +92,9 @@ class Console_Frame(ctk.CTkFrame):
         main_frame = ctk.CTkFrame(self)
         main_frame.grid(padx=configuration.x_pad_main, pady=configuration.y_pad_main, sticky='nsew')
         self.grid_columnconfigure(0, weight=1)  # Configure the column to expand
+        self.grid_columnconfigure(1, weight=1)  # Configure the column to expand
+        self.grid_columnconfigure(2, weight=1)  # Configure the column to expand
+        self.grid_columnconfigure(3, weight=1)  # Configure the column to expand
         self.grid_rowconfigure(0, weight=1)  # Configure the column to expand
         self.grid_rowconfigure(1, weight=1)  # Configure the column to expand
 
@@ -99,12 +102,12 @@ class Console_Frame(ctk.CTkFrame):
 
     def console_box(self, frame):
         # Experiment Metadata Info Box (Title)
-        self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style, anchor='center')
-        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
+        self.title = ctk.CTkLabel(frame, text="Acoustic Camera", font=configuration.console_font_style)
+        self.title.grid(row=0, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew', columnspan=1)
 
-        self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style, anchor='center')
+        self.main_info_label = ctk.CTkLabel(frame, text="University of Memphis", font=configuration.console_font_style)
         self.main_info_label.grid(row=1, column=0, padx=configuration.console_x_pad, pady=configuration.console_y_pad,
-                                  sticky='nsew')
+                                  sticky='nsew', columnspan=1)
 
 
 # ---------------------------------------------------
