@@ -23,8 +23,8 @@ class Controller:
 
     def set_event_sender(self, event_sender):
         self.event_sender = event_sender
-        check_connection_thred = threading.Thread(target=self.check_papapi_connection, daemon=True)
-        check_connection_thred.start()
+        check_connection_thread = threading.Thread(target=controller.check_papapi_connection, daemon=True)
+        check_connection_thread.start()
 
     def set_video_sender(self, video_sender):
         self.video_sender = video_sender
@@ -125,7 +125,9 @@ class Controller:
             elif self.event_sender and not self.event_sender.connected:
                 # self.gui.Main_Frame.Right_Frame.set_papapi_disconnected_label()
                 if self.gui is not None:
-                    self.gui.after(0, self.gui.Main_Frame.Right_Frame.set_papapi_disconnected_label)
+                    # Inside your thread function or method
+                    self.gui.after(0, lambda: self.gui.Main_Frame.Right_Frame.set_papapi_disconnected_label())
+
             time.sleep(1)
 
 
