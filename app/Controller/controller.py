@@ -26,6 +26,9 @@ class Controller:
         check_connection_thred = threading.Thread(target=self.check_papapi_connection, daemon=True)
         check_connection_thred.start()
 
+    def set_video_sender(self, video_sender):
+        self.video_sender = video_sender
+
     # These are the gate keepers for whether or not to perform the action
     def handle_event(self, event):
 
@@ -108,6 +111,7 @@ class Controller:
         # Window Closing Actions
         elif event == Event.ON_CLOSE:
             self.event_sender.close_connection()
+            self.video_sender.close()
 
 
     # Action Functions ------------------------------
