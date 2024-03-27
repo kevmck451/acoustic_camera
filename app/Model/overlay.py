@@ -27,7 +27,7 @@ class Overlay:
         self.rms_threshold = np.log(20)  # 20
         self.rms_max = np.log(85)  # 85
         self.audio_overlay_color = 2
-        self.compression_rate = 20  # Max 100
+        self.compression_rate = 50 # 20  # Max 100
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
