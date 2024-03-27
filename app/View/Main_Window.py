@@ -110,6 +110,10 @@ class Console_Frame(ctk.CTkFrame):
         # Place the main info label in the third column, centered
         self.main_info_label.grid(row=1, column=2, padx=configuration.console_x_pad, pady=configuration.console_y_pad, sticky='nsew')
 
+        self.console_title = ctk.CTkLabel(frame, text="Console Frame", font=configuration.console_font_style)
+        # Place the main info label in the third column, centered
+        self.console_title.grid(row=0, column=1, padx=configuration.console_x_pad, pady=configuration.console_y_pad,
+                                  sticky='nsew')
 
 
 # ---------------------------------------------------
