@@ -296,3 +296,9 @@ sudo wpa_cli -i wlan0 reconfigure
 ```zsh
 ip a show wlan0
 ```
+
+### When not getting ip4 address
+```zsh
+ifconfig
+sudo dhclient -v wlan0
+```
