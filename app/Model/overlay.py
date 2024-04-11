@@ -88,25 +88,30 @@ class Overlay:
             rms_values = self.mic_hardware.RMS_values
             scaled_audio_values = self.scale_audio_matrix(rms_values)  # Process the RMS values
 
+            # based on a threshold ------------------------
+            clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
 
-            # Normalize the scaled audio values within the specified range
-            # based on a threshold
-            # clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
 
-            # show single pixel based on loudest point
+
+
+            # show single pixel based on loudest point ------------------------
 
             # Find the position of the maximum value
-            max_idx = np.unravel_index(np.argmax(scaled_audio_values), scaled_audio_values.shape)
-            # Determine the bounds of the 5x5 area centered around the max value
-            top_left = (max(0, max_idx[0] - 2), max(0, max_idx[1] - 2))
-            bottom_right = (min(scaled_audio_values.shape[0], top_left[0] + 5),
-                            min(scaled_audio_values.shape[1], top_left[1] + 5))
+            # max_idx = np.unravel_index(np.argmax(scaled_audio_values), scaled_audio_values.shape)
+            # # Determine the bounds of the 5x5 area centered around the max value
+            # top_left = (max(0, max_idx[0] - 2), max(0, max_idx[1] - 2))
+            # bottom_right = (min(scaled_audio_values.shape[0], top_left[0] + 5),
+            #                 min(scaled_audio_values.shape[1], top_left[1] + 5))
+            #
+            # # Extract the 5x5 area centered around the max value
+            # loudest_area = scaled_audio_values[top_left[0]:bottom_right[0], top_left[1]:bottom_right[1]]
+            # # Clip and normalize the loudest area
+            # clipped_audio_overlay = np.clip(np.log(loudest_area), self.rms_threshold, self.rms_max)
 
-            # Extract the 5x5 area centered around the max value
-            loudest_area = scaled_audio_values[top_left[0]:bottom_right[0], top_left[1]:bottom_right[1]]
-            # Clip and normalize the loudest area
-            clipped_audio_overlay = np.clip(np.log(loudest_area), self.rms_threshold, self.rms_max)
 
+
+
+            # ---------------------------------------
             norm_audio_overlay = np.uint8(
                 255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
 
