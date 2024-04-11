@@ -88,8 +88,16 @@ class Overlay:
             rms_values = self.mic_hardware.RMS_values
             scaled_audio_values = self.scale_audio_matrix(rms_values)  # Process the RMS values
 
+
             # Normalize the scaled audio values within the specified range
-            clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
+            # based on a threshold
+            # clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
+
+            # show single pixel based on loudest point
+            matrix_max_value = np.max(scaled_audio_values)
+            matrix_max_comp_value = matrix_max_value
+            clipped_audio_overlay = np.clip(np.log(scaled_audio_values), matrix_max_comp_value, self.rms_max)
+
             norm_audio_overlay = np.uint8(
                 255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
 

@@ -33,15 +33,15 @@ class Main_Window(ctk.CTk):
         self.title(configuration.window_title)
 
         # Screen: full screen
-        self.attributes('-fullscreen', True)
+        # self.attributes('-fullscreen', True)
 
         # Screen: can see window
-        # screen_width = self.winfo_screenwidth()
-        # screen_height = self.winfo_screenheight()
-        # center_x = int((screen_width / 2) - (configuration.window_width / 2))
-        # center_y = int((screen_height / 2) - (configuration.window_height / 2))
-        # self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
-        # self.minsize(configuration.min_window_width, configuration.min_window_height)
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        center_x = int((screen_width / 2) - (configuration.window_width / 2))
+        center_y = int((screen_height / 2) - (configuration.window_height / 2))
+        self.geometry(f'{configuration.window_width}x{configuration.window_height}+{center_x}+{center_y}')
+        self.minsize(configuration.min_window_width, configuration.min_window_height)
 
         # -------------------------------
         # MAIN TWO LEVELS: TOP AND BOTTOM
