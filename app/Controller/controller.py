@@ -94,7 +94,7 @@ class Controller:
             self.event_sender.send_data('threshold=+')
 
         elif event == Event.DECREASE_THRESHOLD:
-            self.event_sender.send_data('vthreshold=-')
+            self.event_sender.send_data('threshold=-')
 
         elif event == Event.START_CAMERA:
             print('START_CAMERA')
