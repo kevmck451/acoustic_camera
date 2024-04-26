@@ -24,8 +24,8 @@ class Overlay:
         self.classify_vehicles = False
         self.audio_visual_running = True
         self.running = True
-        self.rms_threshold = np.log(25)  # 20
-        self.rms_max = np.log(85)  # 85
+        self.rms_max = 85  # 85
+        self.rms_threshold = self.rms_max * 0.10  # 20
         self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red
         self.compression_rate = 50 # 20  # Max 100
 
@@ -38,6 +38,9 @@ class Overlay:
         # if wanting to view overlay uncomment this and comment out above
         # overlay_thread = threading.Thread(target=self.view_overlay, daemon=True)
         # overlay_thread.start()
+
+    def set_threshold_value(self, value):
+        self.rms_threshold = self.rms_max * value  # 20
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
@@ -89,7 +92,7 @@ class Overlay:
             scaled_audio_values = self.scale_audio_matrix(rms_values)  # Process the RMS values
 
             # based on a threshold ------------------------
-            clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
+            clipped_audio_overlay = np.clip(scaled_audio_values, self.rms_threshold, self.rms_max)
 
             # normalize RMS values to 8bit
             norm_audio_overlay = np.uint8(
@@ -97,7 +100,7 @@ class Overlay:
 
             # show single pixel based on loudest point ------------------------
             max_val = np.max(norm_audio_overlay)
-            norm_audio_overlay[norm_audio_overlay < max_val] = 0
+            # norm_audio_overlay[norm_audio_overlay < max_val] = 0
 
             # Create an RGB image where the red channel intensity is based on audio level
             # In OpenCV, the channel order is BGR, so the red channel is the last one

@@ -22,7 +22,7 @@ class PiHardware:
 
         # CAMERA HARDWARE CONNECTION-----------------
         print('CAMERA HARDWARE CONNECTION-----------------')
-        self.camera_hardware = Camera(fps=30, color=True) # width=580, height=580,
+        self.camera_hardware = Camera(width=560, height=560, fps=30, color=True) # width=580, height=580,
         # self.camera_hardware.start_viewing()
 
 

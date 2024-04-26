@@ -12,8 +12,9 @@ import time
 
 if __name__ == "__main__":
 
+    # Add start FPGA server automatically
 
-    # EVENT LISTENER SERVER-----------------------
+
     print('Event Listener Server Starting-----------------------')
     # set for simulation connection with 0.0.0.0 if testing
     # event_server = Event_Server('0.0.0.0')
