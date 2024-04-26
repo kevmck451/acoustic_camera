@@ -153,30 +153,21 @@ class Overlay:
                         self.total_overlay = combined_overlay
                         # print(self.total_overlay.shape)
 
-                        # Compress the combined overlay to a JPEG format in memory
-                        result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                             [int(cv2.IMWRITE_JPEG_QUALITY), self.compression_rate])
             elif self.mode == 'a':
                 if self.audio_overlay is not None:
                     self.total_overlay = self.audio_overlay
                     # print(self.total_overlay.shape)
 
-                    # Compress the combined overlay to a JPEG format in memory
-                    result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                         [int(cv2.IMWRITE_JPEG_QUALITY),
-                                                                          self.compression_rate])
             elif self.mode == 'v':
                 frame = self.camera_hardware.read()
                 if frame is not None:
                     self.total_overlay = frame
                     # print(self.total_overlay.shape)
 
-                    # Compress the combined overlay to a JPEG format in memory
-                    result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                         [int(cv2.IMWRITE_JPEG_QUALITY),
-                                                                          self.compression_rate])
-            else:
-                pass
+            # Compress the combined overlay to a JPEG format in memory
+            result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
+                                                                 [int(cv2.IMWRITE_JPEG_QUALITY),
+                                                                  self.compression_rate])
 
     def stop_overlay(self):
         self.running = False

@@ -87,7 +87,8 @@ class Event_Server:
                 self.overlay.audio_overlay_color = 0
         elif command == 'video_stream':
             if value == 'True':
-                self.video_server.start_streaming()
+                # self.video_server.start_streaming()
+                self.overlay.mode = 'av'
             elif value == 'False':
                 self.video_server.stop_streaming()
         elif command == 'threshold':
