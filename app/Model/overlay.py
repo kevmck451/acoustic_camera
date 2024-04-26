@@ -25,7 +25,8 @@ class Overlay:
         self.audio_visual_running = True
         self.running = True
         self.rms_max = 85  # 85
-        self.rms_threshold = self.rms_max * 0.10  # 20
+        self.rms_threshold_scalar = 0.10
+        self.rms_threshold = self.rms_max * self.rms_threshold_scalar  # 20
         self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red
         self.compression_rate = 50 # 20  # Max 100
         self.mode = 'a' # ['a', 'v', 'av']
@@ -40,8 +41,13 @@ class Overlay:
         # overlay_thread = threading.Thread(target=self.view_overlay, daemon=True)
         # overlay_thread.start()
 
-    def set_threshold_value(self, value):
-        self.rms_threshold = self.rms_max * value  # 20
+    def increase_threshold_value(self):
+        self.rms_threshold_scalar += 0.05
+        self.rms_threshold = self.rms_max * self.rms_threshold_scalar
+
+    def decrease_threshold_value(self):
+        self.rms_threshold_scalar -= 0.05
+        self.rms_threshold = self.rms_max * self.rms_threshold_scalar
 
     def scale_audio_matrix(self, original_matrix):
         # Determine the scaling factors for rows and columns
@@ -138,7 +144,6 @@ class Overlay:
         while self.running:
 
             if self.mode == 'av':
-
                 frame = self.camera_hardware.read()
                 if frame is not None and self.audio_overlay is not None:
                     if frame.shape == self.audio_overlay.shape:
@@ -147,19 +152,10 @@ class Overlay:
                         combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
                         self.total_overlay = combined_overlay
                         # print(self.total_overlay.shape)
-                        # Calculate the number of bytes: 921600 bytes
-                        # num_bytes = self.total_overlay.nbytes
-                        # print(num_bytes)
 
                         # Compress the combined overlay to a JPEG format in memory
-
                         result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
                                                                              [int(cv2.IMWRITE_JPEG_QUALITY), self.compression_rate])
-
-                        # num_bytes = self.total_overlay_compressed.nbytes
-                        # print(num_bytes)
-                        # print(self.total_overlay_compressed)
-
             elif self.mode == 'a':
                 if self.audio_overlay is not None:
                     self.total_overlay = self.audio_overlay
@@ -169,7 +165,6 @@ class Overlay:
                     result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
                                                                          [int(cv2.IMWRITE_JPEG_QUALITY),
                                                                           self.compression_rate])
-
             elif self.mode == 'v':
                 frame = self.camera_hardware.read()
                 if frame is not None:

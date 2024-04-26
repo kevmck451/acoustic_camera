@@ -90,6 +90,11 @@ class Controller:
                 self.overlay_threshold_window = Overlay_Threshold_Window(self.handle_event)
                 self.overlay_threshold_window.mainloop()
 
+        elif event == Event.INCREASE_THRESHOLD:
+            self.event_sender.send_data('threshold=+')
+
+        elif event == Event.DECREASE_THRESHOLD:
+            self.event_sender.send_data('vthreshold=-')
 
         elif event == Event.START_CAMERA:
             print('START_CAMERA')

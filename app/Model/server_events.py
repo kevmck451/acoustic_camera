@@ -90,6 +90,10 @@ class Event_Server:
                 self.video_server.start_streaming()
             elif value == 'False':
                 self.video_server.stop_streaming()
+        elif command == 'threshold':
+            if value == '+':
+                self.overlay.increase_threshold_value()
+            else: self.overlay.decrease_threshold_value()
 
 
 @dataclass

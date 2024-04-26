@@ -22,6 +22,8 @@ class Event(Enum):
     OVERLAY_COLOR_BLUE = auto()
     OVERLAY_COLOR_GREEN = auto()
     OVERLAY_THRESHOLD_WINDOW = auto()
+    INCREASE_THRESHOLD = auto()
+    DECREASE_THRESHOLD = auto()
 
 
 

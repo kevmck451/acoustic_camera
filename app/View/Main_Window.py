@@ -272,15 +272,15 @@ class Left_Frame(ctk.CTkFrame):
         frame.grid_rowconfigure(2, weight=1)  # Row for the load button
         frame.grid_columnconfigure(0, weight=1)  # Single column
 
-        self.button_1 = ctk.CTkButton(frame, text='Button', font=(configuration.main_font_style, configuration.main_font_size),
+        self.button_1 = ctk.CTkButton(frame, text='Threshold: +', font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
-                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+                                          command=lambda: self.event_handler(Event.INCREASE_THRESHOLD))
         self.button_1.grid(row=0, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
-        self.button_2 = ctk.CTkButton(frame, text='Button',
+        self.button_2 = ctk.CTkButton(frame, text='Threshold: -',
                                           font=(configuration.main_font_style, configuration.main_font_size),
                                           fg_color=configuration.gray_fg_color, hover_color=configuration.gray_hover_color,
-                                          command=lambda: self.event_handler(Event.DUMMY_BUTTON))
+                                          command=lambda: self.event_handler(Event.DECREASE_THRESHOLD))
         self.button_2.grid(row=1, column=0, padx=configuration.x_pad_2, pady=configuration.y_pad_2, sticky='nsew')
 
         self.button_3 = ctk.CTkButton(frame, text='Button', font=(configuration.main_font_style, configuration.main_font_size),
