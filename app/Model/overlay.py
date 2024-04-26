@@ -91,31 +91,13 @@ class Overlay:
             # based on a threshold ------------------------
             clipped_audio_overlay = np.clip(np.log(scaled_audio_values), self.rms_threshold, self.rms_max)
 
-            # show single pixel based on loudest point ------------------------
-
-            # Find the position of the maximum value
-            # max_idx = np.unravel_index(np.argmax(scaled_audio_values), scaled_audio_values.shape)
-            # # Determine the bounds of the 5x5 area centered around the max value
-            # top_left = (max(0, max_idx[0] - 2), max(0, max_idx[1] - 2))
-            # bottom_right = (min(scaled_audio_values.shape[0], top_left[0] + 5),
-            #                 min(scaled_audio_values.shape[1], top_left[1] + 5))
-            #
-            # # Extract the 5x5 area centered around the max value
-            # loudest_area = scaled_audio_values[top_left[0]:bottom_right[0], top_left[1]:bottom_right[1]]
-            # # Clip and normalize the loudest area
-            # clipped_audio_overlay = np.clip(np.log(loudest_area), self.rms_threshold, self.rms_max)
-
-
-            # ---------------------------------------
+            # normalize RMS values to 8bit
             norm_audio_overlay = np.uint8(
                 255 * (clipped_audio_overlay - self.rms_threshold) / (self.rms_max - self.rms_threshold))
-
-
 
             # show single pixel based on loudest point ------------------------
             max_val = np.max(norm_audio_overlay)
             norm_audio_overlay[norm_audio_overlay < max_val] = 0
-
 
             # Create an RGB image where the red channel intensity is based on audio level
             # In OpenCV, the channel order is BGR, so the red channel is the last one
