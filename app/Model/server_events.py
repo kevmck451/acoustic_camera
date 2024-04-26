@@ -73,11 +73,8 @@ class Event_Server:
         self.running = False
 
     def event_commands(self, command, value):
-        if command == 'mic_rms_threshold':
-            self.overlay.rms_threshold = value
-        elif command == 'mic_rms_max':
-            self.overlay.rms_max = value
-        elif command == 'mic_overlay_color':
+
+        if command == 'mic_overlay_color':
             # BGR 0, 1, 2
             if value == 'red':
                 self.overlay.audio_overlay_color = 2
