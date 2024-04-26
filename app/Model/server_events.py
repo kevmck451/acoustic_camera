@@ -90,7 +90,7 @@ class Event_Server:
                 # self.video_server.start_streaming()
                 self.overlay.mode = 'av'
             elif value == 'False':
-                self.video_server.stop_streaming()
+                self.overlay.mode = 'a'
         elif command == 'threshold':
             if value == '+':
                 self.overlay.increase_threshold_value()
