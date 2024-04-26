@@ -43,10 +43,12 @@ class Overlay:
 
     def increase_threshold_value(self):
         self.rms_threshold_scalar += 0.05
+        print(self.rms_threshold_scalar)
         self.rms_threshold = self.rms_max * self.rms_threshold_scalar
 
     def decrease_threshold_value(self):
         self.rms_threshold_scalar -= 0.05
+        print(self.rms_threshold_scalar)
         self.rms_threshold = self.rms_max * self.rms_threshold_scalar
 
     def scale_audio_matrix(self, original_matrix):
