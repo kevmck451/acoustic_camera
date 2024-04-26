@@ -28,6 +28,7 @@ class Overlay:
         self.rms_threshold = self.rms_max * 0.10  # 20
         self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red
         self.compression_rate = 50 # 20  # Max 100
+        self.mode = 'a' # ['a', 'v', 'av']
 
 
         # audio_scale_thread = threading.Thread(target=self.view_audio_heatmap, daemon=True)
@@ -114,7 +115,7 @@ class Overlay:
         #
         # cv2.destroyAllWindows()
 
-
+    # test function
     def view_overlay(self):
         while self.running:
             frame = self.camera_hardware.read()
@@ -132,30 +133,55 @@ class Overlay:
 
         cv2.destroyAllWindows()
 
-
+    # function that actually transmit data
     def start_overlay(self):
         while self.running:
-            frame = self.camera_hardware.read()
-            if frame is not None and self.audio_overlay is not None:
-                if frame.shape == self.audio_overlay.shape:
 
-                    # Blend the audio overlay with the video frame
-                    combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
-                    self.total_overlay = combined_overlay
+            if self.mode == 'av':
+
+                frame = self.camera_hardware.read()
+                if frame is not None and self.audio_overlay is not None:
+                    if frame.shape == self.audio_overlay.shape:
+
+                        # Blend the audio overlay with the video frame
+                        combined_overlay = cv2.addWeighted(frame, 1, self.audio_overlay, 0.5, 0)
+                        self.total_overlay = combined_overlay
+                        # print(self.total_overlay.shape)
+                        # Calculate the number of bytes: 921600 bytes
+                        # num_bytes = self.total_overlay.nbytes
+                        # print(num_bytes)
+
+                        # Compress the combined overlay to a JPEG format in memory
+
+                        result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
+                                                                             [int(cv2.IMWRITE_JPEG_QUALITY), self.compression_rate])
+
+                        # num_bytes = self.total_overlay_compressed.nbytes
+                        # print(num_bytes)
+                        # print(self.total_overlay_compressed)
+
+            elif self.mode == 'a':
+                if self.audio_overlay is not None:
+                    self.total_overlay = self.audio_overlay
                     # print(self.total_overlay.shape)
-                    # Calculate the number of bytes: 921600 bytes
-                    # num_bytes = self.total_overlay.nbytes
-                    # print(num_bytes)
 
                     # Compress the combined overlay to a JPEG format in memory
-
                     result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
-                                                                         [int(cv2.IMWRITE_JPEG_QUALITY), self.compression_rate])
+                                                                         [int(cv2.IMWRITE_JPEG_QUALITY),
+                                                                          self.compression_rate])
 
-                    # num_bytes = self.total_overlay_compressed.nbytes
-                    # print(num_bytes)
-                    # print(self.total_overlay_compressed)
+            elif self.mode == 'v':
+                frame = self.camera_hardware.read()
+                if frame is not None:
+                    self.total_overlay = frame
+                    # print(self.total_overlay.shape)
 
+                    # Compress the combined overlay to a JPEG format in memory
+                    result, self.total_overlay_compressed = cv2.imencode('.jpg', self.total_overlay,
+                                                                         [int(cv2.IMWRITE_JPEG_QUALITY),
+                                                                          self.compression_rate])
+            else:
+                pass
 
     def stop_overlay(self):
         self.running = False
