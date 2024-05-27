@@ -181,4 +181,4 @@ chmod +x ~/Desktop/AcousticCameraLauncher.desktop
 ```
 - When icon is first double clicked, hit the execute button on the far left
 
-![Back of Phase Array](docs/Phase_Array_Back.jpg)
+![Back of Phase Array](docs/Phase_Array_Back.png)
