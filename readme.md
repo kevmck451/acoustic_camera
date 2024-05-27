@@ -47,6 +47,8 @@
 - CustomTKinter
 
 
+![Phase Array](docs/Phase_Array.jpg)
+
 ## Hardware
 #### Links:
 - [Raspberry Pi 4 Purchase Page](https://www.amazon.com/dp/B07TC2BK1X?ref=ppx_yo2ov_dt_b_product_details&th=1)
@@ -178,3 +180,5 @@ Categories=Utility;
 chmod +x ~/Desktop/AcousticCameraLauncher.desktop
 ```
 - When icon is first double clicked, hit the execute button on the far left
+
+![Back of Phase Array](docs/Phase_Array_Back.jpg)
