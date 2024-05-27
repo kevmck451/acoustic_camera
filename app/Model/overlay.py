@@ -24,7 +24,7 @@ class Overlay:
         self.classify_vehicles = False
         self.audio_visual_running = True
         self.running = True
-        self.rms_max = 85  # 85
+        self.rms_max = 100  # 85
         self.rms_threshold_scalar = 0.10
         self.rms_threshold = self.rms_max * self.rms_threshold_scalar  # 20
         self.audio_overlay_color = 1 # 0 Blue, 1 Green, 2 Red

@@ -1,6 +1,8 @@
 # Acoustic Camera System
 - Real Time Passive Acoustic Phase Array with Visual Display
 
+![App Home](docs/App_Demo.jpg)
+
 ## Overview
 
 ### FPGA
